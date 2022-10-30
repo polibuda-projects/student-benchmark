@@ -1,1 +1,1 @@
-# human-benchmark
+# frontend of student benchmark
