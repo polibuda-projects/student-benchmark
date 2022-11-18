@@ -19,7 +19,7 @@
 ```bash
 git clone https://github.com/polibuda-projects/student-benchmark.git
 ```
-1. **Change branch to `frontend`**
+3. **Change branch to `frontend`**
 ```bash
 git checkout frontend
 ```
@@ -28,7 +28,7 @@ git checkout frontend
 ```bash
 cd frontend
 ```
-1. Install dependencies
+5. Install dependencies
 ```bash
 npm ci
 ```
