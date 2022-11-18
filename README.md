@@ -36,4 +36,8 @@ git log
 
 ### 9.Wypychamy i mamy nadzieję że, działa :)
 
-git push origin <nazwa brancha>
+git push origin nazwa brancha
+
+### 10. W celu zaaktualizowania projektu 
+
+git pull
