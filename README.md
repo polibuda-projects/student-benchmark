@@ -36,4 +36,4 @@ git log
 
 ### 9.Wypychamy i mamy nadzieję że, działa :)
 
-git push
+git push origin <nazwa brancha>
