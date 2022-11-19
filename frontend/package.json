@@ -3,25 +3,58 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^7.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@craco/types": "^7.0.0",
+    "eslint-config-google": "^0.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "typescript": "^4.9.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco  start",
+    "build": "craco  build",
+    "test": "craco  test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
+      "google",
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "linebreak-style": "off",
+      "max-len": [
+        "warn",
+        {
+          "code": 160,
+          "comments": 320
+        }
+      ],
+      "space-in-parens": [
+        "warn",
+        "never"
+      ],
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ],
+      "require-jsdoc": "off"
+    }
   },
   "browserslist": {
     "production": [
