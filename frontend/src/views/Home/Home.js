@@ -1,25 +1,21 @@
+import style from './Home.module.css';
 import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import ButtonMedium from '@components/Buttons/ButtonMedium';
+import Page from '@components/Page/Page';
+
+
+function Home() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Page title='Welcome'>
+      <img src={logo} className={style.logo} alt='Student Benchmark' />
+
+      <span className={style.catchphrase}>Lorem ipsum, one liners are hard</span>
+
+      <ButtonMedium className={style.getStartedButton} text='Get started' />
+    </Page>
   );
 }
 
-export default App;
+
+export default Home;

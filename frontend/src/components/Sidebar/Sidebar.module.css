@@ -1,0 +1,139 @@
+.sidebar {
+  width: 28rem;
+  min-height: 100%;
+  height: fit-content;
+
+  font-size: 2.4rem;
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  box-sizing: border-box;
+
+  background-color: var(--app-bg-color);
+  box-shadow: -25px 25px 50px #1f1f2133,
+    25px -25px 50px #1f1f2133,
+    -25px -25px 50px #2f2f31e6,
+    25px 25px 63px #1f1f21e6,
+    inset 1px 1px 2px #2f2f314d,
+    inset -1px -1px 2px #1f1f2180;
+}
+
+.logo {
+  height: 80px;
+}
+
+.menu {
+  padding-top: 9rem;
+
+  padding-left: 3rem;
+  padding-right: 3rem;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2.5rem;
+}
+
+.menuButton {
+  border-radius: 1.5rem;
+
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+
+  width: 100%;
+  height: 4.6rem;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 1rem;
+}
+
+.menuButton>div {
+  height: 2rem;
+  width: 2rem;
+
+  background-color: var(--app-font-color);
+  mask-size: contain;
+}
+
+.menuButton>span {
+  outline: none;
+  color: var(--app-font-color);
+}
+
+.menuButton:global(.active) {
+  background-color: var(--app-bg-color-darker);
+  box-shadow: 1px 1px 2px rgba(38, 38, 38, 0.3),
+    -1px -1px 2px rgba(26, 26, 26, 0.5),
+    inset -5px 5px 10px rgba(26, 26, 26, 0.2),
+    inset 5px -5px 10px rgba(26, 26, 26, 0.2),
+    inset -5px -5px 10px rgba(38, 38, 38, 0.9),
+    inset 5px 5px 13px rgba(26, 26, 26, 0.9);
+}
+
+.menuButton:global(.active)>div {
+  background-color: var(--app-acc-color);
+}
+
+.menuButton:global(.active)>span {
+  color: var(--app-acc-color);
+}
+
+.auth {
+  margin-top: auto;
+  margin-bottom: 3rem;
+
+  width: 100%;
+
+  box-sizing: border-box;
+  padding: 0 3rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3rem;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+}
+
+.linkDivider {
+  height: 0.5rem;
+  width: 0.5rem;
+
+  background-color: var(--app-font-color);
+  border-radius: 50%;
+}
+
+.link {
+  font-size: 1.6rem;
+  text-transform: lowercase;
+}
+
+@media screen and (max-height: 690px) {
+  .auth>*:not(:first-child) {
+    display: none;
+  }
+}
