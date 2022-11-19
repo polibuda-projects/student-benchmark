@@ -83,3 +83,7 @@ git push origin
 - ### Make sure that you are on `frontend` branch
 - ### You can commit directly from `VS Code`
 - ### Make sure  you are running `npm` commands from `frontend` directory
+
+## Recommended VS Code extensions
+- [CSS Modules](https://marketplace.visualstudio.com/items?itemName=clinyong.vscode-css-modules)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
