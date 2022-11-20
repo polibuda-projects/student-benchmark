@@ -1,43 +1,49 @@
-# experiments backend of student benchmark
+<h1 align="center">Student Benchmark - Backend-experiment Branch</h1>
+<br/>
 
-## HOW TO OGARNIAC W CMD GIT:
+### Requirements:
+- [Spring](https://spring.io)
 
-### 1.Klonujemy repo:
+## 1. Committing changes
 
-git clone URL
-
-### 2.Sprawdzamy branche:
-
+### Make sure you are on `backend-experiments` branch
+```bash
 git branch
-
-### 3.Przełączamy się na brancha na którym pracujemy:
-
 git checkout backend-experiments
+```
 
-### 4.Sprawdzamy czy jesteśmy na właściwym branchu:
-
-git branch
-
-### 5.Dodajemy zmiane:
-
-git add .
-
-### 6.Sprawdzamy co i jak:
-
-git status
-
-### 7.Jak OK to robimy commita:
-
-git commit -m"b nazwa commita"
-
-### 8.Sprawdzamy czy go mamy:
-
-git log
-
-### 9.Wypychamy i mamy nadzieję że, działa :)
-
-git push origin nazwa brancha
-
-### 10. W celu zaaktualizowania projektu 
-
+### Pulling from the repository
+```bash
 git pull
+```
+
+### Adding files
+```bash
+git add <file>
+```
+
+### Checking status of files
+```bash
+git status
+```
+
+### Committing files
+```bash
+git commit -m "<commit message>"
+```
+
+### Pushing to the repository
+```bash
+git push origin
+```
+
+## 2. Commit naming conventions
+- Frontend commits should start with `b` (e.g. `b added registration`)
+- Commits should be written in past tense (e.g. `b added registration` instead of `b add registration`)
+- If applicable, commit message should include name of the Trello card (e.g. `b added registration <trello card name>`)
+
+## Important notes
+
+- ### Pull changes before pushing
+- ### Do not commit to the `main` branch
+- ### Make sure that you are on `frontend` branch
