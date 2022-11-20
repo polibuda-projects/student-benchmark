@@ -46,4 +46,4 @@ git push origin
 
 - ### Pull changes before pushing
 - ### Do not commit to the `main` branch
-- ### Make sure that you are on `frontend` branch
+- ### Make sure that you are on `backend-experiments` branch
