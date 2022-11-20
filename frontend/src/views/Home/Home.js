@@ -3,6 +3,7 @@ import logo from './logo.svg';
 
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import Page from '@components/Page/Page';
+import { Link } from 'react-router-dom';
 
 
 function Home() {
@@ -12,7 +13,9 @@ function Home() {
 
       <span className={style.catchphrase}>Lorem ipsum, one liners are hard</span>
 
-      <ButtonMedium className={style.getStartedButton} text='Get started' />
+      <Link to='/home'>
+        <ButtonMedium className={style.getStartedButton} text='Get started' />
+      </Link>
     </Page>
   );
 }

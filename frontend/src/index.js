@@ -14,12 +14,17 @@ import Recover from '@views/Recover/Recover';
 import Signup from '@views/Signup/Signup';
 import Support from '@views/Support/Support';
 import User from '@views/User/User';
+import TestsHome from '@views/TestsHome/TestsHome';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />,
     errorElement: <div>404</div>,
+  },
+  {
+    path: '/home',
+    element: <TestsHome/>,
   },
   {
     path: '/login',

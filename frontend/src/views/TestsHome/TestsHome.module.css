@@ -1,0 +1,17 @@
+  .testButton {
+    margin: 0 2rem;
+
+  }
+
+  .rowTests {
+    display: flex;
+    margin: 2rem 0;
+  }
+
+  .nullButton {
+    opacity: 0.5;
+    margin: 0 2rem;
+
+  }
+
+  
