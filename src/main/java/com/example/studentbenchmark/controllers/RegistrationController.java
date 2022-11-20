@@ -1,4 +1,4 @@
-package com.example.studentbenchmark.registration;
+package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.repository.UserRepo;
