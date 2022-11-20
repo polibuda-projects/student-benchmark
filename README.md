@@ -38,7 +38,7 @@ git push origin
 ```
 
 ## 2. Commit naming conventions
-- Frontend commits should start with `b` (e.g. `b added registration`)
+- Backend commits should start with `b` (e.g. `b added registration`)
 - Commits should be written in past tense (e.g. `b added registration` instead of `b add registration`)
 - If applicable, commit message should include name of the Trello card (e.g. `b added registration <trello card name>`)
 
