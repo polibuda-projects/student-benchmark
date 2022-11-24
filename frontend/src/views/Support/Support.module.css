@@ -1,3 +1,34 @@
-.todo {
+.title {
   font-size: 5.2rem;
+  text-align: left;
+  margin-top: 0;
+}
+
+.form {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+  align-items: stretch;
+  width:45%;
+  height: 45em;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.formElement,.textElement ,.label{
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1em;
+}
+.label{
+  margin-bottom: 2em;
+}
+.textElement{
+  height: 50%;
+}
+.tosLink{
+  font-weight: bold;
 }
