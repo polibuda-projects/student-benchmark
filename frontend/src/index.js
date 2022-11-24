@@ -2,10 +2,7 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from '@views/Home/Home';
 import Login from '@views/Login/Login';
@@ -15,6 +12,7 @@ import Signup from '@views/Signup/Signup';
 import Support from '@views/Support/Support';
 import User from '@views/User/User';
 import TestsHome from '@views/TestsHome/TestsHome';
+import Password from '@views/Password/Password';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: '/settings',
     element: <User />,
+  },
+  {
+    path: '/password',
+    element: <Password />,
   },
 ]);
 

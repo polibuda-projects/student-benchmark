@@ -22,7 +22,7 @@ function Login() {
               <ButtonMedium text={'Login'} width={''}/>
               <div className={style.formOptionsLink}>
                 <a href={'/signup'}>Sign up</a>
-                <a href={'#'}>Reset my password</a>
+                <a href={'/password'}>Reset my password</a>
               </div>
             </div>
           </form>
