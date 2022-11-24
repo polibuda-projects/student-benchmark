@@ -8,7 +8,7 @@ import donateBoxIcon from './donateBoxIcon.svg';
 
 import MediumButton from '@components/Buttons/ButtonMedium';
 import { Link, NavigateFunction, NavLink, useNavigate } from 'react-router-dom';
-import { Component } from 'react';
+import { Component, HTMLAttributes } from 'react';
 
 
 export interface SidebarProps {
@@ -25,22 +25,22 @@ export class SidebarComponent extends Component<SidebarProps> {
 
         <div className={style.menu}>
           <NavLink className={style.menuButton} to='/'>
-            <div style={{ maskImage: `url(${homeIcon})` }} />
+            <div style={SidebarComponent.menuButtonStyleGenerator(homeIcon)} />
             <span>Home</span>
           </NavLink>
 
           <NavLink className={style.menuButton} to='/dashboard'>
-            <div style={{ maskImage: `url(${dashboardIcon})` }} />
+            <div style={SidebarComponent.menuButtonStyleGenerator(dashboardIcon)} />
             <span>Dashboard</span>
           </NavLink>
 
           <NavLink className={style.menuButton} to='/support'>
-            <div style={{ maskImage: `url(${[supportIcon]})` }} />
+            <div style={SidebarComponent.menuButtonStyleGenerator(supportIcon)} />
             <span>Support</span>
           </NavLink>
 
           <NavLink className={style.menuButton} to='/donate'>
-            <div style={{ maskImage: `url(${donateBoxIcon})` }} />
+            <div style={SidebarComponent.menuButtonStyleGenerator(donateBoxIcon)} />
             <span>Donate</span>
           </NavLink>
 
@@ -61,6 +61,13 @@ export class SidebarComponent extends Component<SidebarProps> {
       </div>
     );
   }
+
+  private static menuButtonStyleGenerator = (icon: string): HTMLAttributes<HTMLDivElement>['style'] => {
+    return {
+      maskImage: `url(${icon})`,
+      WebkitMaskImage: `url(${icon})`,
+    };
+  };
 }
 
 export default function Sidebar() {
