@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Service;
 
 
-@RestController("/")
+@RestController
 @Service
 public class RegistrationController {
     private UserRepo userRepo;
