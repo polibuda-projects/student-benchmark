@@ -67,6 +67,14 @@ form > label > em{
   line-height: 1.7em;
 }
 
+form[name='signup'] a{
+  color: var(--app-acc-color) !important;
+}
+
+form a:hover{
+  color: var(--app-font-color) !important;
+}
+
 
 /*Checkbox style customize*/
 

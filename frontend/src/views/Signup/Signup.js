@@ -5,6 +5,7 @@ import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import logo from '@views/Home/logo.svg';
+import { Link } from 'react-router-dom';
 
 
 function Signup() {
@@ -15,18 +16,20 @@ function Signup() {
         <ContainerBox width={'60em'}>
           <h1 className={style.title}>Sign up</h1>
 
-          <form method="post" action="#" className={style.form}>
-            <Input type={'text'} name={'usernameLog'} placeholder={'Username'} className={style.formElement}/>
-            <Input type={'email'} name={'emailLog'} placeholder={'Address email'} className={style.formElement}/>
-            <Input type={'password'} name={'passwordLog'} placeholder={'Password'} className={style.formElement}/>
-            <Input type={'password'} name={'passwordRepeatLog'} placeholder={'Repeat your password'} className={style.formElement}/>
+          <form method="post" action="#" className={style.form} name={'signup'}>
+            <Input type={'text'} name={'usernameLog'} placeholder={'Username'} required className={style.formElement}/>
+            <Input type={'email'} name={'emailLog'} placeholder={'Address email'} required className={style.formElement}/>
+            <Input type={'password'} name={'passwordLog'} placeholder={'Password'} required className={style.formElement}/>
+            <Input type={'password'} name={'passwordRepeatLog'} placeholder={'Repeat your password'} required className={style.formElement}/>
             <label className={style.label}>
-              <input type="checkbox" name="terms" value="terms" required={true}/><em>I agree to our terms and privacy of sevice.</em>
+              <input type="checkbox" name="terms" value="terms" required={true}/><em>I agree to our <Link to={'/terms'}>terms</Link> and <Link to={'/privacy'}>privacy of sevice</Link>.</em>
             </label>
 
             <div className={style.formOptions}>
               <ButtonMedium text={'Sign up'} width={''}/>
-              <a href={'/login'}>Log in</a>
+              <Link to='/login'>
+                Log in
+              </Link>
             </div>
           </form>
 
