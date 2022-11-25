@@ -5,6 +5,7 @@ import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import logo from '@views/Home/logo.svg';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
+import { Link } from 'react-router-dom';
 
 
 function Login() {
@@ -15,14 +16,14 @@ function Login() {
         <ContainerBox width={'60em'}>
           <h1 className={style.title}>Log in</h1>
           <form method="post" action="#" className={style.form}>
-            <Input type={'email'} name={'emailLog'} placeholder={'Address email'} className={style.formElement}/>
-            <Input type={'password'} name={'passwordLog'} placeholder={'Password'} className={style.formElement}/>
+            <Input type={'email'} name={'emailLog'} placeholder={'Address email'} required className={style.formElement}/>
+            <Input type={'password'} name={'passwordLog'} placeholder={'Password'} required className={style.formElement}/>
 
             <div className={style.formOptions}>
               <ButtonMedium text={'Login'} width={''}/>
               <div className={style.formOptionsLink}>
-                <a href={'/signup'}>Sign up</a>
-                <a href={'/password'}>Reset my password</a>
+                <Link to='/signup'>Sign up</Link>
+                <Link to='/password'>Reset my password</Link>
               </div>
             </div>
           </form>
