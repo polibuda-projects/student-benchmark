@@ -1,7 +1,7 @@
 import style from './TestsHome.module.css';
 import { Link } from 'react-router-dom';
 
-import { SequenceButton, VisualButton, NumberButton, VerbalButton } from '@components/TestButtons/TestButton';
+
 import sequence from '@components/TestButtons/sequenceTest.svg';
 import visual from '@components/TestButtons/visualTest.svg';
 import verbal from '@components/TestButtons/verbalTest.svg';
