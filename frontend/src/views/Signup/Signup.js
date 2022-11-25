@@ -22,7 +22,7 @@ function Signup() {
             <Input type={'password'} name={'passwordLog'} placeholder={'Password'} required className={style.formElement}/>
             <Input type={'password'} name={'passwordRepeatLog'} placeholder={'Repeat your password'} required className={style.formElement}/>
             <label className={style.label}>
-              <input type="checkbox" name="terms" value="terms" required={true}/><em>I agree to our <Link to={'/terms'}>terms</Link> and <Link to={'/privacy'}>privacy of sevice</Link>.</em>
+              <input type="checkbox" name="terms" value="terms" required={true}/><em>I agree to our <Link to={'/privacy'}>privacy and terms of service</Link>.</em>
             </label>
 
             <div className={style.formOptions}>
