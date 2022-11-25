@@ -9,13 +9,14 @@
   align-self: center;
   flex-direction: column;
   align-items: stretch;
-  width:55em;
+  width: 55em;
   height: 45em;
 }
 
 .container {
   display: flex;
   align-items: flex-start;
+  width:140em !important;
 }
 
 .formElement,.textElement ,.label{
@@ -25,10 +26,13 @@
 }
 .label{
   margin-bottom: 2em;
+  cursor: pointer;
+  width: fit-content;
 }
 .textElement{
   height: 15em;
 }
-.tosLink{
+.label a{
   font-weight: bold;
+  color: #8685EF;
 }
