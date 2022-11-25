@@ -9,7 +9,7 @@ import userAvatar from '../../components/UserProfile/defaultAvatar.svg';
 function User() {
   return (
     <Page>
-      <ContainerBox width={'90.25rem'}>
+      <ContainerBox width={'140rem'}>
         <img src={userAvatar} className={style.userAvatar} alt={'Default Avatar'} />
         <div className={style.userBar}>
           <span className={style.username}>UserWithLongUsername</span>
