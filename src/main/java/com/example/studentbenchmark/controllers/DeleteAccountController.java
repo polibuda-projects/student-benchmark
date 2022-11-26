@@ -28,15 +28,15 @@ public class DeleteAccountController {
         if (user == null) {
             return new ResponseEntity<>("User does not exist", HttpStatus.UNAUTHORIZED);
         }
-        if (!user.getPassword().equals(request.Password())) {
+        if (!user.getPassword().equals(request.password())) {
             return new ResponseEntity<>("Incorrect user password", HttpStatus.BAD_REQUEST);
         }
 
-        userRepo.deleteAccount(request.email(), request.Password());
+        userRepo.deleteAccount(request.email());
 
         return new ResponseEntity<>("User Deleted", HttpStatus.OK);
     }
 
-    private record DeleteAccountRequest(String email, String Password) {
+    private record DeleteAccountRequest(String email, String password) {
     }
 }
