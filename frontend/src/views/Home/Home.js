@@ -13,7 +13,7 @@ function Home() {
 
       <span className={style.catchphrase}>Challange your memory and cognitive skills.</span>
 
-      <Link to='/home'>
+      <Link to='/tests'>
         <ButtonMedium className={style.getStartedButton} text='Get started' />
       </Link>
     </Page>

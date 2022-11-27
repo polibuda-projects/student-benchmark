@@ -5,18 +5,23 @@ import Sidebar from '@components/Sidebar/Sidebar';
 import UserProfile from '@components/UserProfile/UserProfile';
 
 
-interface PageProps extends HTMLAttributes<HTMLDivElement> {
+interface PageProps {
   title?: string;
   sidebar?: boolean;
+  titlebar?: boolean;
   user?: boolean;
-  background?: boolean
+  content?: boolean;
+  background?: boolean;
+  children?: HTMLAttributes<HTMLDivElement>['children'];
 }
 
 export default class Page extends Component<PageProps> {
   private static defaultProps: PageProps = {
     title: '',
     sidebar: true,
+    titlebar: true,
     user: true,
+    content: true,
     background: false,
   };
 
@@ -30,14 +35,16 @@ export default class Page extends Component<PageProps> {
             {this.props.user && <UserProfile username='UserWithLongUsername' />}
           </div>
 
-          <div className={style.titleBar}>
-            <span>{this.props.title}</span>
-          </div>
+          {this.props.titlebar &&
+            <div className={style.titleBar}>
+              <span>{this.props.title}</span>
+            </div>
+          }
 
-          <div className={[style.content, this.props.background ? style.contentBackground : ''].join(' ')}>
-            {this.props.children}
-
-          </div>
+          {this.props.content ?
+            <div className={[style.content, this.props.background ? style.contentBackground : ''].join(' ')}> {this.props.children}</div> :
+            this.props.children
+          }
         </div>
       </div>
     );

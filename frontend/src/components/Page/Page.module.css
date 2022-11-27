@@ -16,8 +16,6 @@
   min-width: 50em;
   height: 100%;
   box-sizing: border-box;
-
-  padding-bottom: 4.5rem;
 }
 
 .topBar {
@@ -60,6 +58,8 @@
   height: 100%;
 
   margin: 0 5rem;
+
+  padding-bottom: 4.5rem;
   border-radius: 1.5rem;
   box-sizing: border-box;
 }

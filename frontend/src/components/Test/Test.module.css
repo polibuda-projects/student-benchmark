@@ -1,0 +1,143 @@
+.content {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-direction: row;
+
+  width: 100%;
+  height: calc(100vh - 11rem);
+
+  gap: 7rem;
+
+  padding: 4rem 7rem;
+  overflow-y: auto;
+
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+}
+
+.testBackground {
+  border-radius: 1.5rem;
+  padding: 4rem;
+  box-sizing: border-box;
+
+  background-color: var(--app-bg-color);
+  box-shadow: -10px 10px 20px #1f1f2133,
+    10px -10px 20px #1f1f2133,
+    -10px -10px 20px #2f2f31e6,
+    10px 10px 25px #1f1f21e6,
+    inset 1px 1px 2px #2f2f314d,
+    inset -1px -1px 2px #1f1f2180;
+}
+
+.test {
+  width: 56%;
+  max-width: 85rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.description {
+  width: 44%;
+  max-width: 85rem;
+
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+@media screen and (max-width: 1600px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 2rem;
+  }
+
+  .test {
+    width: 100%;
+    height: 100%;
+
+    flex-shrink: 0;
+  }
+
+  .description {
+    width: 100%;
+    height: fit-content;
+
+    overflow: initial;
+  }
+}
+
+.testTitle {
+  font-size: 4.8rem;
+  font-weight: 600;
+}
+
+.testDescription {
+  font-size: 1.6rem;
+  padding: 3rem 0;
+}
+
+.statisticsText {
+  font-size: 3.6rem;
+  font-weight: 600;
+
+  word-wrap: break-word;
+
+  margin-top: auto;
+}
+
+.chart {
+  padding-top: 2.5rem;
+}
+
+.testContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4rem;
+}
+
+.testInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 1rem;
+}
+
+.testLogo {
+  width: 15rem;
+  height: 15rem;
+}
+
+.testShortDescription {
+  font-size: 2rem;
+  font-weight: 500;
+
+  text-align: center;
+}
+
+.testButton {
+  padding: 0 2.5rem;
+
+  font-size: 3.6rem;
+  font-weight: 600;
+
+  height: 5.5rem;
+}
+
+.testResult {
+  font-size: 4.8rem;
+  font-weight: 600;
+}

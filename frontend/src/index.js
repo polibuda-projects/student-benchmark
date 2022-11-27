@@ -11,8 +11,12 @@ import Recover from '@views/Recover/Recover';
 import Signup from '@views/Signup/Signup';
 import Support from '@views/Support/Support';
 import User from '@views/User/User';
-import TestsHome from '@views/TestsHome/TestsHome';
+import TestsHome from '@views/Tests/Home/Home';
 import Password from '@views/Password/Password';
+import VisualTest from '@views/Tests/VisualTest/VisualTest';
+import VerbalTest from '@views/Tests/VerbalTest/VerbalTest';
+import SequenceTest from '@views/Tests/SequenceTest/SequenceMemory';
+import NumberTest from '@views/Tests/NumberTest/NumberTest';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +25,24 @@ const router = createBrowserRouter([
     errorElement: <div>404</div>,
   },
   {
-    path: '/home',
+    path: '/tests',
     element: <TestsHome />,
+  },
+  {
+    path: '/tests/number',
+    element: <NumberTest />,
+  },
+  {
+    path: '/tests/sequence',
+    element: <SequenceTest />,
+  },
+  {
+    path: '/tests/verbal',
+    element: <VerbalTest />,
+  },
+  {
+    path: '/tests/visual',
+    element: <VisualTest />,
   },
   {
     path: '/login',
