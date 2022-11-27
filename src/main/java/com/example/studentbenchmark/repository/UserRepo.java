@@ -8,9 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Repository
 public interface UserRepo extends JpaRepository<AppUser, Long> {
+    Optional<AppUser> findByNickname(String username);
 
 
     AppUser findByEmail(String email);
