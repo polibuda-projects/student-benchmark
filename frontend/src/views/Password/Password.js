@@ -12,17 +12,17 @@ function Password() {
           <input
             className={style.passwordInput}
             type="password"
-            placeholder='Current Password'
+            placeholder="Current Password"
           />
           <input
             className={style.passwordInput}
             type="password"
-            placeholder='New Password'
+            placeholder="New Password"
           />
           <input
             className={style.passwordInput}
             type="password"
-            placeholder='Repeat New Password'
+            placeholder="Repeat New Password"
           />
           <button className={style.changePasswordSubmit}>UPDATE</button>
         </form>
