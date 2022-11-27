@@ -1,8 +1,12 @@
 .container {
   display: flex;
-  align-items: flex-start;
-  height: 100%;
+  align-items: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
+  height: calc(100vh - 25.5rem);
+  overflow-y: auto;
+  gap: 2rem;
 }
 
 .title {
@@ -23,4 +27,5 @@
   font-size: 1.6rem;
   font-weight: 300;
   display: block;
+  margin: 0;
 }
