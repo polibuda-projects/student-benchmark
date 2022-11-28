@@ -12,6 +12,13 @@
   box-sizing: border-box;
   padding: 0 2rem;
 
+  overflow: hidden;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   box-shadow: -5px 5px 10px #1d1d1d33,
     5px -5px 10px #1d1d1d33,
     -5px -5px 10px #232323e6,
