@@ -1,10 +1,9 @@
 package com.example.studentbenchmark.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class AppUser {
@@ -14,19 +13,23 @@ public class AppUser {
     String nickname;
     String email;
     String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)  //Przy pomcy tego Hybernate tworzy nową tabelę w BD
+    private Set<String> roles = new HashSet<>();
     private Date creationDate;
     private Date lastLoginDate;
 
     public AppUser() {
     }
 
-    public AppUser(Long idUser, String nickname, String email, String password) {
+    public AppUser(Long idUser, String nickname, String email, String password, String role) {
         this.idUser = idUser;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.creationDate = new Date();
         this.lastLoginDate = new Date();
+        this.roles = Set.of("ROLE_USER");
     }
 
     public Long getIdUser() {
@@ -75,5 +78,14 @@ public class AppUser {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }

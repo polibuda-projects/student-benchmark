@@ -4,6 +4,7 @@ import com.example.studentbenchmark.repository.AppUserDetailsService;
 import com.example.studentbenchmark.repository.UserRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,7 +25,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/","/register").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/","/login", "/register","/changeUserPassword","/deleteAccount").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/login", "/register", "/changeUserPassword", "/deleteAccount").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/","/user").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
