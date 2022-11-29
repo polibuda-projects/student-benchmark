@@ -1,3 +1,31 @@
+.dummyContainer {
+  position: relative;
+}
+
+.container {
+  height: 100%;
+  width: fit-content;
+  position: relative;
+}
+
+.shadowBox {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  box-shadow: -25px 25px 50px #1f1f2133,
+    25px -25px 50px #1f1f2133,
+    -25px -25px 50px #2f2f31e6,
+    25px 25px 63px #1f1f21e6,
+    inset 1px 1px 2px #2f2f314d,
+    inset -1px -1px 2px #1f1f2180;
+
+  z-index: -99;
+}
+
 .sidebar {
   width: 28rem;
   min-height: 100%;
@@ -11,21 +39,46 @@
   align-items: center;
   justify-content: flex-start;
 
+  position: relative;
+  overflow-x: hidden;
+
   padding-top: 3rem;
   padding-bottom: 3rem;
   box-sizing: border-box;
 
+  z-index: 99;
+
   background-color: var(--app-bg-color);
-  box-shadow: -25px 25px 50px #1f1f2133,
-    25px -25px 50px #1f1f2133,
-    -25px -25px 50px #2f2f31e6,
-    25px 25px 63px #1f1f21e6,
-    inset 1px 1px 2px #2f2f314d,
-    inset -1px -1px 2px #1f1f2180;
+
+  transition: width 0.3s ease-in-out;
+}
+
+.branding {
+  position: relative;
+  width: 100%;
+
+  height: 8rem;
 }
 
 .logo {
-  height: 80px;
+  position: absolute;
+
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  height: 100%;
+  transition: 0.3s;
+}
+
+.icon {
+  position: absolute;
+
+  height: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  transition: 0.3s;
+  translate: 16rem;
 }
 
 .menu {
@@ -41,6 +94,8 @@
   flex-direction: column;
   align-items: center;
 
+  transition: 0.3s;
+
   gap: 2.5rem;
 }
 
@@ -52,6 +107,8 @@
   padding-top: 0.8rem;
   padding-bottom: 0.8rem;
 
+  overflow: hidden;
+
   width: 100%;
   height: 4.6rem;
   box-sizing: border-box;
@@ -60,12 +117,16 @@
   align-items: center;
   justify-content: flex-start;
 
+  transition: 0.3s;
+
   gap: 1rem;
 }
 
 .menuButton>div {
   height: 2rem;
   width: 2rem;
+
+  flex-shrink: 0;
 
   background-color: var(--app-font-color);
   mask-size: contain;
@@ -109,6 +170,12 @@
   justify-content: center;
 
   gap: 3rem;
+
+  transition: 0.3s;
+}
+
+.auth>a {
+  width: 100%;
 }
 
 .links {
@@ -117,6 +184,8 @@
   justify-content: center;
 
   gap: 0.5rem;
+
+  transition: 0.3s;
 }
 
 .linkDivider {
@@ -125,15 +194,83 @@
 
   background-color: var(--app-font-color);
   border-radius: 50%;
+
+  flex-shrink: 0;
 }
 
 .link {
   font-size: 1.6rem;
   text-transform: lowercase;
+
+  flex-shrink: 0;
+}
+
+.burger {
+  position: absolute;
+  top: 3rem;
+  right: -1.5rem;
+
+  box-sizing: border-box;
+  padding: 0.7rem;
+  border-radius: 1rem;
+
+  z-index: 999;
+
+  height: 3rem;
+  transition: transform 0.2s ease-in-out;
+
+  background-color: var(--app-bg-color-darker);
+}
+
+.burger:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-height: 690px) {
   .auth>*:not(:first-child) {
     display: none;
   }
+}
+
+.sidebarThin .sidebar {
+  width: 7.5rem;
+}
+
+.sidebarThin .hideThin {
+  display: none;
+}
+
+.sidebarThin .burger {
+  transform: rotateY(180deg);
+}
+
+.sidebarThin .menu {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.sidebarThin .menuButton {
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+  gap: 2rem;
+}
+
+.sidebarThin .logo {
+  translate: -16rem;
+}
+
+.sidebarThin .icon {
+  translate: 0%;
+}
+
+.sidebarThin .auth {
+  translate: -16rem;
+}
+
+.sidebarThin .links {
+  translate: -17rem;
+}
+
+.sidebarFloating {
+  width: 7.5rem;
 }
