@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 function Login() {
   return (
-    <Page title=''>
+    <Page titlebar={false}>
       <section className={style.section}>
 
         <ContainerBox width={'60em'}>

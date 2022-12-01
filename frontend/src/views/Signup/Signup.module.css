@@ -13,7 +13,7 @@
 }
 
 .logo {
-  height: 40rem;
+  height: 20vw;
   padding-right: 10em;
 }
 
@@ -108,4 +108,17 @@ input[type="checkbox"]:before, input[type="checkbox"]:checked:before {
 
 input[type="checkbox"]:checked:before {
   content: '✔';
+}
+
+@media (max-width: 1400px) {
+  .logo {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .logo {
+    visibility: hidden;
+    display: none;
+  }
 }
