@@ -25,9 +25,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/","/login", "/register","/changeUserPassword","/deleteAccount").permitAll()
-                .mvcMatchers(HttpMethod.POST, "/login", "/register", "/changeUserPassword", "/deleteAccount").permitAll()
-                .mvcMatchers(HttpMethod.POST, "/","/user").hasRole("ADMIN")
+                .mvcMatchers("/","/login", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
