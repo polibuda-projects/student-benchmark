@@ -24,8 +24,7 @@ public class AppUser {
     }
 
 
-    public AppUser(Long idUser, String nickname, String email, String password, int role) {
-        this.idUser = idUser;
+    public AppUser(String nickname, String email, String password, int role) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;

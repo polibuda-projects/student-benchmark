@@ -24,7 +24,7 @@ public class UserController {
     Optional<AppUser> addUser()
     {
 
-        AppUser user= new AppUser( (long)1,"nickname", "email", "password",0);
+        AppUser user= new AppUser("nickname", "email", "password",0);
 
         userRepo.save(user);
 
