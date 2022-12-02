@@ -33,7 +33,7 @@ public class RegistrationController {
         if (!request.password().equals(request.passwordConfirmation())) {
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
-        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), "ROLE_USER"));
+        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), 0));
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
