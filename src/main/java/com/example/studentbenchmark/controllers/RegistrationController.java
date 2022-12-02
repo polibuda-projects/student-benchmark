@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RestController
 @Service
 public class RegistrationController {
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -26,13 +25,21 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody AppUser user) {
+    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest request) {
 
-        if (userRepo.findByEmail(user.getEmail()) != null) {
+        if ((userRepo.findByEmail(request.email())) != null) {
             return new ResponseEntity<>("User with this email already exists", HttpStatus.BAD_REQUEST);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        if (!request.password().equals(request.passwordConfirmation())) {
+            return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
+        }
+        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), "ROLE_USER"));
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
+
+    private record RegistrationRequest(String nickname, String email, String password, String passwordConfirmation) {}
 }
+
+
+
+
