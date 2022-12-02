@@ -23,7 +23,9 @@ public class UserController {
     @PostMapping("/user")
     Optional<AppUser> addUser()
     {
-        AppUser user= new AppUser( "nickname", "email", "password","role");
+
+        AppUser user= new AppUser( (long)1,"nickname", "email", "password",0);
+
         userRepo.save(user);
 
     return Optional.ofNullable(userRepo.findUser("email", "password"));
