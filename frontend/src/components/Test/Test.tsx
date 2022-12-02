@@ -7,7 +7,7 @@ import { ChartData as ChartDataJS } from 'chart.js/auto';
 import Page from '@components/Page/Page';
 
 
-export type TestState = 'start' | 'playing' | 'end';
+export type TestState = 'start' | 'playing' | 'end' | 'numberInput' | 'numberCorrect' | 'numberIncorrect';
 
 export interface TestProps {
   data: number[];

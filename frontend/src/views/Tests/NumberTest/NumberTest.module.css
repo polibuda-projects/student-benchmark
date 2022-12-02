@@ -1,0 +1,40 @@
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    text-align: center;
+    gap: 4rem;
+    align-items: center;
+}
+
+.levelText {
+    font-size: 2.5rem;
+    color: #8685EF;
+}
+
+.testNumber{
+    display: flex;
+    flex-direction: column;
+    width:25rem;
+}
+
+.outer {
+    height: 1rem;
+    background-color: #202020;
+    width: 25rem;
+}
+
+.inner {
+    background-color: #FAF7FF;
+    width: 70%;
+    height:1rem;
+}
+
+.buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+}
