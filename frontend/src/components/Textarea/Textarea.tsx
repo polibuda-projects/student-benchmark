@@ -4,14 +4,14 @@ import style from './Textarea.module.css';
 
 
 export interface TextareaProps {
-    type?: string,
-    name?: string,
-    placeholder?: string,
-    shadows?: boolean,
-    className?: string
+  type?: string,
+  name?: string,
+  placeholder?: string,
+  shadows?: boolean,
+  className?: string
 }
 
-export default class ContainerBox extends Component<TextareaProps> {
+export default class Textarea extends Component<TextareaProps> {
   private static defaultProps: TextareaProps = {
     shadows: true,
   };
