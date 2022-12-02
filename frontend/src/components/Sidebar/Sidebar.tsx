@@ -48,7 +48,7 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
                 <span>Home</span>
               </NavLink>
 
-              <NavLink className={style.menuButton} to='/dashboard'>
+              <NavLink className={style.menuButton} to='/dashboard-sequence'>
                 <div style={SidebarComponent.menuButtonStyleGenerator(dashboardIcon)} />
                 <span>Dashboard</span>
               </NavLink>

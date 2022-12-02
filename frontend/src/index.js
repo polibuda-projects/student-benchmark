@@ -13,6 +13,10 @@ import Support from '@views/Support/Support';
 import User from '@views/User/User';
 import TestsHome from '@views/Tests/Home/Home';
 import Password from '@views/Password/Password';
+import Sequence from '@views/Dashboard/Sequence/Sequence';
+import Verbal from '@views/Dashboard/Verbal/Verbal';
+import Visual from '@views/Dashboard/Visual/Visual';
+import Number from '@views/Dashboard/Number/Number';
 import VisualTest from '@views/Tests/VisualTest/VisualTest';
 import VerbalTest from '@views/Tests/VerbalTest/VerbalTest';
 import SequenceTest from '@views/Tests/SequenceTest/SequenceMemory';
@@ -71,6 +75,22 @@ const router = createBrowserRouter([
   {
     path: '/password',
     element: <Password />,
+  },
+  {
+    path: '/dashboard-sequence',
+    element: <Sequence />,
+  },
+  {
+    path: '/dashboard-verbal',
+    element: <Verbal />,
+  },
+  {
+    path: '/dashboard-number',
+    element: <Number />,
+  },
+  {
+    path: '/dashboard-visual',
+    element: <Visual />,
   },
 ]);
 
