@@ -1,0 +1,10 @@
+.testWord {
+    font-weight: 700;
+    font-size: 7rem;
+    text-align: center;
+}
+
+.testProperties {
+    font-size: 3rem;
+    margin: 0 2rem;
+}

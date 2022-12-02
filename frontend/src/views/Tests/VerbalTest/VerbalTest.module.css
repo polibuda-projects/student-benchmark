@@ -1,0 +1,19 @@
+.body {
+    
+}
+
+.verbalButtons {
+    display: flex;
+}
+
+.seenButton, .newButton {
+    margin: 2rem;
+}
+
+.testWord {
+    margin: 6rem 0;
+}
+
+.verbalProps {
+    display: flex;
+}
