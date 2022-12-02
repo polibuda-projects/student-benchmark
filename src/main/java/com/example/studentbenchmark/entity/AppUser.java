@@ -1,5 +1,7 @@
 package com.example.studentbenchmark.entity;
 
+import org.springframework.context.annotation.Role;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,22 +16,21 @@ public class AppUser {
     String email;
     String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)  //Przy pomcy tego Hybernate tworzy nową tabelę w BD
-    private Set<String> roles = new HashSet<>();
+    int role; //role = 0  ROLE_USER  role = 1 ROLE_ADMIN
     private Date creationDate;
     private Date lastLoginDate;
 
     public AppUser() {
     }
 
-    public AppUser(Long idUser, String nickname, String email, String password, String role) {
+    public AppUser(Long idUser, String nickname, String email, String password, int role) {
         this.idUser = idUser;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.creationDate = new Date();
         this.lastLoginDate = new Date();
-        this.roles = Set.of("ROLE_USER");
+        this.role = 0;
     }
 
     public Long getIdUser() {
@@ -81,11 +82,11 @@ public class AppUser {
     }
 
 
-    public Set<String> getRoles() {
-        return roles;
+    public int getRole() {
+        return role;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public void setRole(int role) {
+        this.role = role;
     }
 }

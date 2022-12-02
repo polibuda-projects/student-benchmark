@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AppUserEntityDetails implements UserDetails {
     private final AppUser entity;
@@ -16,8 +17,15 @@ public class AppUserEntityDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return entity.getRoles()
-                .stream()
+
+        if(entity.getRole() == 1)
+        {
+            return Stream.of("ROLE_ADMIN")
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toSet());
+        }
+
+        return Stream.of("ROLE_USER")
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
     }
