@@ -67,6 +67,7 @@
   transform: translate(-50%, 0);
 
   height: 100%;
+  aspect-ratio: 232/80;
   transition: 0.3s;
 }
 
@@ -74,6 +75,7 @@
   position: absolute;
 
   height: 50%;
+  aspect-ratio: 1/1;
   left: 50%;
   transform: translate(-50%, 0);
 
