@@ -71,9 +71,7 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
             </div>
 
             <div className={style.links}>
-              <Link className={style.link} to='/privacy'>Privacy</Link>
-              <div className={style.linkDivider}></div>
-              <Link className={style.link} to='/tos'>Terms of service</Link>
+              <Link className={style.link} to='/privacy'>Privacy & Terms of service</Link>
               <div className={style.linkDivider}></div>
               <Link className={style.link} to='/github'>Github</Link>
             </div>
