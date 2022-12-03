@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import style from './Policy.module.css';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
+import { Link } from 'react-router-dom';
 
 import Page from '@components/Page/Page';
 
@@ -10,12 +11,22 @@ function Policy() {
     <Page>
       <ContainerBox className={style.container}>
         <h1 className={style.title}>Privacy Policy</h1>
-        <p className={style.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris libero nisi, finibus in ex nec, sollicitudin tincidunt lacus. Curabitur scelerisque consequat euismod. Nunc aliquam ultrices porttitor. Fusce condimentum rhoncus magna. Phasellus lacinia eros ut augue luctus, id egestas velit viverra. Ut nunc felis, sodales quis placerat ut, aliquet et tellus. Nam ultrices mi vitae fermentum ultrices. Ut efficitur, sem at eleifend sagittis, odio urna ullamcorper dui, in vehicula eros nisl eu tortor. Nullam tincidunt metus nec mauris sodales, eu porta est bibendum. Fusce condimentum vel leo ac interdum. Nunc varius enim risus, mollis tincidunt augue pulvinar vel. Sed tristique sodales erat. </p>
-        <p className={style.text}>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse sapien sapien, venenatis at hendrerit ac, sollicitudin vel nisl. Nulla ut nibh sit amet mi efficitur aliquet iaculis non mi. Sed dapibus commodo eleifend. Donec et ipsum tempus, vestibulum massa sit amet, vestibulum est. Nam ullamcorper ante sit amet laoreet tempor. Sed tincidunt ipsum massa, eu malesuada sapien pulvinar in. Donec ullamcorper augue sit amet dapibus commodo. Cras tincidunt vehicula magna, id fermentum ligula ultricies vel. Nulla ullamcorper mi placerat dapibus eleifend. Nullam sit amet sodales libero. Sed posuere tincidunt ullamcorper. Nulla varius neque nec augue ullamcorper efficitur. Quisque ut dui vitae lectus rutrum pellentesque ac vitae nunc. Donec sit amet quam ut erat porta cursus quis sit amet nunc. </p>
-        <h2 className={style.subtitle}>Information Collection and Use</h2>
-        <p className={style.text}>Suspendisse vel rutrum velit. Proin id sagittis sapien. Sed elementum lorem quis venenatis aliquam. Donec ullamcorper euismod nulla in tincidunt. Nam malesuada luctus tellus, ut ultricies nisl hendrerit ac. Quisque at sem pretium, semper metus non, varius turpis. Sed eget augue suscipit, pretium tellus id, lacinia enim.</p>
+        <p className={style.text}>Student Benchmark operates the <Link to={'/'}>https://studentbenchmark.pl</Link> website, which provides the SERVICE.</p>
+        <p className={style.text}>This page is used to inform website visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service, the Student Benchmark website. </p>
+        <p className={style.text}>If you choose to use our Service, then you agree to the collection and use of information in relation with this policy. The Personal Information that we collect are used for providing and improving the Service. We will not use or share your information with anyone.</p>
+        <h2 className={style.subtitle}>Log Data</h2>
+        <p className={style.text}>We want to inform you that whenever you visit our Service, we collect information that your browser sends to us that is called Log Data. This Log Data may include information such as your computer’s Internet Protocol ("IP") address, browser version, pages of our Service that you visit, the time and date of your visit, the time spent on those pages, and other statistics.</p>
         <h2 className={style.subtitle}>Cookies</h2>
-        <p className={style.text}>Praesent ornare lacus vel sem aliquet pharetra. Quisque rutrum dui arcu, at faucibus nisi tristique a. Fusce ut lacinia risus, elementum aliquam urna. Quisque ut nulla volutpat, porta urna sed, consectetur diam. Integer massa arcu, congue ut urna vel, pellentesque tempus lorem. Pellentesque ac eleifend ante. Nunc eros arcu, congue eget ante a, mollis tempor est. Nam tincidunt vel nisl vel vehicula.</p>
+        <p className={style.text}>Cookies are files with small amount of data that is commonly used an anonymous unique identifier. These are sent to your browser from the website that you visit and are stored on your computer’s hard drive.</p>
+        <p className={style.text}>Our website uses these "cookies" to collection information and to improve our Service. You have the option to either accept or refuse these cookies, and know when a cookie is being sent to your computer. If you choose to refuse our cookies, you may not be able to use some portions of our Service.</p>
+        <h2 className={style.subtitle}>Security</h2>
+        <p className={style.text}>We value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.</p>
+        <h2 className={style.subtitle}>Children's Privacy</h2>
+        <p className={style.text}>Our Services do not address anyone under the age of 13. We do not knowingly collect personal identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.</p>
+        <h2 className={style.subtitle}>Changes to This Privacy Policy</h2>
+        <p className={style.text}>We may update our Privacy Policy from time to time. Thus, we advise you to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately, after they are posted on this page.</p>
+        <h2 className={style.subtitle}>Contact Us</h2>
+        <p className={style.text}>If you have any questions or suggestions about our Privacy Policy, do not hesitate to <Link to={'/support'}>contact us.</Link></p>
       </ContainerBox>
     </Page>
   );

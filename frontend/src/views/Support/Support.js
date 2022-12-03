@@ -18,7 +18,7 @@ function Support() {
 
           <label className={style.label}>
             <input type="checkbox" name="terms" value="terms" required={true} />
-            <em>I agree to our <Link to={'/tos'}>terms of service and privacy.</Link></em>
+            <em>I agree to our <Link to={'/privacy'}>terms of service and privacy.</Link></em>
           </label>
 
           <div className={style.formOptions}>
