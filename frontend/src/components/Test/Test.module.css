@@ -94,10 +94,6 @@
   margin-top: auto;
 }
 
-.chart {
-  padding-top: 2.5rem;
-}
-
 .testContainer {
   display: flex;
   flex-direction: column;
