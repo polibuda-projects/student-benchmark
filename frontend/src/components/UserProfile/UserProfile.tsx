@@ -29,10 +29,10 @@ export class UserProfileComponent extends Component<UserProfileProps, UserProfil
   public render() {
     return (
       <div className={style.container}>
-        <div className={style.profile}>
+        <div className={style.profile} onClick={this.toggleDropdown}>
           <img src={this.props.avatarUrl ?? defaultAvatar} className={style.avatar} alt='?'/>
           <span className={style.username}>{this.props.username ?? 'Guest'}</span>
-          <img src={downArrow} className={this.burgerClasses} onClick={() => this.toggleDropdown()} alt='more'/>
+          <img src={downArrow} className={this.burgerClasses} alt='more'/>
         </div>
 
         <div className={this.dropdownClasses}>
@@ -44,9 +44,9 @@ export class UserProfileComponent extends Component<UserProfileProps, UserProfil
     );
   }
 
-  private toggleDropdown() {
+  private toggleDropdown = () => {
     this.setState({ active: !this.state.active });
-  }
+  };
 
   private joinClasses(...classes: string[]) {
     return classes.join(' ');

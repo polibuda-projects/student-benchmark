@@ -33,6 +33,12 @@
     inset -1px -1px 2px #1d1d1d80;
 
   gap: 1.5rem;
+
+  user-select: none;
+}
+
+.profile:hover {
+  cursor: pointer;
 }
 
 .avatar {
@@ -58,10 +64,6 @@
   width: auto;
 
   transition: transform 0.2s ease-in-out;
-}
-
-.burger:hover {
-  cursor: pointer;
 }
 
 .burgerActive {
@@ -116,4 +118,19 @@
 .dropdownActive {
   top: 5rem;
   opacity: 1;
+}
+
+@media screen and (max-width: 800px) {
+  .profile {
+    padding: 0;
+    min-width: 0;
+  }
+
+  .username {
+    display: none !important;
+  }
+
+  .burger {
+    display: none;
+  }
 }
