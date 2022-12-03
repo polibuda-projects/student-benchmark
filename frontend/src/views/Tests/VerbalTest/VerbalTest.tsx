@@ -8,6 +8,13 @@ import TestEnd from '@components/Test/TestEnd';
 import { VerbalComponent, VerbalProperties } from '@components/Test/VerbalComponent/VerbalComponent';
 
 
+const shortTestDescription='You will be shown words, one at a time. If you\'ve seen a word during the test, click SEEN. If it\'s a new word, click NEW.';
+
+const testDescription='This test measures how many words you can keep in short term memory at once.'+
+'Go as long as you can. You have 3 strikes until game over'+
+'Your score is how many turns you lasted.';
+
+
 export default function VerbalTest() {
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<null | number>(null);
@@ -19,21 +26,13 @@ export default function VerbalTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (
-    <Test testName='Verbal Memory'
-      testDescription={'This test measures how many words you can keep in short term memory at once. Go as long as you can. You have 3 strikes until game over'}
-      chartData={chartData}
-      userScore={userScore}>
+  return (<Test testName='Verbal Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
 
-      {state === 'start' &&
-        <>
-          <TestStart logoUrl={logo} updateState={updateState}
-            shortDescription={'You will be shown words, one at a time. If you\'ve seen a word during the test, click SEEN. If it\'s a new word, click NEW.'}/>
-        </>
-      }
-      {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+    {state === 'start' && <TestStart logoUrl={logo} updateState={updateState} shortDescription={shortTestDescription}/>}
 
-      {state === 'playing' &&
+    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+
+    {state === 'playing' &&
         <>
           {/* <ButtonMedium text='Change Score' onClick={() => updateScore(Math.round(Math.random() * 30))} />
           <ButtonMedium text='Change Chart Data' onClick={() => updateChart({
@@ -56,8 +55,8 @@ export default function VerbalTest() {
             updateScore(Math.round(Math.random() * 50));
           }} />
         </>
-      }
-    </Test>);
+    }
+  </Test>);
 }
 
 

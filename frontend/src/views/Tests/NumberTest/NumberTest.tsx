@@ -8,6 +8,9 @@ import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';
 
+const testDescription='The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
+
+const shortTestDescription='Remember the longest number you can.';
 
 export default function NumberTest() {
   const [state, updateState] = useState<TestState>('start');
@@ -20,14 +23,10 @@ export default function NumberTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Number Memory'
-    testDescription={'The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.'}
-    chartData={chartData}
-    userScore={userScore}>
-    {state === 'start' && <TestStart
-      logoUrl={logo}
-      shortDescription={'Remember the longest number you can.'}
-      updateState={updateState} />}
+  return (<Test testName='Number Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+
+    {state === 'start' && <TestStart logoUrl={logo} shortDescription={shortTestDescription} updateState={updateState} />}
+
     {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
 
     {state === 'playing' &&
@@ -42,7 +41,7 @@ export default function NumberTest() {
             </div>
           </div>
 
-          <ButtonMedium text='Next Stage' onClick={() => { // jak wyjebie przyciski to bedzie równo
+          <ButtonMedium text='Next Stage' onClick={() => { // jak wyjebie przyciski to bedzie rï¿½wno
             updateState('numberInput');
           }} />
         </div>

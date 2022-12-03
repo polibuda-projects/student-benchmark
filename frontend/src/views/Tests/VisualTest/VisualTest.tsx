@@ -6,6 +6,11 @@ import TestStart from '@components/Test/TestStart';
 import logo from '@components/TestButtons/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 
+const testDescription='Every level, a number of tiles will flash white. Memorize them, and pick them again after the tiles are reset!'+
+'Levels get progressively more difficult, to challenge your skills. If you miss 3 tiles on a level, you lose one life.'+
+'You have three lives.Make it as far as you can!';
+
+const shortTestDescription='Memorize the squares';
 
 export default function VisualTest() {
   const [state, updateState] = useState<TestState>('start');
@@ -18,8 +23,10 @@ export default function VisualTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Visual Memory' chartData={chartData} userScore={userScore}>
-    {state === 'start' && <TestStart logoUrl={logo} updateState={updateState} />}
+  return (<Test testName='Visual Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+
+    {state === 'start' && <TestStart shortDescription={shortTestDescription} logoUrl={logo} updateState={updateState} />}
+
     {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
 
     {state === 'playing' &&

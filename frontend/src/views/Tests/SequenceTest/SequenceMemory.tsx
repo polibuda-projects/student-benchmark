@@ -8,9 +8,12 @@ import TestEnd from '@components/Test/TestEnd';
 import SequenceBox from '@components/Test/SequenceBox/SequenceBox';
 import ContainerSequence from '@components/Test/ContainerSequence/ContainerSequence';
 
-const testDescription = 'Zapamiętaj kolejność podświetlających się przycisków,'+
-'a następnie klikaj je w tej samej kolejności. Za każdym razem, gdy kończysz wzór, staje się on dłuższy. Popełnij błąd, a test się skończy.';
-const shortTestDescription = 'Zapamiętaj kolejność podświetlających się przycisków. Następnie klikaj je w tej samej kolejności. Jeden błąd i test się kończy';
+const testDescription = 'Memorize the sequence of buttons that light up, then press them in order. '+
+'Every time you finish the pattern, it gets longer. '+
+'Make a mistake, and the test is over.';
+
+const shortTestDescription = 'Memorize the pattern.';
+
 export default function SequenceTest() {
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<null | number>(0);
@@ -23,7 +26,9 @@ export default function SequenceTest() {
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
   return (<Test testName='Sequence Memory' chartData={chartData} userScore={userScore} testDescription={testDescription}>
+
     {state === 'start' && <TestStart logoUrl={logo} updateState={updateState} shortDescription={shortTestDescription}/>}
+
     {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
 
     {state === 'playing' &&
