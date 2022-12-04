@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Service
 public class LogInController {
+
+    //NIE DZIAŁA
+    /*
     private final UserRepo userRepo;
 
     @Autowired
@@ -38,5 +41,5 @@ public class LogInController {
 
     private record loginRequest(String email, String password) {
     }
-
+*/
 }
