@@ -6,13 +6,8 @@
   display: grid;
   grid-template-columns: repeat(var(--squares-count), 1fr);
   grid-template-rows: repeat(var(--squares-count), 1fr);
-  gap: calc(6em / var(--squares-count));
+  gap: calc(3em / var(--squares-count));
 
-  width: 60em;
-  height: 60em;
-}
-
-.square{
-  background-color: var(--app-acc-color);
-  border-radius: 1em;
+  width: 26em;
+  height: 26em;
 }
