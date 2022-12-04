@@ -40,6 +40,11 @@ public class AppUserEntityDetails implements UserDetails {
         return entity.getEmail();
     }
 
+    public Long getId()
+    {
+        return entity.getIdUser();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
