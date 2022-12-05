@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 public final class VerbalTest extends AppTest {
 
     public static final int MIN_VALID_SCORE = 0;
-    public static final int MAX_VALID_SCORE = 30;
+    public static final int MAX_VALID_SCORE = 200;
 
     @Override
     public boolean isScoreValid() {
