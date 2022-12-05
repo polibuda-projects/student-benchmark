@@ -5,7 +5,7 @@ import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
 import logo from '@components/TestButtons/verbalTest.svg';
 import TestEnd from '@components/Test/TestEnd';
-import { VerbalComponent, VerbalProperties } from '@components/Test/VerbalComponent/VerbalComponent';
+import { VerbalComponent } from '@components/Test/VerbalComponent/VerbalComponent';
 
 
 const shortTestDescription='You will be shown words, one at a time. If you\'ve seen a word during the test, click SEEN. If it\'s a new word, click NEW.';
@@ -39,17 +39,14 @@ export default function VerbalTest() {
             data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
             range: [10, 30],
           })} /> */}
-          <div className={style.verbalProps}>
-            <VerbalProperties className={style.verbalProperties} text='Lives | 3'/>
+          <VerbalComponent className={style.verbalProperties} textLives="Lives |" lives={3} textScore='Score |' score={1231249} testWord={randomWord()}/>
 
-            <VerbalProperties className={style.verbalProperties} text='Score | 2'/>
-          </div>
-          <VerbalComponent className={style.testWord} text={randomWord()}/>
           <div className={style.verbalButtons}>
             <ButtonMedium className={style.seenButton} text='SEEN' onClick={() => VerbalComponent}/>
 
             <ButtonMedium className={style.newButton} text='NEW' onClick={() => VerbalComponent} />
           </div>
+
           <ButtonMedium text='End Test' onClick={() => {
             updateState('end');
             updateScore(Math.round(Math.random() * 50));

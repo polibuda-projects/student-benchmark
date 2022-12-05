@@ -3,29 +3,50 @@ import { Component } from 'react';
 import style from './VerbalComponent.module.css';
 
 export interface VerbalComponentProps {
-  text: string;
+  textScore: string;
+  textLives: string;
+  className: string;
+  testWord: string;
   width?: string;
-  className?: string;
+  lives?: number;
+  score?: number;
+
+  // updateLives: (state: number | null) => void,
+  // updateScore: (score: number | null) => void,
 }
 
 export class VerbalComponent extends Component<VerbalComponentProps> {
   render() {
     return (
-      <div className={[style.testWord, this.props.className].join(' ')} style={{ width: this.props.width }}>
-        {this.props.text}
-      </div>
+      <>
+        <div className={style.verbalContainer}>
+          <span className={[style.testProperties, this.props.className].join(' ')} style={{ width: this.props.width }}>
+            <div className={style.testValues}>
+              {this.props.textLives}
+            </div>
+            <div className={style.number}>
+              {this.props.lives}
+            </div>
+
+            <div className={style.testValues}>
+              {this.props.textScore}
+            </div>
+
+            <div className={style.number}>
+              {this.props.score}
+            </div>
+          </span>
+          <span className={[style.testWord, this.props.className].join(' ')} style={{ width: this.props.width }}>
+            {this.props.testWord}
+          </span>
+        </div>
+      </>
     );
   }
-  private buttonAction =() => {};
+  private buttonAction =() => {
+    // this.props.updateLives(null);
+    // this.props.updateScore(null);
+  };
 }
 
-export class VerbalProperties extends Component<VerbalComponentProps> {
-  render() {
-    return (
-      <div className={[style.testProperties, this.props.className].join(' ')} style={{ width: this.props.width }}>
-        {this.props.text}
-      </div>
-    );
-  }
-}
 
