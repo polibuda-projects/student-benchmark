@@ -33,7 +33,7 @@ public class ChangeUserPasswordController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
-            if (!currentUser.getPassword().equals(passwordEncoder.encode(request.oldPassword()))) {
+            if (!passwordEncoder.matches(request.oldPassword(), currentUser.getPassword())) {
                 return new ResponseEntity<>("Received incorrect user old password", HttpStatus.BAD_REQUEST);
             }
 
