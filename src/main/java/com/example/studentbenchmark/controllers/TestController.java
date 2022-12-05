@@ -13,7 +13,9 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
@@ -33,17 +35,12 @@ public class TestController {
         this.visualTestRepo = visualTestRepo;
     }
 
-
     @PostMapping("/result/sequence")
     ResponseEntity<String> addResultSequenceTest(@RequestBody SequenceTest test) {
-
-        //SPRAWDZENIE CZY PRZESŁANY PLIK JEST OK
-        boolean checkResult = true;
-
-        if (checkResult == true) {
+        if (test.isScoreValid()) {
             sequenceTestRepo.save((SequenceTest) modifyTest(test));
-            return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
 
+            return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
         }
 
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
@@ -51,13 +48,10 @@ public class TestController {
 
     @PostMapping("/result/verbal")
     ResponseEntity<String> addResultVerbalTest(@RequestBody VerbalTest test) {
-        boolean checkResult = true;
-        if (checkResult == true) {
-
+        if (test.isScoreValid()) {
             verbalTestRepo.save((VerbalTest) modifyTest(test));
 
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
-
         }
 
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
@@ -65,13 +59,10 @@ public class TestController {
 
     @PostMapping("/result/number")
     ResponseEntity<String> addResultNumberTest(@RequestBody NumberTest test) {
-        boolean checkResult = true;
-        if (checkResult == true) {
-
+        if (test.isScoreValid()) {
             numberTestRepo.save((NumberTest) modifyTest(test));
 
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
-
         }
 
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
@@ -79,13 +70,10 @@ public class TestController {
 
     @PostMapping("/result/visual")
     ResponseEntity<String> addResultVisualTest(@RequestBody VisualTest test) {
-        boolean checkResult = true;
-        if (checkResult == true) {
-
+        if (test.isScoreValid()) {
             visualTestRepo.save((VisualTest) modifyTest(test));
 
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
-
         }
 
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
@@ -100,7 +88,7 @@ public class TestController {
             test.setIdUser(currentUser.getId());
 
         } else {
-            test.setIdUser(Long.valueOf(0));
+            test.setIdUser(0L);
         }
         test.setDateOfSubmission(new Date());
         return test;
