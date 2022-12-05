@@ -43,22 +43,22 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
             </Link>
 
             <div className={style.menu}>
-              <NavLink className={style.menuButton} to='/'>
+              <NavLink className={this.menuNavlinkStyleGenrator} to='/'>
                 <div style={SidebarComponent.menuButtonStyleGenerator(homeIcon)} />
                 <span>Home</span>
               </NavLink>
 
-              <NavLink className={style.menuButton} to='/dashboard'>
+              <NavLink className={this.menuNavlinkStyleGenrator} to='/dashboard'>
                 <div style={SidebarComponent.menuButtonStyleGenerator(dashboardIcon)} />
                 <span>Dashboard</span>
               </NavLink>
 
-              <NavLink className={style.menuButton} to='/support'>
+              <NavLink className={this.menuNavlinkStyleGenrator} to='/support'>
                 <div style={SidebarComponent.menuButtonStyleGenerator(supportIcon)} />
                 <span>Support</span>
               </NavLink>
 
-              <NavLink className={style.menuButton} to='/donate'>
+              <NavLink className={this.menuNavlinkStyleGenrator} to='/donate'>
                 <div style={SidebarComponent.menuButtonStyleGenerator(donateBoxIcon)} />
                 <span>Donate</span>
               </NavLink>
@@ -84,6 +84,10 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
       </div>
     );
   }
+
+  private menuNavlinkStyleGenrator =(props: { isActive: boolean, isPending: boolean}): string => {
+    return this.joinClasses(style.menuButton, props.isActive ? style.active : '');
+  };
 
   private static menuButtonStyleGenerator = (icon: string): HTMLAttributes<HTMLDivElement>['style'] => {
     return {
