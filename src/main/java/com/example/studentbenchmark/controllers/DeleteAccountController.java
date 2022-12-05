@@ -1,14 +1,17 @@
 package com.example.studentbenchmark.controllers;
 
-import com.example.studentbenchmark.entity.AppUser;
+
+import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 
 @RestController
@@ -23,20 +26,23 @@ public class DeleteAccountController {
 
     @PostMapping("/deleteAccount")
     public ResponseEntity<String> registerUser(@RequestBody DeleteAccountRequest request) {
-        AppUser user = userRepo.findByEmail(request.email());
 
-        if (user == null) {
-            return new ResponseEntity<>("User does not exist", HttpStatus.UNAUTHORIZED);
-        }
-        if (!user.getPassword().equals(request.password())) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        String email = ((AppUserEntityDetails)principal).getUsername();
+        String password = ((AppUserEntityDetails)principal).getPassword();
+
+
+        if (password.matches(request.password())) {
             return new ResponseEntity<>("Incorrect user password", HttpStatus.BAD_REQUEST);
         }
 
-        userRepo.deleteAccount(request.email());
+        userRepo.deleteAccount(email);
 
         return new ResponseEntity<>("User Deleted", HttpStatus.OK);
     }
 
-    private record DeleteAccountRequest(String email, String password) {
+    private record DeleteAccountRequest(String password) {
     }
 }
