@@ -26,8 +26,8 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value= "UPDATE App_User u SET u.password= :newPassword WHERE u.email= :email")
-    void changeUserPassword(@Param("email") String email, @Param("newPassword")String newPassword);
+    @Query(nativeQuery = true, value= "UPDATE App_User u SET u.password= :newPassword WHERE u.idUser= :idUser")
+    void changeUserPassword(@Param("idUser") Long idUser, @Param("newPassword")String newPassword);
 
     @Transactional
     @Modifying
