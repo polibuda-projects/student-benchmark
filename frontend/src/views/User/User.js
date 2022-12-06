@@ -15,11 +15,15 @@ function User() {
           <span className={style.username}>UserWithLongUsername</span>
         </div>
         <div className={style.buttons}>
-          <ButtonGrey text={'Dashboard'} width={'32rem'}/>
+          <Link to='/dashboard'>
+            <ButtonGrey text={'Dashboard'} width={'32rem'}/>
+          </Link>
           <Link to='/password'>
             <ButtonGrey text={'Change Password'} width={'32rem'}/>
           </Link>
-          <ButtonGrey text={'Delete Account'} width={'32rem'}/>
+          <Link to='/delete'>
+            <ButtonGrey text={'Delete Account'} width={'32rem'} />
+          </Link>
         </div>
         <ButtonMedium text={'Log Out'} width={'25rem'}/>
       </ContainerBox>

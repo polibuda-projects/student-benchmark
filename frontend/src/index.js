@@ -8,6 +8,7 @@ import Home from '@views/Home/Home';
 import Login from '@views/Login/Login';
 import Policy from '@views/Policy/Policy';
 import Recover from '@views/Recover/Recover';
+import Delete from '@views/Delete/Delete';
 import Signup from '@views/Signup/Signup';
 import Support from '@views/Support/Support';
 import User from '@views/User/User';
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: '/recover',
     element: <Recover />,
+  },
+  {
+    path: '/delete',
+    element: <Delete />,
   },
   {
     path: '/signup',
