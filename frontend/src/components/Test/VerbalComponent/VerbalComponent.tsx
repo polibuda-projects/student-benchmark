@@ -3,24 +3,20 @@ import { Component } from 'react';
 import style from './VerbalComponent.module.css';
 
 export interface VerbalComponentProps {
-  textScore: string;
-  textLives: string;
-  className: string;
-  testWord: string;
-  width?: string;
-  lives?: number;
-  score?: number;
-
-  // updateLives: (state: number | null) => void,
-  // updateScore: (score: number | null) => void,
+  textScore?: string,
+  textLives?: string,
+  testWord?: string,
+  width?: string,
+  lives: number,
+  score: number,
 }
 
-export class VerbalComponent extends Component<VerbalComponentProps> {
+export default class VerbalComponent extends Component<VerbalComponentProps> {
   render() {
     return (
       <>
         <div className={style.verbalContainer}>
-          <span className={[style.testProperties, this.props.className].join(' ')} style={{ width: this.props.width }}>
+          <span className={style.testProperties} style={{ width: this.props.width }}>
             <div className={style.testValues}>
               {this.props.textLives}
             </div>
@@ -36,17 +32,13 @@ export class VerbalComponent extends Component<VerbalComponentProps> {
               {this.props.score}
             </div>
           </span>
-          <span className={[style.testWord, this.props.className].join(' ')} style={{ width: this.props.width }}>
+          <span className={style.testWord} style={{ width: this.props.width }}>
             {this.props.testWord}
           </span>
         </div>
       </>
     );
   }
-  private buttonAction =() => {
-    // this.props.updateLives(null);
-    // this.props.updateScore(null);
-  };
 }
 
 
