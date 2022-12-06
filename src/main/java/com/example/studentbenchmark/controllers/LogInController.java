@@ -19,9 +19,17 @@ public class LogInController {
     /*
     private final UserRepo userRepo;
 
+    private final LogsRepo logsRepo;
+
+    Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+
+    java.util.Date utilDate = new java.util.Date();
+    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
     @Autowired
-    public LogInController(UserRepo userRepo) {
+    public LogInController(UserRepo userRepo, LogsRepo logsRepo) {
         this.userRepo = userRepo;
+        this.logsRepo = logsRepo;
     }
 
     @PostMapping("/login")
@@ -34,7 +42,8 @@ public class LogInController {
         if (!user.getPassword().equals(request.password())) {
             return new ResponseEntity<>("Incorrect user password", HttpStatus.UNAUTHORIZED);
         }
-
+        logsRepo.save(new LoggerEntity(user.getNickname(), dt, "User has successfully logged in"));
+        logger.info("User has successfully logged in");
         return new ResponseEntity<>("User logged in successfully", HttpStatus.OK);
 
     }
