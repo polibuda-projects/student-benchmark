@@ -52,7 +52,7 @@ export default function NumberTest() {
         <span className={style.levelText}>Level 2</span>
         <div className={style.container}>
           <NumberProperties text={'Enter the showed number'} fontSize={'4rem'} />
-          <Input />
+          <Input className={style.numberInput} />
 
           <ButtonMedium text='submit' onClick={() => updateState('numberCorrect')} />
         </div>

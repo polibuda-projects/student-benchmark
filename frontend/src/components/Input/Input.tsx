@@ -8,7 +8,7 @@ export interface InputProps {
   name?: string,
   placeholder?: string,
   shadows?: boolean,
-  className?: string
+  className?: string,
 }
 
 export default class Inputs extends Component<InputProps> {
@@ -19,7 +19,7 @@ export default class Inputs extends Component<InputProps> {
   render() {
     return (
       <input className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
-        type={this.props.type} name={this.props.name} placeholder={this.props.placeholder}/>
+        type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} />
     );
   }
 }

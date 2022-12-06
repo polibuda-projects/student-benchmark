@@ -38,3 +38,10 @@
     justify-content: center;
     gap: 2rem;
 }
+
+.numberInput {
+    text-align: center;
+    font-size: 5rem;
+    height: 5rem;
+    width: 40rem;
+}
