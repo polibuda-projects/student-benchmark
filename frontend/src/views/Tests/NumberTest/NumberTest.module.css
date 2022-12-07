@@ -17,6 +17,8 @@
     display: flex;
     flex-direction: column;
     width:25rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .outer {
@@ -27,8 +29,10 @@
 
 .inner {
     background-color: #FAF7FF;
-    width: 70%;
+    width: 100%;
     height:1rem;
+    transition: width;
+    transition-timing-function: linear;
 }
 
 .buttons {
@@ -44,4 +48,12 @@
     font-size: 5rem;
     height: 5rem;
     width: 40rem;
+}
+
+.numberForm {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    justify-content: center;
+    align-items: center;
 }

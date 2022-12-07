@@ -3,7 +3,7 @@ import { Component } from 'react';
 import style from './NumberComponent.module.css';
 
 export interface NumberComponentProps {
-    text: string;
+    text: number | string;
     width?: string;
     className?: string;
     fontSize: string;
