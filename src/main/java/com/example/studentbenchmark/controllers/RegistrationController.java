@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+
 
 @RestController
 @Service
@@ -37,18 +39,17 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody AppUser user) {
 
-        if ((userRepo.findByEmail(request.email())) != null) {
-            return new ResponseEntity<>("User with this email already exists", HttpStatus.BAD_REQUEST);
+        if(user.getPassword().equals(user.getPasswordConfirmation())) {
+            userRepo.save(new AppUser(user.getNickname(), user.getEmail(), passwordEncoder.encode(user.getPassword()), 0));
+            logsRepo.save(new LoggerEntity(user.getNickname(), sqlDate, "User has successfully registered the account"));
+            logger.info("User has successfully registered the account");
+            return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
         }
-        if (!request.password().equals(request.passwordConfirmation())) {
-            return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
-        }
-        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), 0));
-        logsRepo.save(new LoggerEntity(request.nickname(), sqlDate, "User has successfully registered the account"));
-        logger.info("User has successfully registered the account");
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+
+        return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
+
     }
 
     private record RegistrationRequest(String nickname, String email, String password, String passwordConfirmation) {

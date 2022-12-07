@@ -1,20 +1,38 @@
 package com.example.studentbenchmark.entity;
 
-import org.springframework.context.annotation.Role;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.*;
+
 
 @Entity
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
+
+    @NotNull
+    @NotBlank(message = "nickname is mandatory")
+    @Size(min=3, max=64)
     String nickname;
+
+    @Email
+    @NotBlank
+    @NotNull
+    @Size(min=3, max=64)
     String email;
+    @NotNull
+    @NotBlank(message = "password is mandatory")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+            "<br/>"+"   Password must contain at least one digit [0-9]." +
+            "<br/>"+"   Password must contain at least one lowercase Latin character [a-z]." +
+                    "<br/>"+"    Password must contain at least one uppercase Latin character [A-Z]." +
+                    "<br/>"+"    Password must contain at least one special character like ! @ # & ( )." +
+                    "<br/>"+ "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
     String password;
+
+    String passwordConfirmation;
 
     int role; //role = 0  ROLE_USER  role = 1 ROLE_ADMIN
     private Date creationDate;
@@ -63,6 +81,10 @@ public class AppUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
     }
 
     public Date getCreationDate() {
