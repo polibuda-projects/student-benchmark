@@ -10,9 +10,11 @@ import { columnTitlesUpper, contentUpper, columnTitlesLower, contentSequenceLowe
 import { contentVerbalLower, contentNumberLower } from './chwilowa-baza-danych';
 import TestBox, { TestBoxEnum } from '@components/TestBox/TestBox';
 import { useState } from 'react';
+import TestChart from '@components/TestChart/TestChart';
 
-const Dashboard = () => {
+const Dashboard = (props: any) => {
   const [toggle, setToggle] = useState<TestBoxEnum>(TestBoxEnum.sequence);
+
   return (
     <Page titlebar={false}>
       <div className={style.dashboardContainer}>
@@ -21,15 +23,27 @@ const Dashboard = () => {
           <div className={style.scrollable}>
             <div id="sequency">
               <DashboardTable tableContent={contentSequenceLower} columnTitles={columnTitlesLower}/>
+              <div className={style.dashboardContainerChart}>
+                <TestChart data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+              </div>
             </div>
             <div id="visual">
               <DashboardTable tableContent={contentVisualLower} columnTitles={columnTitlesLower}/>
+              <div className={style.dashboardContainerChart}>
+                <TestChart data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+              </div>
             </div>
             <div id="verbal">
               <DashboardTable tableContent={contentVerbalLower} columnTitles={columnTitlesLower}/>
+              <div className={style.dashboardContainerChart}>
+                <TestChart data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+              </div>
             </div>
             <div id="number">
               <DashboardTable tableContent={contentNumberLower} columnTitles={columnTitlesLower}/>
+              <div className={style.dashboardContainerChart}>
+                <TestChart data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+              </div>
             </div>
           </div>
         </div>

@@ -19,6 +19,14 @@
   gap: 5rem;
 }
 
+.dashboardContainerChart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
+  width: 100%;
+}
+
 .dashboardContainerLeft {
   display: flex;
   flex-direction: column;

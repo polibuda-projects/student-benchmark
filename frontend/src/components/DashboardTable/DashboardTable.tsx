@@ -12,7 +12,7 @@ export type TableContent = {
   indexValue?: string;
   nickname?: string;
   date?: string;
-  score?: string;
+  score?: number;
 }[];
 
 export type ColumnTitles = string[];
