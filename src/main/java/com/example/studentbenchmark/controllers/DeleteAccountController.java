@@ -36,7 +36,7 @@ public class DeleteAccountController {
     }
 
     @PostMapping("/deleteAccount")
-    public ResponseEntity<String> registerUser(@RequestBody DeleteAccountRequest request) {
+    public ResponseEntity<String> deleteAccount(@RequestBody DeleteAccountRequest request) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

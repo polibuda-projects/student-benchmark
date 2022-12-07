@@ -39,7 +39,7 @@ public class ChangeUserPasswordController {
     }
 
     @PostMapping("/changeUserPassword")
-    public ResponseEntity<String> registerUser(@RequestBody ChangeUserPasswordRequest request) {
+    public ResponseEntity<String> changeUserPassword(@RequestBody ChangeUserPasswordRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
