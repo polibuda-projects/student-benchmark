@@ -31,7 +31,7 @@ public class ChangeUserPasswordController {
     private final PasswordEncoder passwordEncoder;
     private final LogsRepo logsRepo;
 
-    Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+    Logger logger = LoggerFactory.getLogger(ChangeUserPasswordController.class);
 
     java.util.Date utilDate = new java.util.Date();
     java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -50,10 +50,12 @@ public class ChangeUserPasswordController {
             AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
             if (!passwordEncoder.matches(request.oldPassword(), currentUser.getPassword())) {
+                logger.error("User has entered incorrect old password");
                 return new ResponseEntity<>("Received incorrect user old password", HttpStatus.BAD_REQUEST);
             }
 
             if (!request.newPassword().equals(request.newPasswordRepeated())) {
+                logger.error("User has entered not matching passwords");
                 return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
             }
 
@@ -62,7 +64,7 @@ public class ChangeUserPasswordController {
             logger.info("User has changed the password");
             return new ResponseEntity<>("User password changed successfully", HttpStatus.OK);
         }
-
+        logger.error("User is unauthorized");
         return new ResponseEntity<>("User is unauthorized", HttpStatus.UNAUTHORIZED);
     }
 

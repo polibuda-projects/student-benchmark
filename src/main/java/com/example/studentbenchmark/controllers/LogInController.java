@@ -11,12 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
 
 @RestController
 @Service
@@ -29,7 +26,7 @@ public class LogInController {
 
     private final PasswordEncoder passwordEncoder;
 
-    Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+    Logger logger = LoggerFactory.getLogger(LogInController.class);
 
     java.util.Date utilDate = new java.util.Date();
     java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -48,9 +45,11 @@ public class LogInController {
 
 
         if (user == null) {
+            logger.error("User has entered the wrong email");
             return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
         }
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            logger.error("User has entered incorrect password");
             return new ResponseEntity<>("Incorrect user password" , HttpStatus.UNAUTHORIZED);
         }
 
