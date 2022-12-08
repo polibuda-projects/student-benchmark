@@ -32,6 +32,6 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM App_User u WHERE u.email = :email;")
+    @Query(nativeQuery = true, value = "DELETE FROM App_User u WHERE u.email= email")
     void deleteAccount(@Param("email") String email);
 }

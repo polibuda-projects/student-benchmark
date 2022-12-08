@@ -7,5 +7,5 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface NumberTestRepo extends TestRepo<NumberTest>{
+public interface NumberTestRepo extends TestRepo<NumberTest> {
 }

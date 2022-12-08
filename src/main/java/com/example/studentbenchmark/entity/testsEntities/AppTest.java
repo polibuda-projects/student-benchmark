@@ -10,12 +10,15 @@ import java.util.Date;
 @MappedSuperclass
 public abstract class AppTest {
 
+    public static final int MIN_VALID_SCORE = 0;
+    public static final int MAX_VALID_SCORE = 100;
+    public static final int MAX_VALID_SCORE_GRAPH = 30;
+    protected final int score;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTest;
     private Long idUser;
     private Date dateOfSubmission;
-    protected final int score;
 
     public AppTest() {
         this.score = 0;
@@ -25,7 +28,9 @@ public abstract class AppTest {
         this.score = score;
     }
 
-    public abstract boolean isScoreValid();
+    public boolean isScoreValid() {
+        return score >= MIN_VALID_SCORE && score <= MAX_VALID_SCORE;
+    }
 
     public int getScore() {
         return score;
