@@ -1,13 +1,13 @@
-import { Component, useState } from 'react';
+import { Component } from 'react';
 
 import './Square.css';
-import { TestState } from '@components/Test/Test';
 
 
 export interface SquareProps {
   winner?: boolean,
   index: number,
   getIndex: (index: number) => void,
+  testActiveState: boolean,
 }
 
 export interface SquareStates {
@@ -20,6 +20,7 @@ export default class Square extends Component<SquareProps, SquareStates> {
     index: 0,
     winner: false,
     getIndex: () => {},
+    testActiveState: true,
   };
 
   constructor(props: SquareProps) {
@@ -33,18 +34,22 @@ export default class Square extends Component<SquareProps, SquareStates> {
   }
 
   clickCheck() {
-    if (!this.props.winner) {
-      this.setState({ error: true });
-    } else {
-      this.setState({ active: true });
-    }
+    if (!this.state.active && !this.state.error && this.props.testActiveState) {
+      if (!this.props.winner) {
+        this.setState({ error: true });
+      } else {
+        this.setState({ active: true });
+      }
 
-    this.props.getIndex(this.props.index);
+      setTimeout(() => {
+        this.props.getIndex(this.props.index);
+      }, 250);
+    }
   }
 
   render() {
     return (
-      <div
+      <div id={this.props.index.toString()}
         className={this.joinClasses('square', this.state.active ? 'active' : '',
           this.state.error ? 'error' : '')}
         onClick={this.clickCheck}
