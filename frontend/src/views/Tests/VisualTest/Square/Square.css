@@ -1,0 +1,16 @@
+.square{
+  border: calc(2em / var(--squares-count)) solid var(--app-font-color);
+  background-color: rgba(1, 1, 1, 0%);
+  border-radius: 1.2em;
+
+  cursor: pointer;
+}
+
+.active {
+  background-color: rgba(255, 255, 255) !important;
+}
+
+.error {
+  background-color: rgba(0, 0, 0, 100%) !important;
+  opacity: 60%;
+}

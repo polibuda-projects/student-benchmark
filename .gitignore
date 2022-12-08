@@ -13,6 +13,10 @@ src/main/resources
 /build
 /target
 
+
+# production
+/build
+
 # misc
 .DS_Store
 .env.local
