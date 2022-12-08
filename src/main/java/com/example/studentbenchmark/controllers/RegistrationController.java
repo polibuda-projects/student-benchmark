@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 
 @RestController
@@ -39,34 +40,57 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody AppUser user) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequest request) {
 
-        if(!user.getPassword().equals(user.getPasswordConfirmation())) {
+        if(!request.password().equals(request.passwordConfirmation())) {
 
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepo.findByEmail(user.getEmail()) != null)
+        if (userRepo.findByEmail(request.email()) != null)
         {
 
             return new ResponseEntity<>("This email is used by existing account", HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepo.findByNickname(user.getNickname()) == null)
+        if (!userRepo.findByNickname(request.nickname()).isEmpty())
         {
 
             return new ResponseEntity<>("This nickname is used by existing account", HttpStatus.BAD_REQUEST);
         }
 
 
-        userRepo.save(new AppUser(user.getNickname(), user.getEmail(), passwordEncoder.encode(user.getPassword()), 0));
-        logsRepo.save(new LoggerEntity(user.getNickname(), sqlDate, "User has successfully registered the account"));
+        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), 0));
+        logsRepo.save(new LoggerEntity(request.nickname(), sqlDate, "User has successfully registered the account"));
         logger.info("User has successfully registered the account");
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 
     }
 
-    private record RegistrationRequest(String nickname, String email, String password, String passwordConfirmation) {
+    private record RegistrationRequest(
+            @NotNull
+            @NotBlank(message = "nickname is mandatory")
+            @Size(min=3, max=64)
+            String nickname,
+
+            @Email
+            @NotBlank
+            @NotNull
+            @Size(min=3, max=64)
+            String email,
+
+            @NotNull
+            @NotBlank(message = "password is mandatory")
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+                            "<br/>"+"   Password must contain at least one digit [0-9]." +
+                            "<br/>"+"   Password must contain at least one lowercase Latin character [a-z]." +
+                            "<br/>"+"    Password must contain at least one uppercase Latin character [A-Z]." +
+                            "<br/>"+"    Password must contain at least one special character like ! @ # & ( )." +
+                            "<br/>"+ "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
+            String password,
+            @NotNull
+            @NotBlank(message = "password confirmation is mandatory")
+            String passwordConfirmation) {
     }
 }
 

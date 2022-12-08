@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @RestController
@@ -32,10 +37,7 @@ public class SupportController {
 
 
     @PostMapping("/support")
-    public ResponseEntity<String> Support(@RequestBody SupportController.supportRequest request) {
-        if ((request.message()) == null) {
-            return new ResponseEntity<>("No message body", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> Support(@Valid @RequestBody SupportController.supportRequest request) {
 
         //Pobieranie aktualnego uzytkownika
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,11 +47,25 @@ public class SupportController {
             return new ResponseEntity<>("No email to send response", HttpStatus.UNAUTHORIZED);
         }
 
-        supportRepo.save(new SupportMessage(request.message(), currentUser.getUsername(), currentUser.getId()));
+        supportRepo.save(new SupportMessage(request.message(), request.messageTitle(), currentUser.getUsername(), currentUser.getId()));
 
         return new ResponseEntity<>("Support message send succesfully", HttpStatus.OK);
     }
 
-    private record supportRequest(String message) {}
+    private record supportRequest(
+            @NotNull
+            @NotBlank
+            @Size(min=5, max=256)
+            String message,
+
+            @NotNull
+            @Size(max=64)
+            String messageTitle,
+
+            @Email
+            @NotBlank
+            @NotNull
+            @Size(min=3, max=64)
+            String email) {}
 
 }
