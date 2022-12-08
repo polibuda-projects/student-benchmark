@@ -22,7 +22,7 @@ public class DeleteAccountController {
     }
 
     @PostMapping("/deleteAccount")
-    public ResponseEntity<String> registerUser(@RequestBody DeleteAccountRequest request) {
+    public ResponseEntity<String> deleteAccount(@RequestBody DeleteAccountRequest request) {
         AppUser user = userRepo.findByEmail(request.email());
 
         if (user == null) {
