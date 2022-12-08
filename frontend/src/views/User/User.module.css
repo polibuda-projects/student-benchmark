@@ -1,0 +1,38 @@
+.userAvatar {
+  height: 15rem;
+  border-radius: 50%;
+  margin-bottom: 4rem;
+}
+
+.userBar {
+    background-color: var(--app-bg-color-darker);
+    height: 5rem;
+    min-width: 16rem;
+    width: 40rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow: -5px 5px 10px #1d1d1d33, 5px -5px 10px #1d1d1d33, -5px -5px 10px #232323e6, 5px 5px 13px #1d1d1de6, inset 1px 1px 2px #2323234d, inset -1px -1px 2px #1d1d1d80;
+    margin-bottom: 4rem;
+}
+
+.username {
+    font-size: 3.2rem;
+    min-width: 0;
+    width: fit-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 3.5em;
+    margin-bottom: 4rem;
+}
