@@ -86,11 +86,11 @@
 
 .scrollable {
   overflow: scroll;
-  height: 33rem;
+  height: 40rem;
   box-shadow: -10px 10px 20px #1f1f2133,
-  10px -10px 20px #1f1f2133,
-  -10px -10px 20px #2f2f31e6,
-  10px 10px 25px #1f1f21e6,
-  inset 1px 1px 2px #2f2f314d,
-  inset -1px -1px 2px #1f1f2180;
+    10px -10px 20px #1f1f2133,
+    -10px -10px 20px #2f2f31e6,
+    10px 10px 25px #1f1f21e6,
+    inset 1px 1px 2px #2f2f314d,
+    inset -1px -1px 2px #1f1f2180;
 }
