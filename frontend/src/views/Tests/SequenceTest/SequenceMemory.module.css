@@ -10,9 +10,10 @@
     position: relative;
     border: 8px solid white;
     border-radius: 25px;
-    transition: 1s;
-
+    transition:0.2s;
+    cursor: pointer;
 }
+
 .ContainerSequence{
     display: flex;
     flex-wrap: wrap;
