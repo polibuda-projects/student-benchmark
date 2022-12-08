@@ -41,14 +41,28 @@ public class RegistrationController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody AppUser user) {
 
-        if(user.getPassword().equals(user.getPasswordConfirmation())) {
-            userRepo.save(new AppUser(user.getNickname(), user.getEmail(), passwordEncoder.encode(user.getPassword()), 0));
-            logsRepo.save(new LoggerEntity(user.getNickname(), sqlDate, "User has successfully registered the account"));
-            logger.info("User has successfully registered the account");
-            return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        if(!user.getPassword().equals(user.getPasswordConfirmation())) {
+
+            return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
+        if (userRepo.findByEmail(user.getEmail()) != null)
+        {
+
+            return new ResponseEntity<>("This email is used by existing account", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userRepo.findByNickname(user.getNickname()) == null)
+        {
+
+            return new ResponseEntity<>("This nickname is used by existing account", HttpStatus.BAD_REQUEST);
+        }
+
+
+        userRepo.save(new AppUser(user.getNickname(), user.getEmail(), passwordEncoder.encode(user.getPassword()), 0));
+        logsRepo.save(new LoggerEntity(user.getNickname(), sqlDate, "User has successfully registered the account"));
+        logger.info("User has successfully registered the account");
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 
     }
 

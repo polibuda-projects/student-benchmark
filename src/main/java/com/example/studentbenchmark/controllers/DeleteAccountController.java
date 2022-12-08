@@ -10,11 +10,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 
 @RestController
@@ -36,25 +44,39 @@ public class DeleteAccountController {
     }
 
     @PostMapping("/deleteAccount")
-    public ResponseEntity<String> deleteAccount(@RequestBody DeleteAccountRequest request) {
+    public ResponseEntity<String> deleteAccount(@Valid @RequestBody DeleteAccountRequest request) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-
-        String email = ((AppUserEntityDetails) principal).getUsername();
-        String password = ((AppUserEntityDetails) principal).getPassword();
+       // Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 
-        if (password.matches(request.password())) {
-            return new ResponseEntity<>("Incorrect user password", HttpStatus.BAD_REQUEST);
+        //String email = ((AppUserEntityDetails) principal).getEmail();
+       // String password = ((AppUserEntityDetails) principal).getPassword();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+
+            AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
+
+
+            if (currentUser.getPassword().matches(request.password())) {
+                return new ResponseEntity<>("Incorrect user password", HttpStatus.BAD_REQUEST);
+            }
+
+            userRepo.deleteAccount(currentUser.getEmail());
+            logsRepo.save(new LoggerEntity(currentUser.getEmail(), sqlDate, "User has deleted the account"));
+            logger.info("User has deleted the account");
+            return new ResponseEntity<>("User Deleted", HttpStatus.OK);
         }
 
-        userRepo.deleteAccount(email);
-        logsRepo.save(new LoggerEntity(email, sqlDate, "User has deleted the account"));
-        logger.info("User has deleted the account");
-        return new ResponseEntity<>("User Deleted", HttpStatus.OK);
+        return new ResponseEntity<>("User is unauthorized", HttpStatus.UNAUTHORIZED);
+
     }
 
-    private record DeleteAccountRequest(String password) {
+    private record DeleteAccountRequest(
+            @NotEmpty
+            @NotBlank
+            @NotNull
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$")
+            String password) {
     }
 }
