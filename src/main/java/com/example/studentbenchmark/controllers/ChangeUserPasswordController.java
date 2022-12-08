@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 
 @RestController
 @Service
@@ -39,7 +44,7 @@ public class ChangeUserPasswordController {
     }
 
     @PostMapping("/changeUserPassword")
-    public ResponseEntity<String> changeUserPassword(@RequestBody ChangeUserPasswordRequest request) {
+    public ResponseEntity<String> changeUserPassword(@Valid @RequestBody ChangeUserPasswordRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
@@ -61,7 +66,18 @@ public class ChangeUserPasswordController {
         return new ResponseEntity<>("User is unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
-    private record ChangeUserPasswordRequest(String oldPassword, String newPassword,
-                                             String newPasswordRepeated) {
+    private record ChangeUserPasswordRequest(
+            @NotEmpty
+            @NotNull
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$")
+            String oldPassword,
+            @NotEmpty
+            @NotNull
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$")
+            String newPassword,
+            @NotEmpty
+            @NotNull
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$")
+            String newPasswordRepeated) {
     }
 }
