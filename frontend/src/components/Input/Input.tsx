@@ -13,6 +13,7 @@ export interface InputProps {
   id?: string,
   autoComplete?: string;
   required?: boolean;
+  useRef?: React.RefObject<HTMLInputElement>;
 }
 
 export default class Inputs extends Component<InputProps> {
@@ -23,7 +24,7 @@ export default class Inputs extends Component<InputProps> {
 
   render() {
     return (
-      <input className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
+      <input ref={this.props.useRef} className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
         type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} autoFocus ={this.props.focus} id={this.props.id} autoComplete={this.props.autoComplete} required={this.props.required
         } />
     );
