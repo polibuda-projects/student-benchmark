@@ -18,20 +18,20 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
 
     AppUser findByEmail(String email);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM App_User u WHERE u.email= :email AND u.password= :password")
+    @Query(nativeQuery = true, value = "SELECT * FROM App_User WHERE email= :email AND password= :password")
     AppUser findUser(@Param("email") String email, @Param("password") String password);
 
 
-    @Query(nativeQuery = true, value = "SELECT * FROM App_User u WHERE u.id_user= :idUser")
+    @Query(nativeQuery = true, value = "SELECT * FROM App_User WHERE id_user= :idUser")
     AppUser findByID(@Param("idUser") Long idUser);
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "UPDATE App_User u SET u.password= :newPassword WHERE u.id_user= :idUser")
+    @Query(nativeQuery = true, value = "UPDATE App_User SET password= :newPassword WHERE id_user= :idUser")
     void changeUserPassword(@Param("idUser") Long idUser, @Param("newPassword") String newPassword);
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM App_User u WHERE u.email= email")
+    @Query(nativeQuery = true, value = "DELETE FROM App_User WHERE  email= :email")
     void deleteAccount(@Param("email") String email);
 }
