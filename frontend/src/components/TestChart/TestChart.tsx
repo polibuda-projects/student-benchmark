@@ -11,6 +11,7 @@ export interface TestChartProps {
   range: [number, number];
   label?: string;
   userScore?: number | null,
+  aspectRatio?: number,
 };
 
 export default class TestChart extends Component<TestChartProps> {
@@ -18,9 +19,12 @@ export default class TestChart extends Component<TestChartProps> {
     data: [],
     range: [0, 0],
     userScore: null,
+    aspectRatio: 3 / 2,
   };
 
   render() {
+    console.log(this.props.aspectRatio);
+
     return (
       <Chart type='bar'
         className={style.chart}
@@ -29,7 +33,7 @@ export default class TestChart extends Component<TestChartProps> {
         options={{
           backgroundColor: 'transparent',
 
-          aspectRatio: 3 / 2,
+          aspectRatio: this.props.aspectRatio,
           events: [],
 
           elements: {
