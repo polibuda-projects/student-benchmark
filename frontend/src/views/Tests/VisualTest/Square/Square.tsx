@@ -40,10 +40,7 @@ export default class Square extends Component<SquareProps, SquareStates> {
       } else {
         this.setState({ active: true });
       }
-
-      setTimeout(() => {
-        this.props.getIndex(this.props.index);
-      }, 250);
+      this.props.getIndex(this.props.index);
     }
   }
 

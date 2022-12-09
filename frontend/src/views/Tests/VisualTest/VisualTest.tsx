@@ -12,7 +12,7 @@ const testDescription = 'Every level, a number of tiles will flash white. Memori
   'You have three lives.Make it as far as you can!';
 
 const shortTestDescription = 'Memorize the squares';
-export type TestActiveState = 'show' | 'resolve';
+export type TestActiveState = 'generate' | 'show' | 'resolve';
 
 export default function VisualTest() {
   const [state, updateState] = useState<TestState>('start');
@@ -26,7 +26,7 @@ export default function VisualTest() {
   const numberOfWinners = [3, 4, 5, 5, 6, 6, 7, 8, 9, 10, 10, 11];
   const [randomWinnersIdx, updateRandomWinnersIdx] = useState<Set<number>>(randomWinnersIdxGen(numberOfWinners[0], numberOfSquaresSize[0]));
 
-  const [testActiveState, updateTestActiveState] = useState<TestActiveState>();
+  const [testActiveState, updateTestActiveState] = useState<TestActiveState>('generate');
 
   const [chartData, updateChart] = useState<TestProps>({
     data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
@@ -44,26 +44,38 @@ export default function VisualTest() {
   }
 
   // How many times user clicked correct squares
-  let activatedWinnersCount = 0;
+  const [activatedWinnersCount, updateActivatedWinnersCount] = useState<number>(0);
+
+  // Do not let user make another click after:
+  //  - chose that redirects to the next level,
+  //  - chose that end's the game.
+  type TestActiveStateClick = 'resolve' | 'check';
+  const [testActiveStateClick, updateTestActiveStateClick] = useState<TestActiveStateClick>('resolve');
+
   // When user click square
+  // Timeouts are for animations come to an end before reset the squares board
   const UserChoose = (isCorrect: boolean) => {
-    if (testActiveState === 'resolve') {
+    if (testActiveStateClick === 'resolve' && testActiveState === 'resolve' && state === 'playing') {
       if (!isCorrect) {
         if (userLives === 1) {
-          updateState('end');
+          updateTestActiveStateClick('check');
+          setTimeout(() => {
+            updateState('end');
+            updateTestActiveStateClick('resolve');
+          }, 250);
         } else {
           updateLives(userLives - 1);
         }
       } else {
-        activatedWinnersCount += 1;
+        updateActivatedWinnersCount(activatedWinnersCount + 1);
         // Go to next Level
-        if (activatedWinnersCount === numberOfWinners[userScore ? userScore : 0]) {
-          activatedWinnersCount = 0;
-          const actualScore = (userScore ? userScore : 0) + 1;
-          updateScore(actualScore);
-          updateLives(maxNumberOfLives);
-          updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[actualScore], numberOfSquaresSize[actualScore]));
-          updateTestActiveState('show');
+        if ((activatedWinnersCount + 1) === numberOfWinners[userScore ? userScore : 0]) {
+          updateTestActiveStateClick('check');
+          setTimeout(() => {
+            updateScore((userScore ? userScore : 0) + 1);
+            updateTestActiveState('generate');
+            updateTestActiveStateClick('resolve');
+          }, 250);
         }
       }
     }
@@ -72,15 +84,17 @@ export default function VisualTest() {
   useEffect(() => {
     if (state === 'playing') {
       updateScore(0);
-      updateLives(maxNumberOfLives);
-      updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[0], numberOfSquaresSize[0]));
-      updateTestActiveState('show');
+      updateTestActiveState('generate');
     }
   }, [state]);
 
   useEffect(() => {
-    if (testActiveState === 'show') {
+    if (testActiveState === 'generate') {
+      updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[userScore ? userScore : 0], numberOfSquaresSize[userScore ? userScore : 0]));
       updateLives(maxNumberOfLives);
+      updateActivatedWinnersCount(0);
+      updateTestActiveState('show');
+    } else if (testActiveState === 'show') {
       showWinnerSquares();
     }
   }, [testActiveState]);
