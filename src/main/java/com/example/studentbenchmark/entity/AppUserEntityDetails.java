@@ -18,8 +18,7 @@ public class AppUserEntityDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        if(entity.getRole() == 1)
-        {
+        if (entity.getRole() == AppUser.Role.ADMIN) {
             return Stream.of("ROLE_ADMIN")
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toSet());
@@ -44,8 +43,7 @@ public class AppUserEntityDetails implements UserDetails {
         return entity.getEmail();
     }//dodałem bo getUsername() wprowadza w błąd
 
-    public Long getId()
-    {
+    public Long getId() {
         return entity.getIdUser();
     }
 

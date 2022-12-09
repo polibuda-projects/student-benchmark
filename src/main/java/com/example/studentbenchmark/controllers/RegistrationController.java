@@ -60,7 +60,7 @@ public class RegistrationController {
         }
 
 
-        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), 0));
+        userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), AppUser.Role.USER));
         AppUser user = userRepo.findByEmail(request.email());
         logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "User has successfully registered the account"));
         logger.info("User has successfully registered the account");
