@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 @RestController
@@ -110,6 +111,15 @@ public class TestController {
         try (Scanner scanner = new Scanner(new File("src/main/resources/ListOfWordsForVerbalTest.csv"))) {
             while (scanner.hasNextLine()) {
                 words.add(scanner.nextLine());
+            }
+
+            Random rand = new Random();
+
+            for (int i = 0; i < words.size(); i++) {
+                int randomIndexToSwap = rand.nextInt(words.size());
+                String temp = words.get(randomIndexToSwap);
+                words.set(randomIndexToSwap, words.get(i));
+                words.set(i, temp);
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
