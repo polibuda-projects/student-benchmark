@@ -18,33 +18,31 @@ const Dashboard = (props: any) => {
 
 
   const scrollHandler = () => {
-    scroller.current?.addEventListener('scroll', () => {
-      let target = '';
+    let target = '';
+    const children = Array.from(scroller.current?.children ?? []);
 
-      for (const child of scroller.current?.children || []) {
-        if (child instanceof HTMLElement) {
-          if (child.offsetTop > (scroller.current?.scrollTop || 0) + 20) {
-            target = child.id;
-            break;
-          }
+    for (const child of children) {
+      if (child instanceof HTMLElement) {
+        if ((child.offsetTop - (scroller.current?.offsetTop ?? 0)) + child.scrollHeight > (scroller.current?.scrollTop ?? 0) + 100) {
+          target = child.id;
+          break;
         }
       }
+    }
 
-      if (document.location.hash !== `#${target}`) {
-        window.history.replaceState({}, '', `#${target}`);
-        setToggle(TestBoxEnum[target as keyof typeof TestBoxEnum]);
-      }
-    });
+    if (document.location.hash !== `#${target}`) {
+      window.history.replaceState({}, '', `#${target}`);
+      setToggle(TestBoxEnum[target as keyof typeof TestBoxEnum]);
+    }
   };
 
   useEffect(() => {
-    console.log('Running');
     const scrollerCopy = scroller.current;
 
     scrollerCopy?.addEventListener('scroll', scrollHandler);
+    setToggle(TestBoxEnum[document.location.hash.slice(1) as keyof typeof TestBoxEnum]);
 
     return () => {
-      console.log('Unmounting');
       scrollerCopy?.removeEventListener('scroll', scrollHandler);
     };
   }, []);
