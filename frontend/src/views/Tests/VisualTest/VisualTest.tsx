@@ -84,6 +84,7 @@ export default function VisualTest() {
   useEffect(() => {
     if (state === 'playing') {
       updateScore(0);
+      updateLives(maxNumberOfLives);
       updateTestActiveState('generate');
     }
   }, [state]);
@@ -91,7 +92,7 @@ export default function VisualTest() {
   useEffect(() => {
     if (testActiveState === 'generate') {
       updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[userScore ? userScore : 0], numberOfSquaresSize[userScore ? userScore : 0]));
-      updateLives(maxNumberOfLives);
+      // updateLives(maxNumberOfLives);
       updateActivatedWinnersCount(0);
       updateTestActiveState('show');
     } else if (testActiveState === 'show') {
