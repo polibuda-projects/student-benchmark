@@ -1,8 +1,12 @@
 package com.example.studentbenchmark.entity;
 
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+
 
 class AppUserTest {
     AppUser appUser = new AppUser("F(D)i(U)l(P)i(A)p", "jasna.dupa@gmail.com", "jasnadupa", 0);
@@ -125,5 +129,28 @@ class AppUserTest {
         );
 
     }
+
+
+    @Test
+    public void shouldNicknamedBeShorterThan65Sings() {
+        int lenghtNickanmeTest=appUser1.getNickname().length();
+        Assertions.assertThat(lenghtNickanmeTest).isLessThan(65);
+    }
+
+    @Test
+    public void shouldEmailBeShorterThan65Sings() {
+        int lenghtEmialTest=appUser1.getEmail().length();
+        Assertions.assertThat(lenghtEmialTest).isLessThan(65);
+    }
+
+    @Test
+    public void shouldPasswordBeShorterThan65Sings() {
+        int lenghtPasswordTest=appUser1.getPassword().length();
+        Assertions.assertThat(lenghtPasswordTest).isLessThan(65);
+    }
+
+
+
+
 
 }
