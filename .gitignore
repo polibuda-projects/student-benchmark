@@ -3,11 +3,14 @@
 /frontend/build
 /.pnp
 /.idea
+/.mvn
 .pnp.js
+/mvnw
+/mvnw.cmd
 
 # testing
 /coverage
-src/main/resources
+/src/main/resources
 
 # production
 /build
