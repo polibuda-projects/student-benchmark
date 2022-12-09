@@ -60,7 +60,7 @@ public class SupportController {
         }
 
         supportRepo.save(new SupportMessage(request.message(), request.messageTitle(), currentUser.getUsername(), currentUser.getId()));
-        logsRepo.save(new LoggerEntity(currentUser.getUsername(), sqlDate, "User has send the support message"));
+        logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), sqlDate, "User has send the support message"));
         logger.info("User has send the support message");
         return new ResponseEntity<>("Support message send succesfully", HttpStatus.OK);
     }

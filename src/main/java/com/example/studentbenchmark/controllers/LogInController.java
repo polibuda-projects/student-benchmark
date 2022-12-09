@@ -53,7 +53,7 @@ public class LogInController {
             return new ResponseEntity<>("Incorrect user password" , HttpStatus.UNAUTHORIZED);
         }
 
-        logsRepo.save(new LoggerEntity(user.getNickname(), sqlDate, "User has successfully logged in"));
+        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "User has successfully logged in"));
         //sqlDate nie wiem czy dobrze, dalem zeby zrobic walidacje loginu :)
         logger.info("User has successfully logged in");
         return new ResponseEntity<>("User logged in successfully", HttpStatus.OK);

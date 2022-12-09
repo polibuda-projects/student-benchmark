@@ -61,7 +61,7 @@ public class DeleteAccountController {
         }
 
         userRepo.deleteAccount(email);
-        logsRepo.save(new LoggerEntity(((AppUserEntityDetails)principal).getUsername(), sqlDate, "User has deleted the account"));
+        logsRepo.save(new LoggerEntity(((AppUserEntityDetails)principal).getUsername(), ((AppUserEntityDetails) principal).getId(), sqlDate, "User has deleted the account"));
         logger.info("User has deleted the account");
         return new ResponseEntity<>("User Deleted", HttpStatus.OK);
     }

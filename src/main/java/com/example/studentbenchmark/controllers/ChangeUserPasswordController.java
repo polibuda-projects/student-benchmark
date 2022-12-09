@@ -60,7 +60,7 @@ public class ChangeUserPasswordController {
             }
 
             userRepo.changeUserPassword(currentUser.getId(), passwordEncoder.encode(request.newPassword()));
-            logsRepo.save(new LoggerEntity(currentUser.getUsername(), sqlDate, "User has changed the password"));
+            logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), sqlDate, "User has changed the password"));
             logger.info("User has changed the password");
             return new ResponseEntity<>("User password changed successfully", HttpStatus.OK);
         }

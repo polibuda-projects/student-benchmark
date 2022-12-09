@@ -15,12 +15,15 @@ public class LoggerEntity {
 
     private String userLog;
 
+    private Long userLogId;
+
     private Date dateOfLog;
 
     private String logContext;
 
-    public LoggerEntity(String userLog, Date dateOfLog, String logContext) {
+    public LoggerEntity(String userLog, Long userLogId, Date dateOfLog, String logContext) {
         this.userLog = userLog;
+        this.userLogId = userLogId;
         this.dateOfLog = dateOfLog;
         this.logContext = logContext;
     }
@@ -46,6 +49,13 @@ public class LoggerEntity {
         this.userLog = userLog;
     }
 
+    public Long getUserLogId() {
+        return userLogId;
+    }
+
+    public void setUserLogId(Long userLogId) {
+        this.userLogId = userLogId;
+    }
 
     public Date getDateOfLog() {
         return dateOfLog;
