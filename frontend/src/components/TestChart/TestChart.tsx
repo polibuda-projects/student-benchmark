@@ -23,8 +23,6 @@ export default class TestChart extends Component<TestChartProps> {
   };
 
   render() {
-    console.log(this.props.aspectRatio);
-
     return (
       <Chart type='bar'
         className={style.chart}
