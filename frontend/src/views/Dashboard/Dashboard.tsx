@@ -41,6 +41,7 @@ const Dashboard = (props: any) => {
 
     scrollerCopy?.addEventListener('scroll', scrollHandler);
     setToggle(TestBoxEnum[document.location.hash.slice(1) as keyof typeof TestBoxEnum]);
+    scrollHandler();
 
     return () => {
       scrollerCopy?.removeEventListener('scroll', scrollHandler);
