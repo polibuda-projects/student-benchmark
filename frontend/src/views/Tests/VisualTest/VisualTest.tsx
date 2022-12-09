@@ -3,7 +3,7 @@ import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
-import logo from '@components/TestButtons/visualTest.svg';
+import logo from '@resources/img/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import SquaresBoard from '@views/Tests/VisualTest/SquaresBoard/SquaresBoard';
 

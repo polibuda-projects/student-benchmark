@@ -3,7 +3,7 @@ import Page from '@components/Page/Page';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import ButtonGrey from '@components/Buttons/ButtonGrey';
 import { Link } from 'react-router-dom';
-import userAvatar from '../../components/UserProfile/defaultAvatar.svg';
+import userAvatar from '@resources/img/defaultAvatar.svg';
 
 function User() {
   return (

@@ -3,7 +3,7 @@ import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
-import logo from '@components/TestButtons/numberTest.svg';
+import logo from '@resources/img/numberTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';

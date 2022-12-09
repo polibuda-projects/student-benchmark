@@ -3,7 +3,7 @@ import style from './Login.module.css';
 import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
-import logo from '@views/Home/logo.svg';
+import logo from '@resources/img/logoVertical.svg';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import { Link } from 'react-router-dom';
 

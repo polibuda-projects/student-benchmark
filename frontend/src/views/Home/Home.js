@@ -1,5 +1,5 @@
 import style from './Home.module.css';
-import logo from './logo.svg';
+import logo from '@resources/img/logoVertical.svg';
 
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import Page from '@components/Page/Page';

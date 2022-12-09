@@ -1,12 +1,12 @@
 import style from './Sidebar.module.css';
-import logo from './logo.svg';
-import icon from './icon.svg';
-import leftDoubleArrow from './leftDoubleArrow.svg';
+import logo from '@resources/img/logo.svg';
+import icon from '@resources/img/icon.svg';
+import leftDoubleArrow from '@resources/img/leftDoubleArrow.svg';
 
-import homeIcon from './homeIcon.svg';
-import dashboardIcon from './dashboardIcon.svg';
-import supportIcon from './supportIcon.svg';
-import donateBoxIcon from './donateBoxIcon.svg';
+import homeIcon from '@resources/img/homeIcon.svg';
+import dashboardIcon from '@resources/img/dashboardIcon.svg';
+import supportIcon from '@resources/img/supportIcon.svg';
+import donateBoxIcon from '@resources/img/donateBoxIcon.svg';
 
 import MediumButton from '@components/Buttons/ButtonMedium';
 import { Link, NavLink } from 'react-router-dom';

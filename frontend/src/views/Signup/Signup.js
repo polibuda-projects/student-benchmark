@@ -4,7 +4,7 @@ import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
-import logo from '@views/Home/logo.svg';
+import logo from '@resources/img/logoVertical.svg';
 import { Link } from 'react-router-dom';
 
 

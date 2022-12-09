@@ -1,8 +1,8 @@
 import style from './Dashboard.module.css';
-import sequence from './sequence.svg';
-import visual from './visual.svg';
-import verbal from './verbal.svg';
-import number from './number.svg';
+import sequence from '@resources/img/sequenceTest.svg';
+import visual from '@resources/img/visualTest.svg';
+import verbal from '@resources/img/verbalTest.svg';
+import number from '@resources/img/numberTest.svg';
 
 import Page from '@components/Page/Page';
 import DashboardTable from '@components/DashboardTable/DashboardTable';
