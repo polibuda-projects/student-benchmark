@@ -76,6 +76,24 @@
  - Commits should be written in past tense (e.g. `f added login page` instead of `f add login page`)
  - If applicable, commit message should include name of the Trello card (e.g. `f added login page <trello card name>`)
 
+## 4. How to set up backend environment on your machine?
+ 
+ - ### Install IntelliJ Idea
+ - ### Reload maven
+ - ### Download [XAMPP](https://www.apachefriends.org/download.html) or [MySql Workbench](https://dev.mysql.com/downloads/workbench/)
+ - ### Create database `student_benchmark` on basic config (port 3306)
+ - ### Add resources file `src/main/resources/application.properties`
+ - ### Insert this snippet of code
+ ```java
+ spring.jpa.hibernate.ddl-auto=create
+ spring.datasource.url=jdbc:mysql://localhost:3306/student_benchmark
+ spring.datasource.username=root
+ spring.datasource.password=
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+ ```
+ - ### Run `main`
+ - ### Enjoy your connection with backend
+
  ## Important notes
 
  - ### Pull changes before pushing
