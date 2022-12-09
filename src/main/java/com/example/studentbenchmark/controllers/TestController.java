@@ -6,6 +6,8 @@ import com.example.studentbenchmark.repository.testsRepositories.NumberTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.SequenceTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.VerbalTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.VisualTestRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,10 @@ public class TestController {
     NumberTestRepo numberTestRepo;
     VisualTestRepo visualTestRepo;
 
+
+
+    Logger logger = LoggerFactory.getLogger(TestController.class);
+
     @Autowired
     public TestController(SequenceTestRepo sequenceTestRepo, VerbalTestRepo verbalTestRepo, NumberTestRepo numberTestRepo, VisualTestRepo visualTestRepo) {
         this.sequenceTestRepo = sequenceTestRepo;
@@ -39,10 +45,10 @@ public class TestController {
     ResponseEntity<String> addResultSequenceTest(@RequestBody SequenceTest test) {
         if (test.isScoreValid()) {
             sequenceTestRepo.save((SequenceTest) modifyTest(test));
-
+            logger.info("Results added successfully");
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
         }
-
+        logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
 
@@ -50,10 +56,10 @@ public class TestController {
     ResponseEntity<String> addResultVerbalTest(@RequestBody VerbalTest test) {
         if (test.isScoreValid()) {
             verbalTestRepo.save((VerbalTest) modifyTest(test));
-
+            logger.info("Results added successfully");
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
         }
-
+        logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
 
@@ -61,10 +67,10 @@ public class TestController {
     ResponseEntity<String> addResultNumberTest(@RequestBody NumberTest test) {
         if (test.isScoreValid()) {
             numberTestRepo.save((NumberTest) modifyTest(test));
-
+            logger.info("Results added successfully");
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
         }
-
+        logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
 
@@ -72,10 +78,10 @@ public class TestController {
     ResponseEntity<String> addResultVisualTest(@RequestBody VisualTest test) {
         if (test.isScoreValid()) {
             visualTestRepo.save((VisualTest) modifyTest(test));
-
+            logger.info("Results added successfully");
             return new ResponseEntity<>("Result added successfully", HttpStatus.OK);
         }
-
+        logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
 

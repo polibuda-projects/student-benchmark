@@ -43,19 +43,19 @@ public class RegistrationController {
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequest request) {
 
         if(!request.password().equals(request.passwordConfirmation())) {
-
+            logger.error("User has entered not matching passwords");
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
         if (userRepo.findByEmail(request.email()) != null)
         {
-
+            logger.error("User has entered the email which is already in use");
             return new ResponseEntity<>("This email is used by existing account", HttpStatus.BAD_REQUEST);
         }
 
         if (!userRepo.findByNickname(request.nickname()).isEmpty())
         {
-
+            logger.error("User has entered the nickname which is already in use");
             return new ResponseEntity<>("This nickname is used by existing account", HttpStatus.BAD_REQUEST);
         }
 

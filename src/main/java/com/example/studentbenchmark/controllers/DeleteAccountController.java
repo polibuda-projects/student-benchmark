@@ -2,7 +2,11 @@ package com.example.studentbenchmark.controllers;
 
 
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
+import com.example.studentbenchmark.entity.LoggerEntity;
+import com.example.studentbenchmark.repository.LogsRepo;
 import com.example.studentbenchmark.repository.UserRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +30,19 @@ public class DeleteAccountController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final LogsRepo logsRepo;
+
+    Logger logger = LoggerFactory.getLogger(DeleteAccountController.class);
+
+    java.util.Date utilDate = new java.util.Date();
+    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
     @Autowired
-    public DeleteAccountController(UserRepo userRepo,PasswordEncoder passwordEncoder) {
+    public DeleteAccountController(UserRepo userRepo, PasswordEncoder passwordEncoder, LogsRepo logsRepo) {
 
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
+        this.logsRepo = logsRepo;
     }
 
     @PostMapping("/deleteAccount")
@@ -44,11 +56,13 @@ public class DeleteAccountController {
 
 
         if (!passwordEncoder.matches(request.password(), password)) {
+            logger.error("User has entered incorrect password");
             return new ResponseEntity<>("Incorrect user password", HttpStatus.BAD_REQUEST);
         }
 
         userRepo.deleteAccount(email);
-
+        logsRepo.save(new LoggerEntity(((AppUserEntityDetails)principal).getUsername(), sqlDate, "User has deleted the account"));
+        logger.info("User has deleted the account");
         return new ResponseEntity<>("User Deleted", HttpStatus.OK);
     }
 
