@@ -15,11 +15,16 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 @RestController
 @Service
@@ -98,5 +103,17 @@ public class TestController {
         }
         test.setDateOfSubmission(new Date());
         return test;
+    }
+    @GetMapping("/verbalTest")
+    public ArrayList<String> readFromCsvFile() {
+        ArrayList<String> words = new ArrayList<>();
+        try (Scanner scanner = new Scanner(new File("src/main/resources/ListOfWordsForVerbalTest.csv"))) {
+            while (scanner.hasNextLine()) {
+                words.add(scanner.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return words;
     }
 }
