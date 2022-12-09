@@ -21,11 +21,17 @@ export default function VisualTest() {
   const maxNumberOfLives = 3;
   const [userLives, updateLives] = useState<number>(maxNumberOfLives);
 
-  // Count of squares in row and number of correct squares to click (this will be in database?)
-  const numberOfSquaresSize = [3, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6];
-  const numberOfWinners = [3, 4, 5, 5, 6, 6, 7, 8, 9, 10, 10, 11];
-  const [randomWinnersIdx, updateRandomWinnersIdx] = useState<Set<number>>(randomWinnersIdxGen(numberOfWinners[0], numberOfSquaresSize[0]));
+  // Count of squares in row and number of correct squares to click
+  const numberOfSquaresSize =
+    [3, 3, 4, 4, 4, 5, 5, 5, 5, 6,
+      6, 6, 6, 6, 7, 7, 7, 7, 7, 7,
+      8, 8, 8, 8, 8, 8, 8, 9, 9, 9];
+  const numberOfWinners =
+    [3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+      13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+      23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
 
+  const [randomWinnersIdx, updateRandomWinnersIdx] = useState<Set<number>>(randomWinnersIdxGen(numberOfWinners[0], numberOfSquaresSize[0]));
   const [testActiveState, updateTestActiveState] = useState<TestActiveState>('generate');
 
   const [chartData, updateChart] = useState<TestProps>({
@@ -35,7 +41,7 @@ export default function VisualTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  function randomWinnersIdxGen(numOfWinnerSquares : number, squaresSize : number) {
+  function randomWinnersIdxGen(numOfWinnerSquares: number, squaresSize: number) {
     const nums = new Set<number>();
     while (nums.size < numOfWinnerSquares) {
       nums.add(Math.floor(Math.random() * ((squaresSize * squaresSize) - 1 + 1) + 1));
@@ -92,7 +98,6 @@ export default function VisualTest() {
   useEffect(() => {
     if (testActiveState === 'generate') {
       updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[userScore ? userScore : 0], numberOfSquaresSize[userScore ? userScore : 0]));
-      // updateLives(maxNumberOfLives);
       updateActivatedWinnersCount(0);
       updateTestActiveState('show');
     } else if (testActiveState === 'show') {
@@ -103,7 +108,7 @@ export default function VisualTest() {
   const showWinnerSquares = () => {
     randomWinnersIdx.forEach((val) => {
       setTimeout(() => {
-        const highlightBox : HTMLInputElement = (document.getElementById(val.toString()) as HTMLInputElement);
+        const highlightBox: HTMLInputElement = (document.getElementById(val.toString()) as HTMLInputElement);
         highlightBox.classList.add('active');
         setTimeout(() => {
           highlightBox.classList.remove('active');
@@ -125,41 +130,25 @@ export default function VisualTest() {
 
     {state === 'playing' &&
       <section>
-        <div className={style.testButtons}>
-          <ButtonMedium text='Change Score' onClick={() => updateScore(Math.round(Math.random() * 30))}/>
-          <ButtonMedium text='Change Chart Data' onClick={() => updateChart({
-            data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-            range: [10, 30],
-          })}/>
 
-          <ButtonMedium text='End Test' onClick={() => {
-            updateState('end');
-            updateScore(Math.round(Math.random() * 50));
-          }}/>
+        <div className={style.testInfo}>
+          <span className={style.testLives}>
+              Lives | {userLives}
+          </span>
+          <span className={style.testScore}>
+              Score | {userScore === null ? 0 : userScore}
+          </span>
         </div>
 
-        <section>
+        {testActiveState === 'show' &&
+          <SquaresBoard size={numberOfSquaresSize[userScore ? userScore : 0]} randomWinnersIdx={randomWinnersIdx}
+            correctTileRespond={UserChoose} testActiveState={false}/>
+        }
+        {testActiveState === 'resolve' &&
+          <SquaresBoard size={numberOfSquaresSize[userScore ? userScore : 0]} randomWinnersIdx={randomWinnersIdx}
+            correctTileRespond={UserChoose} testActiveState={true}/>
+        }
 
-          <div className={style.testInfo}>
-            <span className={style.testLives}>
-              Lives | {userLives}
-            </span>
-            <span className={style.testScore}>
-              Score | {userScore === null ? 0 : userScore}
-            </span>
-          </div>
-
-          {testActiveState === 'show' &&
-            <SquaresBoard size={numberOfSquaresSize[userScore ? userScore : 0]} randomWinnersIdx={randomWinnersIdx}
-              correctTileRespond={UserChoose} testActiveState={false}/>
-          }
-
-          {testActiveState === 'resolve' &&
-            <SquaresBoard size={numberOfSquaresSize[userScore ? userScore : 0]} randomWinnersIdx={randomWinnersIdx}
-              correctTileRespond={UserChoose} testActiveState={true}/>
-          }
-
-        </section>
       </section>
     }
   </Test>);
