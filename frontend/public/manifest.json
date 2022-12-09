@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Student Benchmark",
+  "short_name": "Student Benchmark",
+  "start_url": ".",
+  "display": "browser",
+  "background_color": "#272729",
+  "description": "Challange your memory and cognitive skills",
+  "icons": [
+    {
+      "src": "/img/favicon128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/favicon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/favicon250.png",
+      "sizes": "250x250",
+      "type": "image/png"
+    }
+  ]
+}
