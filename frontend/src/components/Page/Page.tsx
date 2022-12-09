@@ -8,6 +8,7 @@ import UserProfile from '@components/UserProfile/UserProfile';
 interface PageProps {
   title?: string;
   sidebar?: boolean;
+  topbar?: boolean;
   titlebar?: boolean;
   user?: boolean;
   content?: boolean;
@@ -19,6 +20,7 @@ export default class Page extends Component<PageProps> {
   private static defaultProps: PageProps = {
     title: '',
     sidebar: true,
+    topbar: true,
     titlebar: true,
     user: true,
     content: true,
@@ -31,9 +33,11 @@ export default class Page extends Component<PageProps> {
         {this.props.sidebar && <Sidebar />}
 
         <div className={style.container}>
+          {this.props.topbar &&
           <div className={style.topBar}>
             {this.props.user && <UserProfile username='UserWithLongUsername' />}
           </div>
+          }
 
           {this.props.titlebar &&
             <div className={style.titleBar}>
