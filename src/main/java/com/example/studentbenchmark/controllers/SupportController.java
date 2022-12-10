@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,45 +39,37 @@ public class SupportController {
     java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
     @Autowired
-    SupportController(UserRepo userRepo, SupportRepo supportRepo, LogsRepo logsRepo){
+    SupportController(UserRepo userRepo, SupportRepo supportRepo, LogsRepo logsRepo) {
         this.userRepo = userRepo;
         this.supportRepo = supportRepo;
         this.logsRepo = logsRepo;
     }
 
 
-
     @PostMapping("/support")
-    public ResponseEntity<String> Support(@Valid @RequestBody SupportController.supportRequest request) {
+    public ResponseEntity<String> Support(@Valid @RequestBody SupportRequest request) {
 
-        //Pobieranie aktualnego uzytkownika
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
-        if ((userRepo.findByNickname(currentUser.getUsername())) == null) {
+        if ((userRepo.findByNickname(currentUser.getUsername())).isEmpty()) {
             return new ResponseEntity<>("No email to send response", HttpStatus.UNAUTHORIZED);
         }
 
-        supportRepo.save(new SupportMessage(request.message(), request.messageTitle(), currentUser.getUsername(), currentUser.getId()));
+        supportRepo.save(new SupportMessage(request.message(), request.messageTitle(), currentUser.getEmail(), currentUser.getId()));
         logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), sqlDate, "User has send the support message"));
         logger.info("User has send the support message");
         return new ResponseEntity<>("Support message send succesfully", HttpStatus.OK);
     }
 
-    private record supportRequest(
+    private record SupportRequest(
             @NotNull
             @NotBlank
-            @Size(min=5, max=256)
+            @Size(min = 5, max = 256)
             String message,
 
             @NotNull
-            @Size(max=64)
-            String messageTitle,
-
-            @Email
-            @NotBlank
-            @NotNull
-            @Size(min=3, max=64)
-            String email) {}
-
+            @Size(max = 64)
+            String messageTitle) {
+    }
 }
