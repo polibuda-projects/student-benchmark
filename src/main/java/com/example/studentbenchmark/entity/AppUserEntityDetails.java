@@ -41,7 +41,7 @@ public class AppUserEntityDetails implements UserDetails {
 
     public String getEmail() {
         return entity.getEmail();
-    }//dodałem bo getUsername() wprowadza w błąd
+    }
 
     public Long getId() {
         return entity.getIdUser();
