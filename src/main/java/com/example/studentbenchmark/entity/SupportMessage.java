@@ -39,4 +39,46 @@ public class SupportMessage {
     public SupportMessage() {
 
     }
+
+    public Long getId_Support() {
+        return id_Support;
+    }
+
+    public void setId_Support(Long id_Support) {
+        this.id_Support = id_Support;
+    }
+
+    public Long getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(Long id_user) {
+        this.id_user = id_user;
+    }
+
+    public String getMessageTitle() {
+        return messageTitle;
+    }
+
+    public void setMessageTitle(String messageTitle) {
+        this.messageTitle = messageTitle;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
 }
