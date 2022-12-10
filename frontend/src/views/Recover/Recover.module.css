@@ -46,3 +46,20 @@
 .formOptionsLink a:first-child{
   color: #8685EF;
 }
+
+@media (max-width: 1024px) {
+  .logo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .section {
+    transform: scale(0.7);
+  }
+
+  .formOptions {
+    font-size: 3rem;
+    height: 5rem;
+  } 
+}
