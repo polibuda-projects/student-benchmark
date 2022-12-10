@@ -137,3 +137,29 @@
   font-size: 4.8rem;
   font-weight: 600;
 }
+
+@media screen and (max-width: 500px) {
+  .content {
+    padding: 1.5rem;
+    margin: 3rem 1.5rem;
+
+    height: fit-content;
+    overflow-y: initial;
+  }
+
+  .test {
+    flex-shrink: initial;
+
+    height: 70vh;
+
+    padding: 1.5rem;
+  }
+
+  .description {
+    padding: 1.5rem;
+  }
+
+  .testTitle {
+    font-size: 3.6rem;
+  }
+}
