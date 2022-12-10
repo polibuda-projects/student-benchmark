@@ -34,3 +34,19 @@
   .imageButton {
     transform: scale(0.95);
   }
+
+
+@media screen and (max-width: 820px) {
+  .testButton {
+    height: 17rem;
+    width: 17rem;
+    
+    font-size: 1.4rem;
+    justify-content: flex-start;
+
+  }
+
+  .imageButton {
+    transform: scale(0.6);
+  }
+}

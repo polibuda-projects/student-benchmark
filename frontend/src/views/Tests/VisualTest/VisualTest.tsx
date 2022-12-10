@@ -7,9 +7,8 @@ import logo from '@resources/img/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import SquaresBoard from '@views/Tests/VisualTest/SquaresBoard/SquaresBoard';
 
-const testDescription = 'Every level, a number of tiles will flash white. Memorize them, and pick them again after the tiles are reset!' +
-  'Levels get progressively more difficult, to challenge your skills. If you miss 3 tiles on a level, you lose one life.' +
-  'You have three lives.Make it as far as you can!';
+const testDescription = 'Every level, a number of tiles will flash white. Memorize them, and pick them again after the tiles are reset! ' +
+  'Levels get progressively more difficult, to challenge your skills. You have three lives. Make it as far as you can!';
 
 const shortTestDescription = 'Memorize the squares';
 export type TestActiveState = 'generate' | 'show' | 'resolve';
