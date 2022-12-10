@@ -36,3 +36,21 @@
   font-weight: bold;
   color: #8685EF;
 }
+
+@media (max-width: 1400px) {
+  .container {
+    width:65em !important;
+  }
+  .form {
+    width: 40em;
+  }
+}
+
+@media (max-width: 800px) {
+  .container {
+    width:40em !important;
+  }
+  .form {
+    width: 25em;
+  }
+}
