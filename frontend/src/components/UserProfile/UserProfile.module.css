@@ -94,6 +94,7 @@
   opacity: 0;
 
   z-index: -1;
+  pointer-events: none;
 
   background-color: var(--app-bg-color-darker);
 
@@ -118,6 +119,8 @@
 .dropdownActive {
   top: 5rem;
   opacity: 1;
+
+  pointer-events: initial;
 
   z-index: 101;
   transform: translateZ(1px);
