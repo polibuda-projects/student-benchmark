@@ -30,8 +30,8 @@
   justify-content: space-between;
   flex-direction: column;
   gap: 2em;
-  _text-align: left;
-  width: 42em;
+  width: 100%;
+  max-width: 42em;
 }
 
 .formOptions {
