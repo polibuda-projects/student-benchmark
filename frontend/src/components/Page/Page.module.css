@@ -126,6 +126,9 @@
   .content {
     width: calc(100% - 4rem);
     margin: 0 2rem;
+
+    justify-content: flex-start;
+    height: fit-content;
   }
 
   .titleBar {
