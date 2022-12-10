@@ -4,6 +4,10 @@ import { Component, HTMLAttributes } from 'react';
 import Sidebar from '@components/Sidebar/Sidebar';
 import UserProfile from '@components/UserProfile/UserProfile';
 
+import icon from '@resources/img/icon.svg';
+import { Link } from 'react-router-dom';
+import Bottombar from '@components/Bottombar/Bottombar';
+
 
 interface PageProps {
   title?: string;
@@ -30,13 +34,16 @@ export default class Page extends Component<PageProps> {
   render() {
     return (
       <div className={style.app}>
-        {this.props.sidebar && <Sidebar />}
+        {this.props.sidebar && <Sidebar className={style.sidebar} />}
 
-        <div className={style.container}>
+        <div className={this.containerClasses}>
           {this.props.topbar &&
-          <div className={style.topBar}>
-            {this.props.user && <UserProfile username='UserWithLongUsername' />}
-          </div>
+            <div className={style.topBar}>
+              <Link className={style.branding} to='/#'>
+                <img src={icon} className={style.icon} alt='' />
+              </Link>
+              {this.props.user && <UserProfile username='UserWithLongUsername' />}
+            </div>
           }
 
           {this.props.titlebar &&
@@ -50,7 +57,14 @@ export default class Page extends Component<PageProps> {
             this.props.children
           }
         </div>
+
+        {this.props.sidebar && <Bottombar className={style.bottombar} />}
       </div>
     );
+  }
+
+  private get containerClasses(): string {
+    if (this.props.sidebar) return [style.container, style.containerPadded].join(' ');
+    return style.container;
   }
 }

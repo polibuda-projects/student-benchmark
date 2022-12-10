@@ -13,7 +13,9 @@ import { Link, NavLink } from 'react-router-dom';
 import { Component, HTMLAttributes } from 'react';
 
 
-export interface SidebarProps {}
+export interface SidebarProps {
+  className?: string;
+}
 
 export interface SidebarState {
   active: boolean;
@@ -106,7 +108,12 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
   };
 
   private get dummyContainerClasses() {
-    return this.joinClasses(style.dummyContainer, this.state.active ? '':style.sidebarThin, this.state.floating ? style.sidebarFloating : '');
+    return this.joinClasses(
+        style.dummyContainer,
+        this.state.active ? '' : style.sidebarThin,
+        this.state.floating ? style.sidebarFloating : '',
+        this.props.className ?? '',
+    );
   }
 
   public componentDidMount() {
