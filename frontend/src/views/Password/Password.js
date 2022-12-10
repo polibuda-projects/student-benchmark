@@ -5,8 +5,8 @@ import ContainerBox from '@components/ContainerBox/ContainerBox';
 
 function Password() {
   return (
-    <Page title="">
-      <ContainerBox width={'100%'}>
+    <Page titlebar={false}>
+      <ContainerBox width={'100%'} className={style.container}>
         <form className={style.changePasswordForm}>
           <h1 className={style.title}>Change Password</h1>
           <input
