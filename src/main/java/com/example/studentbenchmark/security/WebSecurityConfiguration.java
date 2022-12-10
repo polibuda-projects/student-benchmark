@@ -1,6 +1,7 @@
 package com.example.studentbenchmark.security;
 
 import com.example.studentbenchmark.repository.AppUserDetailsService;
+import com.example.studentbenchmark.repository.LogsRepo;
 import com.example.studentbenchmark.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +21,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserRepo userRepo;
 
+    private final LogsRepo logsRepo;
     @Autowired
-    public WebSecurityConfiguration(UserRepo userRepo) {
+    public WebSecurityConfiguration(UserRepo userRepo, LogsRepo logsRepo) {
         this.userRepo = userRepo;
+        this.logsRepo = logsRepo;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/", "/register", "/result/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(new LoginSuccessHandler(userRepo))
+                .formLogin().successHandler(new LoginSuccessHandler(userRepo, logsRepo))
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
