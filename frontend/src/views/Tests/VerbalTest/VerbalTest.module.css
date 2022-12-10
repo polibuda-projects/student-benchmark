@@ -13,3 +13,9 @@
     margin: 6rem 0;
 }
 
+@media screen and (max-width: 500px) {
+    .seenButton, .newButton {
+        margin: 0 2rem;
+        font-size: 3.2rem;
+    }
+}
