@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -34,4 +35,9 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "DELETE FROM App_User WHERE  email= :email")
     void deleteAccount(@Param("email") String email);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE App_User SET last_login_date= :lastLoginDate WHERE id_user= :idUser")
+    void changeLoginDate(@Param("idUser") Long idUser, @Param("lastLoginDate") Date lastLoginDate);
 }
