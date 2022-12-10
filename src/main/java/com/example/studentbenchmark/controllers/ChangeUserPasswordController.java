@@ -1,5 +1,6 @@
 package com.example.studentbenchmark.controllers;
 
+import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.LoggerEntity;
 import com.example.studentbenchmark.repository.LogsRepo;
@@ -47,7 +48,8 @@ public class ChangeUserPasswordController {
     public ResponseEntity<String> changeUserPassword(@Valid @RequestBody ChangeUserPasswordRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
+            AppUserEntityDetails user = (AppUserEntityDetails) authentication.getPrincipal();
+            AppUser currentUser = userRepo.findByEmail(user.getEmail());
 
             if (!passwordEncoder.matches(request.oldPassword(), currentUser.getPassword())) {
                 logger.error("User has entered incorrect old password");
@@ -59,8 +61,8 @@ public class ChangeUserPasswordController {
                 return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
             }
 
-            userRepo.changeUserPassword(currentUser.getId(), passwordEncoder.encode(request.newPassword()));
-            logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), sqlDate, "User has changed the password"));
+            userRepo.changeUserPassword(user.getId(), passwordEncoder.encode(request.newPassword()));
+            logsRepo.save(new LoggerEntity(user.getUsername(), user.getId(), sqlDate, "User has changed the password"));
             logger.info("User has changed the password");
             return new ResponseEntity<>("User password changed successfully", HttpStatus.OK);
         }
