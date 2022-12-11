@@ -19,6 +19,7 @@ export interface InputProps {
   id?: string,
   autoComplete?: string;
   required?: boolean;
+  useRef?: React.RefObject<HTMLInputElement>;
 }
 
 export interface InputState {
