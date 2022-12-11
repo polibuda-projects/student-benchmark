@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "spring.jpa.hibernate.ddl-auto=create" > application.properties
 echo "spring.datasource.url=jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME" >> application.properties

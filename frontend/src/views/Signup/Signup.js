@@ -6,14 +6,14 @@ import Input from '@components/Input/Input';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import logo from '@views/Home/logo.svg';
 import { Link } from 'react-router-dom';
-const fetchUrl = 'http://localhost:8080/register';
+const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/register`;
 
 function Signup() {
   const nickname = React.useRef(null);
   const email = React.useRef(null);
   const password = React.useRef(null);
   const passwordConfirmation = React.useRef(null);
-  function sendAjax() {
+  async function sendAjax() {
     console.log('leci post');
     const body = {
       nickname: nickname.current.value,
@@ -27,9 +27,13 @@ function Signup() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     };
-    fetch(fetchUrl, requestOptions)
-        .then((response) => console.log(response))
-        .then((data) => console.log(data));
+
+    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
+    try {
+      console.log(await response.clone().json());
+    } catch (error) {
+      console.log(await response.clone().text());
+    }
   };
   return (
     <Page titlebar={false}>
