@@ -2,7 +2,9 @@ package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.LoggerEntity;
+import com.example.studentbenchmark.entity.SupportMessage;
 import com.example.studentbenchmark.repository.LogsRepo;
+import com.example.studentbenchmark.repository.SupportRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,22 +19,39 @@ import java.util.List;
 public class AdminDashboardController{
 
     private LogsRepo logsRepo;
+    private SupportRepo supportRepo;
 
     @Autowired
-    public AdminDashboardController(LogsRepo logsRepo) {
+    public AdminDashboardController(LogsRepo logsRepo, SupportRepo supportRepo) {
         this.logsRepo = logsRepo;
+        this.supportRepo = supportRepo;
     }
 
-    @GetMapping("/adminDashboard")
-    public List<LoggerEntity> adminDashboard() {
-        List<LoggerEntity> log = logsRepo.findAll();
+    @GetMapping("/adminDashboard/logs")
+    public List<LoggerEntity> adminDashboardLogs() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
         if (currentUser.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
+            List<LoggerEntity> log = logsRepo.findAll();
             return log;
         } else {
-            return null;
+            throw new RuntimeException("You are not authorized to view this page");
+        }
+    }
+
+    @GetMapping("/adminDashboard/messages")
+    public List<SupportMessage> adminDashboardMessages() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
+
+        if (currentUser.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
+            List<SupportMessage> messages = supportRepo.findAll();
+            return messages;
+        } else {
+            throw new RuntimeException("You are not authorized to view this page");
         }
     }
 }
