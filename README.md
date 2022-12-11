@@ -126,3 +126,4 @@
  ## Recommended VS Code extensions
  - [CSS Modules](https://marketplace.visualstudio.com/items?itemName=clinyong.vscode-css-modules)
  - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+ - [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi)
