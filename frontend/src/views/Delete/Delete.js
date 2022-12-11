@@ -14,7 +14,7 @@ function Delete() {
   };
 
   return (
-    <Page title='Delete'>
+    <Page title='Delete' contentClassName={style.contentOverride}>
       <section className={style.section}>
         <ContainerBox width={'60em'} className={style.containerBox}>
           <h1 className={style.title}>Enter your password</h1>
