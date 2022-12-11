@@ -17,6 +17,7 @@ interface PageProps {
   user?: boolean;
   content?: boolean;
   background?: boolean;
+  contentClassName?: string;
   children?: HTMLAttributes<HTMLDivElement>['children'];
 }
 
@@ -29,6 +30,7 @@ export default class Page extends Component<PageProps> {
     user: true,
     content: true,
     background: false,
+    contentClassName: '',
   };
 
   render() {
@@ -53,7 +55,11 @@ export default class Page extends Component<PageProps> {
           }
 
           {this.props.content ?
-            <div className={[style.content, this.props.background ? style.contentBackground : ''].join(' ')}> {this.props.children}</div> :
+            <div className={[
+              style.content,
+              this.props.background ? style.contentBackground : '',
+              this.props.contentClassName,
+            ].join(' ')}> {this.props.children}</div> :
             this.props.children
           }
         </div>
