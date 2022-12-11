@@ -16,6 +16,7 @@ COPY --from=build /build/target/*.jar ./app.jar
 COPY ./docker/backend/docker-entrypoint.sh ./
 
 RUN apt update && apt install -y netcat
+RUN chmod +x ./docker-entrypoint.sh
 
 EXPOSE 8080
 
