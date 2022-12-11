@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 @RestController
 @Service
@@ -34,7 +31,6 @@ public class TestController {
     VerbalTestRepo verbalTestRepo;
     NumberTestRepo numberTestRepo;
     VisualTestRepo visualTestRepo;
-
 
 
     Logger logger = LoggerFactory.getLogger(TestController.class);
@@ -58,6 +54,11 @@ public class TestController {
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/tests/sequence")
+    List<Integer> getResultsFromSequenceTest() {
+        return sequenceTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+    }
+
     @PostMapping("/result/verbal")
     ResponseEntity<String> addResultVerbalTest(@RequestBody VerbalTest test) {
         if (test.isScoreValid()) {
@@ -68,6 +69,11 @@ public class TestController {
         logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
+    @GetMapping("/tests/verbal")
+    List<Integer> getResultsFromVerbalTest() {
+        return verbalTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+    }
+
 
     @PostMapping("/result/number")
     ResponseEntity<String> addResultNumberTest(@RequestBody NumberTest test) {
@@ -79,6 +85,11 @@ public class TestController {
         logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
+    @GetMapping("/tests/number")
+    List<Integer> getResultsFromNumberTest() {
+        return numberTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+    }
+
 
     @PostMapping("/result/visual")
     ResponseEntity<String> addResultVisualTest(@RequestBody VisualTest test) {
@@ -90,12 +101,14 @@ public class TestController {
         logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
+    @GetMapping("/tests/visual")
+    List<Integer> getResultsFromVisualTest() {
+        return visualTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+    }
 
     AppTest modifyTest(AppTest test) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            System.out.println(authentication.getPrincipal().getClass());
-
             AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
             test.setIdUser(currentUser.getId());
 
@@ -105,6 +118,7 @@ public class TestController {
         test.setDateOfSubmission(new Date());
         return test;
     }
+
     @GetMapping("/verbalTest")
     public ArrayList<String> readFromCsvFile() {
         ArrayList<String> words = new ArrayList<>();
@@ -126,4 +140,5 @@ public class TestController {
         }
         return words;
     }
+
 }
