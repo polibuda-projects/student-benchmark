@@ -14,6 +14,7 @@ public interface TestRepo<T extends AppTest> extends JpaRepository<T, Long> {
     //PRZYKŁADOWA FUNKCJA, POBIERA 100 NAJLEPSZYCH WYNIKÓW Z DANEJ TABELI
     @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName}  u ORDER BY u.score DESC LIMIT 100")
     List<T> findBestScores();
+
     @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName}  u ORDER BY u.score ASC")
     List<T> getAllScores();
 

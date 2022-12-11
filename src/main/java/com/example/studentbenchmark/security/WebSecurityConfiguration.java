@@ -22,6 +22,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserRepo userRepo;
 
     private final LogsRepo logsRepo;
+
     @Autowired
     public WebSecurityConfiguration(UserRepo userRepo, LogsRepo logsRepo) {
         this.userRepo = userRepo;
@@ -32,7 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/", "/register", "/result/*", "/passwordRecovery","/resetPassword").permitAll()
+                .mvcMatchers("/", "/register", "/result/*", "/passwordRecovery", "/resetPassword").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(new LoginSuccessHandler(userRepo, logsRepo))

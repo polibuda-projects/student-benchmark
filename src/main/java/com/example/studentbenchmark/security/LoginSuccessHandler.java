@@ -1,6 +1,5 @@
 package com.example.studentbenchmark.security;
 
-import com.example.studentbenchmark.controllers.ChangeUserPasswordController;
 import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.LoggerEntity;

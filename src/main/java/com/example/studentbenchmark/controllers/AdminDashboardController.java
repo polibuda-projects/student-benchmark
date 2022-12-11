@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RestController
-public class AdminDashboardController{
+public class AdminDashboardController {
 
     private LogsRepo logsRepo;
     private SupportRepo supportRepo;

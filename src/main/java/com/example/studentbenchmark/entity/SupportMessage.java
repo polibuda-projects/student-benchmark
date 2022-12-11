@@ -11,25 +11,24 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class SupportMessage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_Support;
     Long id_user;
-
     @NotNull
-    @Size(max=64)
+    @Size(max = 64)
     String messageTitle;
     @NotBlank
     @NotNull
-    @Size(min=5, max=256)
+    @Size(min = 5, max = 256)
     String message;
     @Email
     @NotBlank
     @NotNull
-    @Size(min=3, max=64)
+    @Size(min = 3, max = 64)
     String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_Support;
 
-    public SupportMessage(String message,String messageTitle,String email, Long id_user){
+    public SupportMessage(String message, String messageTitle, String email, Long id_user) {
         this.message = message;
         this.messageTitle = messageTitle;
         this.email = email;

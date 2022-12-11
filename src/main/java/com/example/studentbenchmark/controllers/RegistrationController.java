@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -42,19 +42,17 @@ public class RegistrationController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequest request) {
 
-        if(!request.password().equals(request.passwordConfirmation())) {
+        if (!request.password().equals(request.passwordConfirmation())) {
             logger.error("User has entered not matching passwords");
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepo.findByEmail(request.email()) != null)
-        {
+        if (userRepo.findByEmail(request.email()) != null) {
             logger.error("User has entered the email which is already in use");
             return new ResponseEntity<>("This email is used by existing account", HttpStatus.BAD_REQUEST);
         }
 
-        if (!userRepo.findByNickname(request.nickname()).isEmpty())
-        {
+        if (!userRepo.findByNickname(request.nickname()).isEmpty()) {
             logger.error("User has entered the nickname which is already in use");
             return new ResponseEntity<>("This nickname is used by existing account", HttpStatus.BAD_REQUEST);
         }
@@ -71,23 +69,23 @@ public class RegistrationController {
     private record RegistrationRequest(
             @NotNull
             @NotBlank(message = "nickname is mandatory")
-            @Size(min=3, max=64)
+            @Size(min = 3, max = 64)
             String nickname,
 
             @Email
             @NotBlank
             @NotNull
-            @Size(min=3, max=64)
+            @Size(min = 3, max = 64)
             String email,
 
             @NotNull
             @NotBlank(message = "password is mandatory")
             @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
-                            "<br/>"+"   Password must contain at least one digit [0-9]." +
-                            "<br/>"+"   Password must contain at least one lowercase Latin character [a-z]." +
-                            "<br/>"+"    Password must contain at least one uppercase Latin character [A-Z]." +
-                            "<br/>"+"    Password must contain at least one special character like ! @ # & ( )." +
-                            "<br/>"+ "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
+                    "<br/>" + "   Password must contain at least one digit [0-9]." +
+                            "<br/>" + "   Password must contain at least one lowercase Latin character [a-z]." +
+                            "<br/>" + "    Password must contain at least one uppercase Latin character [A-Z]." +
+                            "<br/>" + "    Password must contain at least one special character like ! @ # & ( )." +
+                            "<br/>" + "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
             String password,
             @NotNull
             @NotBlank(message = "password confirmation is mandatory")

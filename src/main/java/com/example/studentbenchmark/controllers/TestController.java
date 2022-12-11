@@ -56,7 +56,7 @@ public class TestController {
 
     @GetMapping("/tests/sequence")
     List<Integer> getResultsFromSequenceTest() {
-        return sequenceTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+        return sequenceTestRepo.getAllScores().stream().map(p -> p.getScore()).toList();
     }
 
     @PostMapping("/result/verbal")
@@ -69,9 +69,10 @@ public class TestController {
         logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
+
     @GetMapping("/tests/verbal")
     List<Integer> getResultsFromVerbalTest() {
-        return verbalTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+        return verbalTestRepo.getAllScores().stream().map(p -> p.getScore()).toList();
     }
 
 
@@ -85,9 +86,10 @@ public class TestController {
         logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
+
     @GetMapping("/tests/number")
     List<Integer> getResultsFromNumberTest() {
-        return numberTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+        return numberTestRepo.getAllScores().stream().map(p -> p.getScore()).toList();
     }
 
 
@@ -101,9 +103,10 @@ public class TestController {
         logger.error("Incorrect data");
         return new ResponseEntity<>("Incorrect data", HttpStatus.BAD_REQUEST);
     }
+
     @GetMapping("/tests/visual")
     List<Integer> getResultsFromVisualTest() {
-        return visualTestRepo.getAllScores().stream().map(p->p.getScore()).toList();
+        return visualTestRepo.getAllScores().stream().map(p -> p.getScore()).toList();
     }
 
     AppTest modifyTest(AppTest test) {
