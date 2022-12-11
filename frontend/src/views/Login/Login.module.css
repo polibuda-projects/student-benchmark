@@ -7,7 +7,6 @@
   height: 100%;
   width: 100%;
 
-  margin: 0 5rem;
   border-radius: 1.5rem;
   box-sizing: border-box;
 }
@@ -25,12 +24,16 @@
 }
 
 .form {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   text-align: center;
   width: 42em;
+  gap: 2.6em;
 }
 
-.formElement {
-  margin-bottom: 1em;
+.checkboxLabel {
+  margin-top: .2em;
 }
 
 .formOptions {

@@ -1,8 +1,8 @@
 import { Component, useRef } from 'react';
 
 import style from './UserProfile.module.css';
-import defaultAvatar from './defaultAvatar.svg';
-import downArrow from './downArrow.svg';
+import defaultAvatar from '@resources/img/defaultAvatar.svg';
+import downArrow from '@resources/img/downArrow.svg';
 import { Link } from 'react-router-dom';
 
 

@@ -10,7 +10,8 @@
   flex-direction: column;
   align-items: stretch;
   width: 55em;
-  height: 45em;
+  height: 40em;
+  gap: 2.6em;
 }
 
 .container {
@@ -22,17 +23,46 @@
 .formElement,.textElement ,.label{
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 1em;
 }
 .label{
-  margin-bottom: 2em;
   cursor: pointer;
   width: fit-content;
 }
 .textElement{
-  height: 15em;
+  height: 6em;
 }
 .label a{
   font-weight: bold;
   color: #8685EF;
+}
+
+@media (max-width: 1400px) {
+  .container {
+    width:65em !important;
+  }
+  .form {
+    width: 40em;
+  }
+}
+
+@media (max-width: 800px) {
+  .textElement{
+    height: 12em;
+  }
+  .container {
+    width:40em !important;
+  }
+  .form {
+    width: 35em;
+    height: auto;
+
+  }
+  .formOptions{
+    align-self: center;
+  }
+  .title{
+    font-size: 3em;
+    align-self: center;
+    margin-bottom: 2em;
+  }
 }

@@ -17,3 +17,9 @@
   inset 1px 1px 2px #2f2f314d,
   inset -1px -1px 2px #1f1f2180;
 }
+
+@media (max-width: 800px) {
+  .content {
+    padding: 3em;
+  }
+}

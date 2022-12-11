@@ -34,3 +34,18 @@
   font-weight: bold;
   color: #8685EF;
 }
+
+@media (max-width: 500px) {
+
+  .container {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    overflow-y: none;
+    gap: 2rem;
+  }
+
+}

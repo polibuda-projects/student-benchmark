@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from '@views/Home/Home';
 import Login from '@views/Login/Login';
 import Policy from '@views/Policy/Policy';
+import Donate from '@views/Donate/Donate';
 import Recover from '@views/Recover/Recover';
 import Delete from '@views/Delete/Delete';
 import Signup from '@views/Signup/Signup';
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <Dashboard />,
+  },
+  {
+    path: '/donate',
+    element: <Donate />,
   },
 ]);
 
