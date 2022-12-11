@@ -12,7 +12,7 @@ import Page from '@components/Page/Page';
 
 function TestsHome() {
   return (
-    <Page title='Welcome'>
+    <Page title='Get started'>
       <div className={style.blocks}>
         <div className={style.rowTests}>
           <div className={style.nullButton} div/>

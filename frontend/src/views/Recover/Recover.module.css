@@ -45,6 +45,10 @@
   color: #8685EF;
 }
 
+.formElement {
+  width: 40rem;
+}
+
 @media (max-width: 1024px) {
   .logo {
     display: none;
