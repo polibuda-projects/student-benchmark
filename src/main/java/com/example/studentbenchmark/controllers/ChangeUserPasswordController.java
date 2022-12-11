@@ -1,7 +1,6 @@
 package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUser;
-import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.LoggerEntity;
 import com.example.studentbenchmark.repository.LogsRepo;
 import com.example.studentbenchmark.repository.UserRepo;
@@ -48,10 +47,11 @@ public class ChangeUserPasswordController {
     public ResponseEntity<String> changeUserPassword(@Valid @RequestBody ChangeUserPasswordRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            AppUserEntityDetails user = (AppUserEntityDetails) authentication.getPrincipal();
-            AppUser currentUser = userRepo.findByEmail(user.getEmail());
+            // Użycie AppUserEntityDetails powodowało ClassCastException
+            String username = authentication.getName();
+            AppUser user = userRepo.findByNickname(username).get();
 
-            if (!passwordEncoder.matches(request.oldPassword(), currentUser.getPassword())) {
+            if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
                 logger.error("User has entered incorrect old password");
                 return new ResponseEntity<>("Received incorrect user old password", HttpStatus.BAD_REQUEST);
             }
@@ -61,8 +61,8 @@ public class ChangeUserPasswordController {
                 return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
             }
 
-            userRepo.changeUserPassword(user.getId(), passwordEncoder.encode(request.newPassword()));
-            logsRepo.save(new LoggerEntity(user.getUsername(), user.getId(), sqlDate, "User has changed the password"));
+            userRepo.changeUserPassword(user.getIdUser(), passwordEncoder.encode(request.newPassword()));
+            logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "User has changed the password"));
             logger.info("User has changed the password");
             return new ResponseEntity<>("User password changed successfully", HttpStatus.OK);
         }
