@@ -48,3 +48,23 @@
 .formOptionsLink a:first-child{
   color: #8685EF;
 }
+
+@media (max-width: 800px) {
+
+  .section {
+    height: calc(100vh - 25rem);
+  }
+
+  .form {
+    width: auto;
+    min-width: 30em;
+
+  }
+  .formOptions{
+    align-self: center;
+  }
+  .title{
+    font-size: 3em;
+    align-self: center;
+  }
+}

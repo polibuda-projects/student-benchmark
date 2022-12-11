@@ -16,7 +16,7 @@ function Delete() {
   return (
     <Page title='Delete'>
       <section className={style.section}>
-        <ContainerBox width={'60em'}>
+        <ContainerBox width={'60em'} className={style.containerBox}>
           <h1 className={style.title}>Enter your password</h1>
           <form method="post" action="#" className={style.form}>
             <Input type={isShown ? 'text' : 'password'} name={'passwordLogin'} placeholder={'Password'} />
