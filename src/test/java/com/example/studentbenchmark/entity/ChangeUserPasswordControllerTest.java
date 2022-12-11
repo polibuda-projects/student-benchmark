@@ -19,14 +19,15 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import static com.example.studentbenchmark.entity.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
 @SpringBootTest
+@AutoConfigureMockMvc
 public class ChangeUserPasswordControllerTest {
 
     private final static String PATH = "/changeUserPassword";
@@ -38,12 +39,12 @@ public class ChangeUserPasswordControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static RequestPostProcessor rob() {
-        return user(USER_NICKNAME).password(USER_PASSWORD);
+    private static RequestPostProcessor basicAuth() {
+        return httpBasic(USER_NICKNAME, USER_PASSWORD);
     }
 
     @BeforeEach
-    void addTestUser() {
+    public void addTestUser() {
         userRepo.save(new AppUser(USER_NICKNAME, USER_EMAIL, passwordEncoder.encode(USER_PASSWORD), AppUser.Role.USER));
     }
 
@@ -55,7 +56,7 @@ public class ChangeUserPasswordControllerTest {
     @Test
     public void shouldReturnOk_whenSuccessful() throws Exception {
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
                 .andDo(print()).andExpect(status().isOk())
@@ -65,10 +66,10 @@ public class ChangeUserPasswordControllerTest {
     @Test
     public void shouldChangeUserPassword() throws Exception {
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
-                .andDo(print()).andExpect(status().isOk());
+                .andDo(print());
 
         AppUser user = userRepo.findByEmail(USER_EMAIL);
         Assertions.assertTrue(passwordEncoder.matches(USER_NEW_PASSWORD, user.getPassword()));
@@ -76,25 +77,25 @@ public class ChangeUserPasswordControllerTest {
 
     @Test
     public void shouldChangeUserPasswordAgain() throws Exception {
-        String NEXT_NEW_PASSWORD = "P@ssw0rdNEXTNEW";
+        String NEWER_PASSWORD = "P@ssw0rdNEWER";
         JsonObject nextRequest = new JsonObject();
         nextRequest.addProperty("oldPassword", USER_NEW_PASSWORD);
-        nextRequest.addProperty("newPassword", NEXT_NEW_PASSWORD);
-        nextRequest.addProperty("newPasswordRepeated", NEXT_NEW_PASSWORD);
+        nextRequest.addProperty("newPassword", NEWER_PASSWORD);
+        nextRequest.addProperty("newPasswordRepeated", NEWER_PASSWORD);
 
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(CHANGE_USER_PASSWORD_REQUEST.toString()));
 
         mvc
-                .perform(post(PATH).with(user(USER_NICKNAME).password(USER_NEW_PASSWORD))
+                .perform(post(PATH).with(httpBasic(USER_NICKNAME, USER_NEW_PASSWORD))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nextRequest.toString()))
-                .andDo(print()).andExpect(status().isOk());
+                .andDo(print());
 
         AppUser user = userRepo.findByEmail(USER_EMAIL);
-        Assertions.assertTrue(passwordEncoder.matches(NEXT_NEW_PASSWORD, user.getPassword()));
+        Assertions.assertTrue(passwordEncoder.matches(NEWER_PASSWORD, user.getPassword()));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class ChangeUserPasswordControllerTest {
         badRequest.addProperty("oldPassword", USER_PASSWORD + "#");
 
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(badRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
@@ -116,14 +117,14 @@ public class ChangeUserPasswordControllerTest {
         badRequest.addProperty("newPasswordRepeated", USER_NEW_PASSWORD + "#");
 
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(badRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Passwords do not match")));
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest
     @CsvFileSource(resources = "/invalidPasswords.csv")
     public void shouldReturnBadRequest_whenNewPasswordIsInvalid(String invalidPassword) throws Exception {
         JsonObject badRequest = CHANGE_USER_PASSWORD_REQUEST.deepCopy();
@@ -131,14 +132,14 @@ public class ChangeUserPasswordControllerTest {
         badRequest.addProperty("newPasswordRepeated", invalidPassword);
 
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(badRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
     }
 
     @Test
-    public void shouldReturnUnauthorized() throws Exception {
+    public void shouldReturnUnauthorized_withoutAuthorization() throws Exception {
         mvc
                 .perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -146,27 +147,54 @@ public class ChangeUserPasswordControllerTest {
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
-    @ParameterizedTest()
+    @Test
+    public void shouldReturnUnauthorized_withAnonymousAuthorization() throws Exception {
+        mvc
+                .perform(post(PATH).with(anonymous())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
+                .andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenAuthorizationUsernameIsIncorrect() throws Exception {
+        mvc
+                .perform(post(PATH).with(httpBasic(USER_NICKNAME + "#", USER_PASSWORD))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
+                .andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenAuthorizationPasswordIsIncorrect() throws Exception {
+        mvc
+                .perform(post(PATH).with(httpBasic(USER_NICKNAME, USER_PASSWORD + "#"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
+                .andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @ParameterizedTest
     @ValueSource(strings = {"oldPassword", "newPassword", "newPasswordRepeated"})
-    public void shouldReturnBadRequest_whenRequestPropertyIsNull(String key) throws Exception {
+    public void shouldReturnBadRequest_whenRequestPropertyIsNull(String nullKey) throws Exception {
         JsonObject incompleteRequest = CHANGE_USER_PASSWORD_REQUEST.deepCopy();
-        incompleteRequest.remove(key);
+        incompleteRequest.remove(nullKey);
 
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(incompleteRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
     }
 
-    @ParameterizedTest()
+    @ParameterizedTest
     @ValueSource(strings = {"oldPassword", "newPassword", "newPasswordRepeated"})
-    public void shouldReturnBadRequest_whenRequestPropertyIsEmpty(String key) throws Exception {
+    public void shouldReturnBadRequest_whenRequestPropertyIsEmpty(String emptyKey) throws Exception {
         JsonObject incompleteRequest = CHANGE_USER_PASSWORD_REQUEST.deepCopy();
-        incompleteRequest.addProperty(key, "");
+        incompleteRequest.addProperty(emptyKey, "");
 
         mvc
-                .perform(post(PATH).with(rob())
+                .perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(incompleteRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
