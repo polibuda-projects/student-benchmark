@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  backend:
+    extends:
+      file: docker-compose.yml
+      service: backend
+
+  db:
+    extends:
+      file: docker-compose.yml
+      service: db
+
+  frontend_dev:
+    build:
+      context: .
+      dockerfile: ./docker/frontend_dev/Dockerfile
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_BACKEND_URL=/api/v1
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+
+  nginx:
+    image: nginx:stable-alpine
+    depends_on:
+      - backend
+      - frontend_dev
+    ports:
+      - "${FRONTEND_PORT}:80"
+    environment:
+      - DEV_CLIENT_IP=${DEV_CLIENT_IP}
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro

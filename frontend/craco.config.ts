@@ -8,6 +8,13 @@ const config:CracoConfig ={
       '@views': resolve(__dirname, 'src/views'),
       '@components': resolve(__dirname, 'src/components'),
     },
+
+    configure: {
+      watchOptions: {
+        poll: 1000,
+        ignored: /node_modules/,
+      },
+    },
   },
 };
 
