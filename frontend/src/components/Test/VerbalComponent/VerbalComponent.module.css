@@ -1,0 +1,43 @@
+.verbalContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.testWord {
+    display: flex;
+    font-weight: 700;
+    font-size: 7rem;
+    text-align: center;
+    margin: 7rem 0;
+}
+
+.testProperties {
+    font-size: 3rem;
+    margin: 0 2rem;
+    display: flex;
+}
+
+.testValues {
+    opacity: 0.5;
+    margin: 0 1.5rem;
+}
+
+.number {
+    opacity: 0.75;
+    margin-right: 2rem;
+}
+
+@media screen and (max-width: 500px) {
+    .testProperties {
+        font-size: 2.5rem;
+    }
+    
+    .testValues {
+        margin: 0 1rem;
+    }
+
+    .testWord {
+        font-size: 5.5rem;
+    }
+}

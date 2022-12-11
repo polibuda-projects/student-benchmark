@@ -1,0 +1,68 @@
+.title {
+  font-size: 5.2rem;
+  text-align: left;
+  margin-top: 0;
+}
+
+.form {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+  align-items: stretch;
+  width: 55em;
+  height: 40em;
+  gap: 2.6em;
+}
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  width:140em !important;
+}
+
+.formElement,.textElement ,.label{
+  justify-content: space-between;
+  width: 100%;
+}
+.label{
+  cursor: pointer;
+  width: fit-content;
+}
+.textElement{
+  height: 6em;
+}
+.label a{
+  font-weight: bold;
+  color: #8685EF;
+}
+
+@media (max-width: 1400px) {
+  .container {
+    width:65em !important;
+  }
+  .form {
+    width: 40em;
+  }
+}
+
+@media (max-width: 800px) {
+  .textElement{
+    height: 12em;
+  }
+  .container {
+    width:40em !important;
+  }
+  .form {
+    width: 35em;
+    height: auto;
+
+  }
+  .formOptions{
+    align-self: center;
+  }
+  .title{
+    font-size: 3em;
+    align-self: center;
+    margin-bottom: 2em;
+  }
+}

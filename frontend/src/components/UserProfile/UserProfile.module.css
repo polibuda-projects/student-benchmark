@@ -1,0 +1,142 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  z-index: 100;
+
+  position: relative;
+}
+
+.profile {
+  background-color: var(--app-bg-color-darker);
+
+  height: 5rem;
+  min-width: 16rem;
+  width: 100%;
+  border-radius: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 0 1rem;
+  box-sizing: border-box;
+
+  box-shadow: -5px 5px 10px #1d1d1d33,
+    5px -5px 10px #1d1d1d33,
+    -5px -5px 10px #232323e6,
+    5px 5px 13px #1d1d1de6,
+    inset 1px 1px 2px #2323234d,
+    inset -1px -1px 2px #1d1d1d80;
+
+  gap: 1.5rem;
+
+  user-select: none;
+}
+
+.profile:hover {
+  cursor: pointer;
+}
+
+.avatar {
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+}
+
+.username {
+  font-size: 3.2rem;
+
+  min-width: 0;
+  width: fit-content;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.burger {
+  height: 1.3rem;
+  width: auto;
+
+  transition: transform 0.2s ease-in-out;
+}
+
+.burgerActive {
+  /* transform: rotate(-180deg); */
+  transform: rotateX(180deg);
+}
+
+.dropdown {
+  font-size: 2.4rem;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  box-sizing: border-box;
+
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+
+  gap: 1rem;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+
+  z-index: -1;
+  pointer-events: none;
+
+  background-color: var(--app-bg-color-darker);
+
+  box-shadow: -5px 5px 10px #1d1d1d33,
+    5px -5px 10px #1d1d1d33,
+    -5px -5px 10px #232323e6,
+    5px 5px 13px #1d1d1de6,
+    inset 1px 1px 2px #2323234d,
+    inset -1px -1px 2px #1d1d1d80;
+
+  border-radius: 1.5rem;
+
+  transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.dropdownButton {
+  width: 100%;
+
+  /* text-transform: uppercase; */
+}
+
+.dropdownActive {
+  top: 5rem;
+  opacity: 1;
+
+  pointer-events: initial;
+
+  z-index: 101;
+  transform: translateZ(1px);
+}
+
+@media screen and (max-width: 800px) {
+  .profile {
+    padding: 0;
+    min-width: 0;
+  }
+
+  .username {
+    display: none !important;
+  }
+
+  .burger {
+    display: none;
+  }
+}

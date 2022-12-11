@@ -1,0 +1,67 @@
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+
+  margin: 0 5rem;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 40rem;
+  padding-right: 10em;
+}
+
+.title {
+  font-size: 4em;
+  font-weight: 600;
+  line-height: 1.5em;
+  margin: 0 0 0.6em;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 42em;
+  gap: 2em;
+}
+
+.formOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  height: 4rem;
+  margin-top: .6em;
+}
+
+.formOptionsLink a:first-child{
+  color: #8685EF;
+}
+
+.formElement {
+  width: 40rem;
+}
+
+@media (max-width: 1024px) {
+  .logo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .section {
+    transform: scale(0.7);
+  }
+
+  .formOptions {
+    font-size: 3rem;
+    height: 5rem;
+  } 
+}
