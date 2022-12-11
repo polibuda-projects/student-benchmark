@@ -11,7 +11,7 @@
   align-items: stretch;
   width: 55em;
   height: 40em;
-  gap: 2.6em
+  gap: 2.6em;
 }
 
 .container {
@@ -46,10 +46,23 @@
 }
 
 @media (max-width: 800px) {
+  .textElement{
+    height: 12em;
+  }
   .container {
     width:40em !important;
   }
   .form {
-    width: 25em;
+    width: 35em;
+    height: auto;
+
+  }
+  .formOptions{
+    align-self: center;
+  }
+  .title{
+    font-size: 3em;
+    align-self: center;
+    margin-bottom: 2em;
   }
 }
