@@ -1,9 +1,13 @@
 package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUser;
+import com.example.studentbenchmark.entity.LoggerEntity;
 import com.example.studentbenchmark.entity.PasswordResetToken;
+import com.example.studentbenchmark.repository.LogsRepo;
 import com.example.studentbenchmark.repository.PasswordResetTokenRepo;
 import com.example.studentbenchmark.repository.UserRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,18 +30,27 @@ public class PasswordRecoveryController {
 
     private final JavaMailSender mailSender;
 
+    private final LogsRepo logsRepo;
+
+    Logger logger = LoggerFactory.getLogger(PasswordRecoveryController.class);
+
+    java.util.Date utilDate = new java.util.Date();
+    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
     @Autowired
-    public PasswordRecoveryController(UserRepo userRepo, PasswordResetTokenRepo tokenRepo, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
+    public PasswordRecoveryController(UserRepo userRepo, PasswordResetTokenRepo tokenRepo, PasswordEncoder passwordEncoder, JavaMailSender mailSender, LogsRepo logsRepo) {
         this.userRepo = userRepo;
         this.tokenRepo = tokenRepo;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
+        this.logsRepo = logsRepo;
     }
 
     @PostMapping("/passwordRecovery")
     public ResponseEntity<String> passwordRecovery(HttpServletRequest request, @RequestBody PasswordRecoveryRequest requestPwd) {
         AppUser user = userRepo.findByEmail(requestPwd.email());
         if (user == null) {
+            logger.error("User has entered invalid email address");
             return new ResponseEntity<>("Invalid email address", HttpStatus.BAD_REQUEST);
         }
         PasswordResetToken token = new PasswordResetToken();
@@ -56,7 +69,8 @@ public class PasswordRecoveryController {
         email.setSubject("Password reset");
         email.setText(url + "/resetPassword?token=" + token.getToken());
         mailSender.send(email);
-
+        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "Password reset email has been sent to the user"));
+        logger.info("Password reset email has been sent to the user");
         return new ResponseEntity<>("Password reset email sent successfully", HttpStatus.OK);
     }
 
@@ -65,17 +79,22 @@ public class PasswordRecoveryController {
                                                 @RequestBody ResetPasswordRequest request) {
         PasswordResetToken passwordResetToken = tokenRepo.findByToken(token).orElse(null);
         if (passwordResetToken == null) {
+            logger.error("Token not found");
             return new ResponseEntity<>("Token not found", HttpStatus.BAD_REQUEST);
         }
         if (passwordResetToken.getExpiryDate().before(new Date())) {
+            logger.error("Token has expired");
             return new ResponseEntity<>("Token expired", HttpStatus.FORBIDDEN);
         }
         if (!request.newPassword().equals(request.newPasswordRepeated())) {
+            logger.error("User has entered not matching passwords");
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
         AppUser user = passwordResetToken.getUser();
         userRepo.changeUserPassword(user.getIdUser(), passwordEncoder.encode(request.newPassword()));
+        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "User's password has changed successfully"));
+        logger.info("User's password has changed successfully");
         return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
     }
 
