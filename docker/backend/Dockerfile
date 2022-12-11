@@ -13,10 +13,11 @@ FROM openjdk:18-slim-bullseye AS runtime
 WORKDIR /app
 
 COPY --from=build /build/target/*.jar ./app.jar
-COPY ./docker/backend/docker-entrypoint.sh ./
+COPY ./docker/backend/docker-entrypoint.sh .
 
 RUN apt update && apt install -y netcat
 RUN chmod +x ./docker-entrypoint.sh
+RUN sed -i -e 's/\r$//' ./docker-entrypoint.sh
 
 EXPOSE 8080
 
