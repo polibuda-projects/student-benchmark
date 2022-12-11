@@ -94,6 +94,27 @@
  - ### Run `main`
  - ### Enjoy your connection with backend
 
+ ## 5. Frontend environment with backend
+ 
+ ### Requirements:
+  - [Node.js](https://nodejs.org/en/)
+  - [Docker](https://www.docker.com/)
+  
+ ### Setup
+ 1. Copy .env.template to .env
+ 2. Set values in .env file (MAIL_* values are optional)
+ 
+ ### Running with **frontend in development mode**
+  1. Start docker containers in root directory
+  ```bash
+  docker compose -f docker-compose.dev.yml up
+  ```
+  ### Running with **frontend in production mode**
+  1. Start docker containers in root directory
+  ```bash
+  docker compose up
+  ```
+  
  ## Important notes
 
  - ### Pull changes before pushing
