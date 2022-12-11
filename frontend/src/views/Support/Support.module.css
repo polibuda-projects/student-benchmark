@@ -10,7 +10,8 @@
   flex-direction: column;
   align-items: stretch;
   width: 55em;
-  height: 45em;
+  height: 40em;
+  gap: 2.6em
 }
 
 .container {
@@ -22,15 +23,13 @@
 .formElement,.textElement ,.label{
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 1em;
 }
 .label{
-  margin-bottom: 2em;
   cursor: pointer;
   width: fit-content;
 }
 .textElement{
-  height: 15em;
+  height: 6em;
 }
 .label a{
   font-weight: bold;

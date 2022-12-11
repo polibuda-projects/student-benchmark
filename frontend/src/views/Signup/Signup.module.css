@@ -26,10 +26,9 @@
 
 .form {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
-  gap: 2em;
+  gap: 2.6em;
   width: 100%;
   max-width: 42em;
 }
@@ -41,6 +40,10 @@
   flex-direction: row;
   height: 4rem;
   width: 100%;
+}
+
+.checkboxLabel {
+  margin-top: .2em;
 }
 
 .formOptionsLink {

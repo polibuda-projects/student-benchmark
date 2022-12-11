@@ -24,13 +24,16 @@
 }
 
 .form {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   text-align: center;
-  width: 100%;
-  max-width: 42em;
+  width: 42em;
+  gap: 2.6em;
 }
 
-.formElement {
-  margin-bottom: 1em;
+.checkboxLabel {
+  margin-top: .2em;
 }
 
 .formOptions {

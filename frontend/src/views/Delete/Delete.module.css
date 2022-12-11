@@ -29,10 +29,12 @@
   flex-direction: column;
   align-items: center;
   width: 42em;
+  gap: 2.6em;
 }
 
-.formElement{
-  margin-bottom: 1.5em;
+.checkboxLabel {
+  align-self: center;
+  margin-top: .2em;
 }
 
 .formOptions {
