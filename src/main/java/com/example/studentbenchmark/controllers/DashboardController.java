@@ -1,15 +1,12 @@
 package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
-import com.example.studentbenchmark.entity.testsEntities.NumberTest;
-import com.example.studentbenchmark.entity.testsEntities.SequenceTest;
-import com.example.studentbenchmark.entity.testsEntities.VerbalTest;
-import com.example.studentbenchmark.entity.testsEntities.VisualTest;
-import com.example.studentbenchmark.repository.UserRepo;
+import com.example.studentbenchmark.entity.testsEntities.*;
 import com.example.studentbenchmark.repository.testsRepositories.NumberTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.SequenceTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.VerbalTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.VisualTestRepo;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,71 +19,56 @@ import java.util.List;
 
 @RestController
 @Service
-public class DashboardController {
+public class DashboardController<T extends AppTest> {
     private final NumberTestRepo numberTestRepo;
     private final SequenceTestRepo sequenceTestRepo;
     private final VerbalTestRepo verbalTestRepo;
     private final VisualTestRepo visualTestRepo;
 
     @Autowired
-    DashboardController(NumberTestRepo numberTestRepo, SequenceTestRepo sequenceTestRepo, VerbalTestRepo verbalTestRepo, VisualTestRepo visualTestRepo, UserRepo userRepo){
+    DashboardController(NumberTestRepo numberTestRepo, SequenceTestRepo sequenceTestRepo, VerbalTestRepo verbalTestRepo, VisualTestRepo visualTestRepo){
         this.numberTestRepo = numberTestRepo;
         this.sequenceTestRepo = sequenceTestRepo;
         this.verbalTestRepo = verbalTestRepo;
         this.visualTestRepo = visualTestRepo;
     }
 
-    @GetMapping("/numberTest/topHudred")
-    public List<NumberTest> getTopHundredNumberTestResults(){
-        List<NumberTest> list =  numberTestRepo.findBestScores();
-        return list;
+    //Funkcja zwraca dane w formacie JSON zawierajace top 100 kazdego z testow a nastapnie dane do tworzenia wykresow
+    @GetMapping("/DashboardPublic")
+    public String getDashboardPublicData(){
+        List<List<T>> data = new ArrayList<>();
+        Gson gson = new Gson();
+
+        List<NumberTest> numberBestList =  numberTestRepo.findBestScores();
+        List<SequenceTest> sequenceBestList =  sequenceTestRepo.findBestScores();
+        List<VerbalTest> verbalBestList =  verbalTestRepo.findBestScores();
+        List<VisualTest> visualBestList =  visualTestRepo.findBestScores();
+
+        List<NumberTest> numberGraphList =  numberTestRepo.findAllGraphValidScores();
+        List<SequenceTest> sequenceGraphList =  sequenceTestRepo.findAllGraphValidScores();
+        List<VerbalTest> verbalGraphList =  verbalTestRepo.findAllGraphValidScores();
+        List<VisualTest> visualGraphList =  visualTestRepo.findAllGraphValidScores();
+
+        data.add((List<T>)numberBestList);
+        data.add((List<T>)sequenceBestList);
+        data.add((List<T>)verbalBestList);
+        data.add((List<T>)visualBestList);
+
+        data.add((List<T>)numberGraphList);
+        data.add((List<T>)sequenceGraphList);
+        data.add((List<T>)verbalGraphList);
+        data.add((List<T>)visualGraphList);
+
+        return gson.toJson(data);
     }
 
-    @GetMapping("/numberTest/graphValid")
-    public List<NumberTest> getGraphValidScoresNumberTestResults(){
-        List<NumberTest> list =  numberTestRepo.findAllGraphValidScores();
-        return list;
-    }
 
-    @GetMapping("/sequenceTest/topHudred")
-    public List<SequenceTest> getTopHundredSequenceTestResults(){
-        List<SequenceTest> list =  sequenceTestRepo.findBestScores();
-        return list;
-    }
+    //Funkcja zwraca dane w formacie JSON zawierajace: nazwe testu, najlepszy wynik zalogowanego, sredni wynik tego testu, percentyl
+    @GetMapping("/DashboardPersonal")
+    public String getDashboardPersonalData(){
+        Gson gson = new Gson();
+        List<PersonalData> data = new ArrayList<>();
 
-    @GetMapping("/sequenceTest/graphValid")
-    public List<SequenceTest> getGraphValidScoresSequenceTestResults(){
-        List<SequenceTest> list =  sequenceTestRepo.findAllGraphValidScores();
-        return list;
-    }
-
-    @GetMapping("/verbalTest/topHudred")
-    public List<VerbalTest> getTopHundredVerbalTestResults(){
-        List<VerbalTest> list =  verbalTestRepo.findBestScores();
-        return list;
-    }
-
-    @GetMapping("/verbalTest/graphValid")
-    public List<VerbalTest> getGraphValidScoresVerbalTestResults(){
-        List<VerbalTest> list =  verbalTestRepo.findAllGraphValidScores();
-        return list;
-    }
-
-    @GetMapping("/visualTest/topHudred")
-    public List<VisualTest> getTopHundredVisualTestResults(){
-        List<VisualTest> list =  visualTestRepo.findBestScores();
-        return list;
-    }
-
-    @GetMapping("/visualTest/graphValid")
-    public List<VisualTest> getGraphValidScoresVisualTestResults(){
-        List<VisualTest> list =  visualTestRepo.findAllGraphValidScores();
-        return list;
-    }
-
-    @GetMapping("/personalPerformance")
-    public List<String> getPersonalPerformance(){
-        List<String> list = new ArrayList<>();
         //Pobieranie aktualnego uzytkownika
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
@@ -150,15 +132,25 @@ public class DashboardController {
         visualAverage /= visualList.size();
         visualPercentile /= visualList.size();
 
-        list.add("test name: \'number memory\',\npersonalBest: \'" + number.getScore() + "\'.\naverageScore: \'" + numberAverage + "\'.\nPercentile: \'" + numberPercentile + "%\'");
-        list.add("test name: \'sequence memory\',\npersonalBest: \'" + sequence.getScore() + "\'.\naverageScore: \'" + sequenceAverage + "\'.\nPercentile: \'" + sequencePercentile + "%\'");
-        list.add("test name: \'verbal memory\',\npersonalBest: \'" + verbal.getScore() + "\'.\naverageScore: \'" + verbalAverage + "\'.\nPercentile: \'" + verbalPercentile + "%\'");
-        list.add("test name: \'visual memory\',\npersonalBest: \'" + visual.getScore() + "\'.\naverageScore: \'" + visualAverage + "\'.\nPercentile: \'" + visualPercentile + "%\'");
+        data.add(new PersonalData("number memory", number.getScore(), numberAverage, (int)(100*numberPercentile)));
+        data.add(new PersonalData("sequence memory", sequence.getScore(), sequenceAverage, (int)(100*sequencePercentile)));
+        data.add(new PersonalData("verbal memory", verbal.getScore(), verbalAverage, (int)(100*verbalPercentile)));
+        data.add(new PersonalData("visual memory", visual.getScore(), visualAverage, (int)(100*visualPercentile)));
 
-        return list;
+        return gson.toJson(data);
     }
 
-
-
+    private class PersonalData{
+        private final String testName;
+        private final int personalBest;
+        private final float averageScore;
+        private final int percentile;
+        PersonalData(String testName, int personalBest, float averageScore, int percentile){
+            this.testName = testName;
+            this.personalBest = personalBest;
+            this.averageScore = averageScore;
+            this.percentile = percentile;
+        }
+    }
 
 }
