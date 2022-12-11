@@ -2,17 +2,17 @@ import style from './Home.module.css';
 import { Link } from 'react-router-dom';
 
 
-import sequence from '@components/TestButtons/sequenceTest.svg';
-import visual from '@components/TestButtons/visualTest.svg';
-import verbal from '@components/TestButtons/verbalTest.svg';
-import number from '@components/TestButtons/numberTest.svg';
+import sequence from '@resources/img/sequenceTest.svg';
+import visual from '@resources/img/visualTest.svg';
+import verbal from '@resources/img/verbalTest.svg';
+import number from '@resources/img/numberTest.svg';
 import { TestButton } from '@components/TestButtons/TestButton';
 import Page from '@components/Page/Page';
 
 
 function TestsHome() {
   return (
-    <Page title='Welcome'>
+    <Page title='Get started'>
       <div className={style.blocks}>
         <div className={style.rowTests}>
           <div className={style.nullButton} div/>
@@ -33,6 +33,14 @@ function TestsHome() {
             <TestButton text='number memory' src={number} alt='number memory'/>
           </Link>
           <div className={style.nullButton} div/>
+        </div>
+        <div className={style.rowTests}>
+          <div className={style.nullButtonMobile} />
+          <div className={style.nullButtonMobile} />
+        </div>
+        <div className={style.rowTests}>
+          <div className={style.nullButtonMobile} />
+          <div className={style.nullButtonMobile} />
         </div>
       </div>
     </Page>

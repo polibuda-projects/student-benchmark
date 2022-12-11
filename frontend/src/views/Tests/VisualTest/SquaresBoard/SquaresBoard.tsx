@@ -2,37 +2,47 @@ import { Component } from 'react';
 
 import style from './SquaresBoard.module.css';
 import Square from '@views/Tests/VisualTest/Square/Square';
+import { TestActiveState } from '@views/Tests/VisualTest/VisualTest';
 
 
 export interface SquaresBoardProps {
   size: number,
-  howManyWinners: number,
   randomWinnersIdx: Set<number>,
+  correctTileRespond: (isCorrect: boolean) => void,
+  testActiveState: boolean,
 }
 
 export default class SquaresBoard extends Component<SquaresBoardProps> {
   private static defaultProps: SquaresBoardProps = {
     size: 3,
-    howManyWinners: 0,
     randomWinnersIdx: new Set(),
+    correctTileRespond: () => {},
+    testActiveState: true,
   };
 
   state = {
     activeIndex: null,
-    // randomUniqueNum: Set,
+    reset: false,
   };
-  handleClick = (index: number) => this.setState({ activeIndex: index });
+
+  handleClick = (index: number) => {
+    this.setState({ activeIndex: index });
+    if (this.props.randomWinnersIdx.has(index)) {
+      this.props.correctTileRespond(true);
+    } else {
+      this.props.correctTileRespond(false);
+    }
+  };
 
   render() {
     const squares = [];
 
-    // const randomUniqueIdx = new Set(this.randomUniqueNum());
-    // this.setState({ randomUniqueNum: randomUniqueIdx });
     let idx = 1;
+
     for (let i = 0; i < this.props.size; i++) {
       for (let j = 0; j < this.props.size; j++) {
         squares.push(<Square key={idx} winner={this.props.randomWinnersIdx.has(idx)} index={idx}
-          getIndex={this.handleClick}></Square>);
+          getIndex={this.handleClick} testActiveState={this.props.testActiveState}></Square>);
         idx += 1;
       }
     }
@@ -41,7 +51,6 @@ export default class SquaresBoard extends Component<SquaresBoardProps> {
     return (
       <section className={style.squaresBoard}>
         {squares}
-        {this.state.activeIndex}
       </section>
     );
   }

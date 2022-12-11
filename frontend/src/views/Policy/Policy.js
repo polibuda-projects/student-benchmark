@@ -8,9 +8,8 @@ import Page from '@components/Page/Page';
 
 function Policy() {
   return (
-    <Page>
+    <Page title='Privacy Policy'>
       <ContainerBox className={style.container}>
-        <h1 className={style.title}>Privacy Policy</h1>
         <p className={style.text}>Student Benchmark operates the <Link to={'/'}>https://studentbenchmark.pl</Link> website, which provides the SERVICE.</p>
         <p className={style.text}>This page is used to inform website visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service, the Student Benchmark website. </p>
         <p className={style.text}>If you choose to use our Service, then you agree to the collection and use of information in relation with this policy. The Personal Information that we collect are used for providing and improving the Service. We will not use or share your information with anyone.</p>

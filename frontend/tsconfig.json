@@ -25,6 +25,9 @@
       ],
       "@views/*": [
         "./src/views/*"
+      ],
+      "@resources/*": [
+        "./src/resources/*"
       ]
     }
   },

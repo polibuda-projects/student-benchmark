@@ -29,10 +29,7 @@
   flex-direction: column;
   align-items: center;
   width: 42em;
-}
-
-.formElement{
-  margin-bottom: 1.5em;
+  gap: 2em;
 }
 
 .formOptions {
@@ -41,8 +38,30 @@
   justify-content: space-between;
   flex-direction: row;
   height: 4rem;
+  margin-top: .6em;
 }
 
 .formOptionsLink a:first-child{
   color: #8685EF;
+}
+
+.formElement {
+  width: 40rem;
+}
+
+@media (max-width: 1024px) {
+  .logo {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .section {
+    transform: scale(0.7);
+  }
+
+  .formOptions {
+    font-size: 3rem;
+    height: 5rem;
+  } 
 }

@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+      args:
+        - REACT_APP_BACKEND_URL=/api/v1
+    ports:
+      - "${FRONTEND_PORT}:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./docker/frontend/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_SMTP_AUTH=${MAIL_SMTP_AUTH}
+      - MAIL_SMTP_TLS=${MAIL_SMTP_TLS}
+
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
