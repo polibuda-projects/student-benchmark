@@ -7,7 +7,6 @@
     flex: 0 26%;
     padding-bottom: 26%;
     margin-bottom: 4%;
-    position: relative;
     border: 8px solid white;
     border-radius: 25px;
     transition:0.2s;
@@ -21,3 +20,8 @@
     width: 35em;
     pointer-events: none;
 }
+@media (max-width: 800px) {
+    .ContainerSequence{
+        width: 30em;
+    }
+  }
