@@ -13,20 +13,20 @@ import java.sql.Date;
 @Repository
 public interface LogsRepo extends JpaRepository<LoggerEntity, Long> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.date_Of_Log = :dateOfLog")
+    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.date = :dateOfLog")
     LoggerEntity findLogByDate(@Param("dateOfLog") Date dateOfLog);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.id_Log= :idLog")
+    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.id_log= :idLog")
     LoggerEntity findLogsById(@Param("idLog") Long idLog);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.user_Log= :userLog")
+    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.user= :userLog")
     void findLogsByUser(@Param("userLog") String userLog);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.log_Context = :logContext;")
+    @Query(nativeQuery = true, value = "SELECT * FROM Logger_Entity u WHERE u.context = :logContext;")
     void findLogsByMessage(@Param("logContext") String logContext);
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM Logger_Entity u WHERE u.id_Log = :idLog;")
+    @Query(nativeQuery = true, value = "DELETE FROM Logger_Entity u WHERE u.id_log = :idLog;")
     void deleteLog(@Param("idLog") Long idLog);
 }
