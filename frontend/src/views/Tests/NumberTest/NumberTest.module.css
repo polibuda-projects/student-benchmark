@@ -57,3 +57,27 @@
     justify-content: center;
     align-items: center;
 }
+.textToScale {
+    font-size: 4rem;
+}
+
+
+@media (max-width: 500px) {
+    .container {
+        gap: 2rem;
+    }
+    .numberInput {
+        transform: scale(0.7);
+    }
+    .textToScale {
+        font-size: 2.4rem;
+    }
+    .numberForm {
+        gap: 2rem;
+    }
+    .buttons {
+        margin-top: 2.5rem;
+        flex-direction: column;
+        width: 20rem;
+    }
+  }

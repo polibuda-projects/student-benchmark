@@ -99,7 +99,7 @@ export default function NumberTest() {
       <>
         <span className={style.levelText}>Level {currentLevel}</span>
         <div className={style.container}>
-          <NumberProperties text={'Enter the showed number'} fontSize={'4rem'} />
+          <NumberProperties className={style.textToScale} text={'Enter the showed number'} />
           <form onSubmit={handleSubmitClick} className={style.numberForm}>
             <Input className={style.numberInput} focus={true} id={'numberToCheck'} autoComplete={'off'} required={true} />
             <ButtonMedium width={'auto'} text='submit' onClick={handleSubmitClick} />
@@ -128,7 +128,7 @@ export default function NumberTest() {
             <NumberProperties text={'Your answer'} fontSize={'2rem'} />
             <NumberProperties text={yourNumber} fontSize={'4rem'} />
           </div>
-          <NumberProperties text={'You entered wrong number'} fontSize={'4rem'} />
+          <NumberProperties className={style.textToScale} text={'You entered wrong number'}/>
           <div className={style.buttons}>
             <ButtonMedium text='save score' onClick={() => {
               updateState('end');

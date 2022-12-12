@@ -6,7 +6,7 @@ export interface NumberComponentProps {
     text: number | string;
     width?: string;
     className?: string;
-    fontSize: string;
+    fontSize?: string;
 }
 
 export class NumberProperties extends Component<NumberComponentProps> {
