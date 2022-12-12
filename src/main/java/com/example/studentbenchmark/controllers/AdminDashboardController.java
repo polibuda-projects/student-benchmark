@@ -30,29 +30,37 @@ public class AdminDashboardController {
         this.supportRepo = supportRepo;
     }
 
+    //Metoda po sprawdzeniu uprawnień, zwraca w formacie JSON spis logów
     @GetMapping("/adminDashboard/logs")
     public ResponseEntity<String> adminDashboardLogs() {
-
+        //Pobranie zalogowanego użytkownika
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
+        //Sprawdzenie czy użytkownik jest adminem,
+        // jeśli tak to zwrócenie listy logów,
+        // jeśli nie rzucenie wyjątku
         if (currentUser.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
             List<LoggerEntity> log = logsRepo.findAll();
             Gson gson = new Gson();
             String json = gson.toJson(log);
             return ResponseEntity.ok(json);
-            //return gson.toJson(log);
         } else {
             throw new RuntimeException("You are not authorized to view this page");
         }
     }
 
+    //Metoda po sprawdzeniu uprawnień, zwraca w formacie JSON spis wiadomości z formularza support
     @GetMapping("/adminDashboard/messages")
     public ResponseEntity<String> adminDashboardMessages() {
 
+        //Pobranie zalogowanego użytkownika
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
+        //Sprawdzenie czy użytkownik jest adminem,
+        // jesli tak to zwraca wiadomości,
+        // jeśli nie to rzucenie wyjątku
         if (currentUser.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
             List<SupportMessage> messages = supportRepo.findAll();
             Gson gson = new Gson();
