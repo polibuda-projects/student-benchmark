@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface SupportRepo extends JpaRepository<SupportMessage, Long>{
+public interface SupportRepo extends JpaRepository<SupportMessage, Long> {
 }

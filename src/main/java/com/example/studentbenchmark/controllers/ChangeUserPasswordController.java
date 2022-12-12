@@ -1,5 +1,6 @@
 package com.example.studentbenchmark.controllers;
 
+import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.LoggerEntity;
 import com.example.studentbenchmark.repository.LogsRepo;
@@ -31,7 +32,7 @@ public class ChangeUserPasswordController {
     private final PasswordEncoder passwordEncoder;
     private final LogsRepo logsRepo;
 
-    Logger logger = LoggerFactory.getLogger(RegistrationController.class);
+    Logger logger = LoggerFactory.getLogger(ChangeUserPasswordController.class);
 
     java.util.Date utilDate = new java.util.Date();
     java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -47,22 +48,25 @@ public class ChangeUserPasswordController {
     public ResponseEntity<String> changeUserPassword(@Valid @RequestBody ChangeUserPasswordRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
+            AppUserEntityDetails userEntityDetails = (AppUserEntityDetails) authentication.getPrincipal();
+            AppUser currentUser = userRepo.findByEmail(userEntityDetails.getEmail());
 
             if (!passwordEncoder.matches(request.oldPassword(), currentUser.getPassword())) {
+                logger.error("User has entered incorrect old password");
                 return new ResponseEntity<>("Received incorrect user old password", HttpStatus.BAD_REQUEST);
             }
 
             if (!request.newPassword().equals(request.newPasswordRepeated())) {
+                logger.error("User has entered not matching passwords");
                 return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
             }
 
-            userRepo.changeUserPassword(currentUser.getId(), passwordEncoder.encode(request.newPassword()));
-            logsRepo.save(new LoggerEntity(currentUser.getUsername(), sqlDate, "User has changed the password"));
+            userRepo.changeUserPassword(currentUser.getIdUser(), passwordEncoder.encode(request.newPassword()));
+            logsRepo.save(new LoggerEntity(currentUser.getNickname(), currentUser.getIdUser(), sqlDate, "User has changed the password"));
             logger.info("User has changed the password");
             return new ResponseEntity<>("User password changed successfully", HttpStatus.OK);
         }
-
+        logger.error("User is unauthorized");
         return new ResponseEntity<>("User is unauthorized", HttpStatus.UNAUTHORIZED);
     }
 

@@ -15,6 +15,9 @@ public interface TestRepo<T extends AppTest> extends JpaRepository<T, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName}  u ORDER BY u.score DESC LIMIT 100")
     List<T> findBestScores();
 
+    @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName}  u ORDER BY u.score ASC")
+    List<T> getAllScores();
+
     @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName} u WHERE u.id_user == :id_User u ORDER BY u.score DESC LIMIT 1")
     T findPersonalBest(@Param("id_User") Long idUser);
 
