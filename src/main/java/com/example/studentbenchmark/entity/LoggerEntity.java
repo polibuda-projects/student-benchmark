@@ -1,24 +1,19 @@
 package com.example.studentbenchmark.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class LoggerEntity {
 
+    @Transient
+    private final java.util.Date utilDate = new java.util.Date();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLog;
-
     private String userLog;
-
     private Long userLogId;
-
     private Date dateOfLog;
-
     private String logContext;
 
     public LoggerEntity(String userLog, Long userLogId, Date dateOfLog, String logContext) {
@@ -28,10 +23,16 @@ public class LoggerEntity {
         this.logContext = logContext;
     }
 
+    public LoggerEntity(String userLog, Long userLogId, String logContext) {
+        this.userLog = userLog;
+        this.userLogId = userLogId;
+        this.dateOfLog = getCurrentDate();
+        this.logContext = logContext;
+    }
+
     public LoggerEntity() {
 
     }
-
 
     public Long getIdLog() {
         return idLog;
@@ -71,5 +72,9 @@ public class LoggerEntity {
 
     public void setLogContext(String logContext) {
         this.logContext = logContext;
+    }
+
+    private java.sql.Date getCurrentDate() {
+        return new java.sql.Date(utilDate.getTime());
     }
 }

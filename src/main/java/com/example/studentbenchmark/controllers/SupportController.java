@@ -35,9 +35,6 @@ public class SupportController {
 
     Logger logger = LoggerFactory.getLogger(SupportController.class);
 
-    java.util.Date utilDate = new java.util.Date();
-    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
     @Autowired
     SupportController(UserRepo userRepo, SupportRepo supportRepo, LogsRepo logsRepo) {
         this.userRepo = userRepo;
@@ -57,7 +54,7 @@ public class SupportController {
         }
 
         supportRepo.save(new SupportMessage(request.message(), request.messageTitle(), currentUser.getEmail(), currentUser.getId()));
-        logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), sqlDate, "User has send the support message"));
+        logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), "User has send the support message"));
         logger.info("User has send the support message");
         return new ResponseEntity<>("Support message send succesfully", HttpStatus.OK);
     }

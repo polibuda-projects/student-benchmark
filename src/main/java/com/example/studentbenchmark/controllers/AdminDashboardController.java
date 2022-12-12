@@ -18,8 +18,8 @@ import java.util.List;
 @RestController
 public class AdminDashboardController {
 
-    private LogsRepo logsRepo;
-    private SupportRepo supportRepo;
+    private final LogsRepo logsRepo;
+    private final SupportRepo supportRepo;
 
     @Autowired
     public AdminDashboardController(LogsRepo logsRepo, SupportRepo supportRepo) {

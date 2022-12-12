@@ -29,9 +29,6 @@ public class RegistrationController {
 
     Logger logger = LoggerFactory.getLogger(RegistrationController.class);
 
-    java.util.Date utilDate = new java.util.Date();
-    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
     @Autowired
     public RegistrationController(UserRepo userRepo, PasswordEncoder passwordEncoder, LogsRepo logsRepo) {
         this.userRepo = userRepo;
@@ -60,7 +57,7 @@ public class RegistrationController {
 
         userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), AppUser.Role.USER));
         AppUser user = userRepo.findByEmail(request.email());
-        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "User has successfully registered the account"));
+        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), "User has successfully registered the account"));
         logger.info("User has successfully registered the account");
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 

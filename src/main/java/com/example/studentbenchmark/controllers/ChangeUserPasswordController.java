@@ -34,9 +34,6 @@ public class ChangeUserPasswordController {
 
     Logger logger = LoggerFactory.getLogger(ChangeUserPasswordController.class);
 
-    java.util.Date utilDate = new java.util.Date();
-    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
     @Autowired
     public ChangeUserPasswordController(UserRepo userRepo, PasswordEncoder passwordEncoder, LogsRepo logsRepo) {
         this.userRepo = userRepo;
@@ -62,7 +59,7 @@ public class ChangeUserPasswordController {
             }
 
             userRepo.changeUserPassword(currentUser.getIdUser(), passwordEncoder.encode(request.newPassword()));
-            logsRepo.save(new LoggerEntity(currentUser.getNickname(), currentUser.getIdUser(), sqlDate, "User has changed the password"));
+            logsRepo.save(new LoggerEntity(currentUser.getNickname(), currentUser.getIdUser(), "User has changed the password"));
             logger.info("User has changed the password");
             return new ResponseEntity<>("User password changed successfully", HttpStatus.OK);
         }
