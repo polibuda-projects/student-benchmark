@@ -33,7 +33,7 @@
 }
 
 .checkboxLabel {
-  align-self: center;
+  align-self: flex-start;
   margin-top: .2em;
 }
 
@@ -49,24 +49,22 @@
   color: #8685EF;
 }
 
-@media (max-width: 500px) {
+.passwordAlign {
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+  gap: 1em;
+  width: 30rem;
+}
 
-  .contentOverride {
-    justify-content: center;
-    height: 100%;
-  }
 
-  .form {
-    width: auto;
-    min-width: 30em;
+@media screen and (max-width: 500px) {
+  .section {
+    transform: scale(0.7);
   }
 
   .formOptions {
-    align-self: center;
-  }
-
-  .title {
-    font-size: 3em;
-    align-self: center;
-  }
+    font-size: 3rem;
+    height: 5rem;
+  } 
 }
