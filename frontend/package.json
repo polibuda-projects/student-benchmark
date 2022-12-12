@@ -26,7 +26,8 @@
     "start": "craco  start",
     "build": "craco  build",
     "test": "craco  test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "npx eslint --ext .js,.jsx,.ts,.tsx --fix src/"
   },
   "eslintConfig": {
     "extends": [
@@ -76,4 +77,3 @@
     "@types/react-transition-group": "^4.4.5"
   }
 }
-
