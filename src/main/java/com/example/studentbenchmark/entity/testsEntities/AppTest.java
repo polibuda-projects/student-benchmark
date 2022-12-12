@@ -60,3 +60,4 @@ public abstract class AppTest {
         this.dateOfSubmission = dateOfSubmission;
     }
 }
+

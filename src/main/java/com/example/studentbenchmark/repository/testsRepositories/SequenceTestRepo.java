@@ -10,3 +10,4 @@ import javax.transaction.Transactional;
 public interface SequenceTestRepo extends TestRepo<SequenceTest> {
 
 }
+

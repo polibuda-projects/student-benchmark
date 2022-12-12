@@ -59,3 +59,4 @@ export default class Square extends Component<SquareProps, SquareStates> {
     return classes.join(' ');
   }
 }
+

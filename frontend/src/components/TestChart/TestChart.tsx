@@ -121,3 +121,4 @@ export default class TestChart extends Component<TestChartProps> {
     return classes.join(' ');
   }
 }
+

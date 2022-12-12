@@ -196,3 +196,4 @@ export const contentNumberLower: TableContent = [
     score: 19,
   },
 ];
+

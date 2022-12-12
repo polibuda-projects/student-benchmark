@@ -46,3 +46,4 @@ const DashboardTable: FC<{tableContent: TableContent, columnTitles: ColumnTitles
 
 export default DashboardTable;
 
+

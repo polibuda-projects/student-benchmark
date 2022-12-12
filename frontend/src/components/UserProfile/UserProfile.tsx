@@ -68,3 +68,4 @@ export default function UserProfile(props: Omit<UserProfileProps, 'nodeRef'>) {
     <UserProfileComponent nodeRef={nodeRef} {...props} />
   );
 };
+

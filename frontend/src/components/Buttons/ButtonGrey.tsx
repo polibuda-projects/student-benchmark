@@ -19,3 +19,4 @@ export default class ButtonMedium extends Component<ButtonGreyProps> {
     );
   }
 }
+

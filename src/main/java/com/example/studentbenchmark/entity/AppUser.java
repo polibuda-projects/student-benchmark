@@ -112,3 +112,4 @@ public class AppUser {
         this.role = role;
     }
 }
+

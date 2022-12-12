@@ -14,3 +14,4 @@ public interface VerbalTestRepo extends TestRepo<VerbalTest> {
     @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName} u WHERE u.score <= " + VerbalTest.MAX_VALID_SCORE_GRAPH)
     List<VerbalTest> findAllGraphValidScores();
 }
+

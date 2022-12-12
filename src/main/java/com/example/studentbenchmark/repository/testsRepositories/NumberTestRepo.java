@@ -9,3 +9,4 @@ import javax.transaction.Transactional;
 @Transactional
 public interface NumberTestRepo extends TestRepo<NumberTest> {
 }
+

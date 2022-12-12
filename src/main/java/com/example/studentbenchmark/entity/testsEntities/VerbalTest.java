@@ -15,3 +15,4 @@ public final class VerbalTest extends AppTest {
     }
 
 }
+

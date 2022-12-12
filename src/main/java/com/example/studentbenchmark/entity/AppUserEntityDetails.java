@@ -69,3 +69,4 @@ public class AppUserEntityDetails implements UserDetails {
         return true;
     }
 }
+

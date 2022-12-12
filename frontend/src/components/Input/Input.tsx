@@ -109,3 +109,4 @@ export default class Inputs extends Component<InputProps, InputState> {
     );
   }
 }
+

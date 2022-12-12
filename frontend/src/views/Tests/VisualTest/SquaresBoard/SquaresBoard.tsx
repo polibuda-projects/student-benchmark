@@ -55,3 +55,4 @@ export default class SquaresBoard extends Component<SquaresBoardProps> {
     );
   }
 }
+

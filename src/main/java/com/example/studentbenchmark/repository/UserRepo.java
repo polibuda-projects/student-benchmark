@@ -35,3 +35,4 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
     @Query(nativeQuery = true, value = "DELETE FROM App_User u WHERE u.email= email")
     void deleteAccount(@Param("email") String email);
 }
+

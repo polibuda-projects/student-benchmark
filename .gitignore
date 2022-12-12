@@ -3,11 +3,14 @@
 /frontend/build
 /.pnp
 /.idea
+/.mvn
 .pnp.js
+/mvnw
+/mvnw.cmd
 
 # testing
 /coverage
-src/main/resources
+/src/main/resources
 
 # production
 /build
@@ -28,6 +31,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+/src/main/resources/application.properties
 
 # env files
 .env

@@ -18,3 +18,4 @@ export class NumberProperties extends Component<NumberComponentProps> {
     );
   }
 }
+

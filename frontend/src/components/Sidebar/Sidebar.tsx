@@ -151,3 +151,4 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
     }
   };
 }
+

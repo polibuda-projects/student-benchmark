@@ -18,3 +18,4 @@ public class AppUserDetailsService implements UserDetailsService {
         .orElseThrow(()->new UsernameNotFoundException(username));
     }
 }
+

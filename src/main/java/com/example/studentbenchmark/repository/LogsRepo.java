@@ -31,3 +31,4 @@ public interface LogsRepo extends JpaRepository<LoggerEntity, Long> {
     @Query(nativeQuery = true, value = "DELETE FROM LoggerEntity u WHERE u.idLog = :idLog;")
     void deleteLog(@Param("idLog") Long idLog);
 }
+

@@ -35,3 +35,4 @@ services:
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
+

@@ -74,3 +74,4 @@ export default class Page extends Component<PageProps> {
     return style.container;
   }
 }
+
