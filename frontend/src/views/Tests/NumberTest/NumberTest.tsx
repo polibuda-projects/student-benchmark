@@ -8,9 +8,9 @@ import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';
 
-const testDescription='The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
+const testDescription = 'The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
 
-const shortTestDescription='Remember the longest number you can.';
+const shortTestDescription = 'Remember the longest number you can.';
 
 export default function NumberTest() {
   const [state, updateState] = useState<TestState>('start');
@@ -31,10 +31,10 @@ export default function NumberTest() {
       if (elem) elem.style.width = '0%';
     });
 
-    if (elem) elem.style.transition = 'width ' + 2 * currentLevel* 0.5 +'s linear';
+    if (elem) elem.style.transition = 'width ' + 2 * currentLevel * 0.5 + 's linear';
     setTimeout(() => {
       updateState('numberInput');
-    }, 2000 * currentLevel*0.5);
+    }, 2000 * currentLevel * 0.5);
   };
 
   useEffect(() => {
@@ -52,11 +52,14 @@ export default function NumberTest() {
   }, [state]);
 
   const handleSubmitClick = () => {
-    updateYourNumber(yourNumber = (document.getElementById('numberToCheck') as HTMLInputElement).value as unknown as number);
-    if (yourNumber == currentNumber) {
-      updateState('numberCorrect');
-    } else {
-      updateState('numberIncorrect');
+    const check = (document.getElementById('numberToCheck') as HTMLInputElement).value;
+    if (check.length != 0) {
+      updateYourNumber(yourNumber = check as unknown as number);
+      if (yourNumber == currentNumber) {
+        updateState('numberCorrect');
+      } else {
+        updateState('numberIncorrect');
+      }
     }
   };
 
@@ -86,7 +89,7 @@ export default function NumberTest() {
         <span className={style.levelText}>Level {currentLevel}</span>
         <div className={style.container}>
           <div className={style.testNumber}>
-            <NumberProperties text={currentNumber} fontSize={'7rem'}/>
+            <NumberProperties text={currentNumber} fontSize={'7rem'} />
             <div className={style.outer}>
               <div className={style.inner} id={'inner'}>
               </div>
@@ -128,7 +131,7 @@ export default function NumberTest() {
             <NumberProperties text={'Your answer'} fontSize={'2rem'} />
             <NumberProperties text={yourNumber} fontSize={'4rem'} />
           </div>
-          <NumberProperties className={style.textToScale} text={'You entered wrong number'}/>
+          <NumberProperties className={style.textToScale} text={'You entered wrong number'} />
           <div className={style.buttons}>
             <ButtonMedium text='save score' onClick={() => {
               updateState('end');
