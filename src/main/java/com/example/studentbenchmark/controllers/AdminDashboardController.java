@@ -7,6 +7,7 @@ import com.example.studentbenchmark.repository.LogsRepo;
 import com.example.studentbenchmark.repository.SupportRepo;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/adminDashboard/logs")
-    public String adminDashboardLogs() {
+    public ResponseEntity<String> adminDashboardLogs() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
@@ -38,14 +39,16 @@ public class AdminDashboardController {
         if (currentUser.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
             List<LoggerEntity> log = logsRepo.findAll();
             Gson gson = new Gson();
-            return gson.toJson(log);
+            String json = gson.toJson(log);
+            return ResponseEntity.ok(json);
+            //return gson.toJson(log);
         } else {
             throw new RuntimeException("You are not authorized to view this page");
         }
     }
 
     @GetMapping("/adminDashboard/messages")
-    public String adminDashboardMessages() {
+    public ResponseEntity<String> adminDashboardMessages() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
@@ -53,7 +56,8 @@ public class AdminDashboardController {
         if (currentUser.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
             List<SupportMessage> messages = supportRepo.findAll();
             Gson gson = new Gson();
-            return gson.toJson(messages);
+            String json = gson.toJson(messages);
+            return ResponseEntity.ok(json);
         } else {
             throw new RuntimeException("You are not authorized to view this page");
         }
