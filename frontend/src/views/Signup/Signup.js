@@ -16,34 +16,34 @@ function Signup() {
     setIsSHown((isShown) => !isShown);
   };
 
-//frontend-experiments
-// function Signup() {
-//   const nickname = React.useRef(null);
-//   const email = React.useRef(null);
-//   const password = React.useRef(null);
-//   const passwordConfirmation = React.useRef(null);
-//   async function sendAjax() {
-//     console.log('leci post');
-//     const body = {
-//       nickname: nickname.current.value,
-//       email: email.current.value,
-//       password: password.current.value,
-//       passwordConfirmation: passwordConfirmation.current.value,
-//     };
-//     console.log(body);
-//     const requestOptions = {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(body),
-//     };
+  const nickname = React.useRef(null);
+  const email = React.useRef(null);
+  const password = React.useRef(null);
+  const passwordConfirmation = React.useRef(null);
 
-//     const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
-//     try {
-//       console.log(await response.clone().json());
-//     } catch (error) {
-//       console.log(await response.clone().text());
-//     }
-//   };
+  async function sendRegisterRequest() {
+    console.log('Sending request');
+
+    const body = {
+      nickname: nickname.current.value,
+      email: email.current.value,
+      password: password.current.value,
+      passwordConfirmation: passwordConfirmation.current.value,
+    };
+    console.log(body);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    };
+
+    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
+    try {
+      console.log(await response.clone().json());
+    } catch (error) {
+      console.log(await response.clone().text());
+    }
+  };
 
   return (
     <Page titlebar={false}>
@@ -53,10 +53,10 @@ function Signup() {
           <h1 className={style.title}>Sign up</h1>
 
           <form method="post" action="#" className={style.form} name={'signup'}>
-            <Input type={'text'} name={'usernameLog'} placeholder={'Username'} required className={style.formElement}/>
-            <Input type={'email'} name={'emailLog'} placeholder={'Address email'} required className={style.formElement}/>
-            <Input type={isShown ? 'text' : 'password'} name={'passwordRegister'} placeholder={'Password'} required className={style.formElement}/>
-            <Input type={isShown ? 'text' : 'password'} name={'passwordRegisterRepeat'}
+            <Input useRef={nickname} type={'text'} name={'usernameLog'} placeholder={'Username'} required className={style.formElement}/>
+            <Input useRef={email} type={'email'} name={'emailLog'} placeholder={'Address email'} required className={style.formElement}/>
+            <Input useRef={password} type={isShown ? 'text' : 'password'} name={'passwordRegister'} placeholder={'Password'} required className={style.formElement}/>
+            <Input useRef={passwordConfirmation} type={isShown ? 'text' : 'password'} name={'passwordRegisterRepeat'}
               placeholder={'Repeat your password'} required className={style.formElement}/>
             <label className={style.checkboxLabel}>
               <input type="checkbox" checked={isShown} onChange={togglePassword}/>
@@ -65,21 +65,9 @@ function Signup() {
             <label className={style.label}>
               <input type="checkbox" name="terms" value="terms" required={true}/>
               <em>I agree to our <Link to={'/privacy'}>privacy and terms of service</Link>.</em>
-
-//frontend-experiments
-//           <form className={style.form} name={'signup'}>
-//             <Input type={'text'} useRef={nickname} name={'nickname'} placeholder={'Username'} required className={style.formElement}/>
-//             <Input type={'email'} useRef={email} name={'email'} placeholder={'Address email'} required className={style.formElement}/>
-//             <Input type={'password'} useRef={password} name={'password'} placeholder={'Password'} required className={style.formElement}/>
-//             <Input type={'password'} useRef={passwordConfirmation}
-//               name={'passwordConfirmation'} placeholder={'Repeat your password'} required className={style.formElement}/>
-//             <label className={style.label}>
-//               <input type="checkbox" name="terms"
-//                 value="terms" required={true}/><em>I agree to our <Link to={'/privacy'}>privacy and terms of service</Link>.</em>
-
             </label>
             <div className={style.formOptions}>
-              <ButtonMedium onClick={sendAjax} text={'Sign up'} width={''}/>
+              <ButtonMedium onClick={sendRegisterRequest} text={'Sign up'} width={''}/>
               <Link to='/login'>
                 Log in
               </Link>
@@ -96,4 +84,3 @@ function Signup() {
 
 
 export default Signup;
-

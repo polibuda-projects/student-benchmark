@@ -101,7 +101,7 @@ export default class Inputs extends Component<InputProps, InputState> {
   render() {
     return (
       <div className={style.container}>
-        <input className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
+        <input ref={this.props.useRef} className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
           type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} autoFocus ={this.props.focus} id={this.props.id}
           autoComplete={this.props.autoComplete} required={this.props.required} onChange={this.validateInput} />
         <span className={style.message}>{this.state.message}</span>
