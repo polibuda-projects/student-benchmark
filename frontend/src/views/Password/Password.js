@@ -14,18 +14,43 @@ function Password() {
   };
   return (
     <Page title="">
-      <ContainerBox width={'60em'}>
+      <ContainerBox width={'60em'} className={style.passwordContainer}>
         <form className={style.changePasswordForm}>
           <h1 className={style.title}>Change Password</h1>
-          <Input type={isShown ? 'text' : 'password'} name={'passwordLogin'} placeholder={'Current Password'} required className={style.passwordInput}/>
-          <Input type={isShown ? 'text' : 'password'} name={'passwordRegister'} placeholder={'New Password'} required className={style.passwordInput}/>
-          <Input type={isShown ? 'text' : 'password'} name={'passwordRegisterRepeat'}
-            placeholder={'Repeat New Password'} required className={style.passwordInput}/>
+          <Input
+            type={isShown ? 'text' : 'password'}
+            name={'passwordLogin'}
+            placeholder={'Current Password'}
+            required
+            className={style.passwordInput}
+          />
+          <Input
+            type={isShown ? 'text' : 'password'}
+            name={'passwordRegister'}
+            placeholder={'New Password'}
+            required
+            className={style.passwordInput}
+          />
+          <Input
+            type={isShown ? 'text' : 'password'}
+            name={'passwordRegisterRepeat'}
+            placeholder={'Repeat New Password'}
+            required
+            className={style.passwordInput}
+          />
           <label className={style.checkboxLabel}>
-            <input type="checkbox" checked={isShown} onChange={togglePassword}/>
+            <input
+              type="checkbox"
+              checked={isShown}
+              onChange={togglePassword}
+            />
             <em>Show password?</em>
           </label>
-          <ButtonMedium className={style.changePasswordSubmit} text={'UPDATE'} width={''}/>
+          <ButtonMedium
+            className={style.changePasswordSubmit}
+            text={'UPDATE'}
+            width={''}
+          />
         </form>
       </ContainerBox>
     </Page>

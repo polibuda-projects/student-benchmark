@@ -1,7 +1,7 @@
 import { ColumnTitles, TableContent } from '@components/DashboardTable/DashboardTable';
 
 export const columnTitlesUpper: ColumnTitles = [
-  'Benchmark Scenario',
+  'Scenario',
   'Personal Best',
   'Avg. Score',
   'Percentile',

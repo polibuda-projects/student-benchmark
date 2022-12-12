@@ -17,23 +17,37 @@ export type TableContent = {
 
 export type ColumnTitles = string[];
 
-const DashboardTable: FC<{tableContent: TableContent, columnTitles: ColumnTitles}> = ({ tableContent, columnTitles }) => {
+const DashboardTable: FC<{
+  tableContent: TableContent;
+  columnTitles: ColumnTitles;
+}> = ({ tableContent, columnTitles }) => {
   return (
-    <ContainerBox width={'100rem'}>
+    <ContainerBox width={'100rem'} className={style.dashboardContainer}>
       {
         <table cellSpacing="0" className={style.dashboardTable}>
           <thead className={style.dashboardTableHead}>
             <tr className={style.dashboardTableHeadRow}>
               {columnTitles.map((columnTitle: string, index: Key) => (
-                <th key={index} className={style.dashboardTableTitle}>{columnTitle}</th>
+                <th key={index} className={style.dashboardTableTitle}>
+                  {columnTitle}
+                </th>
               ))}
             </tr>
           </thead>
           <tbody className={style.dashboardTableBody}>
             {Object.values(tableContent).map((object, index) => (
-              <tr key={index} className={index%2===1?`${style.dashboardTableBodyRow} ${style.shadow}`:`${style.dashboardTableBodyRow}`}>
+              <tr
+                key={index}
+                className={
+                  index % 2 === 1 ?
+                    `${style.dashboardTableBodyRow} ${style.shadow}` :
+                    `${style.dashboardTableBodyRow}`
+                }
+              >
                 {Object.values(object).map((value, secondIndex) => (
-                  <td key={secondIndex} className={style.dashboardTableCell}>{value}</td>
+                  <td key={secondIndex} className={style.dashboardTableCell}>
+                    {value}
+                  </td>
                 ))}
               </tr>
             ))}
