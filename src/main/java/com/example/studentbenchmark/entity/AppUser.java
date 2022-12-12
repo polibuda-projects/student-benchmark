@@ -32,8 +32,6 @@ public class AppUser {
                     "<br/>"+ "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
     String password;
 
-    String passwordConfirmation;
-
     int role; //role = 0  ROLE_USER  role = 1 ROLE_ADMIN
     private Date creationDate;
     private Date lastLoginDate;
@@ -81,10 +79,6 @@ public class AppUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
     }
 
     public Date getCreationDate() {

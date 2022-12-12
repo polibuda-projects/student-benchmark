@@ -37,7 +37,7 @@ public class AppUserEntityDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return entity.getEmail();
+        return entity.getNickname();
     }
 
     public String getEmail() {
