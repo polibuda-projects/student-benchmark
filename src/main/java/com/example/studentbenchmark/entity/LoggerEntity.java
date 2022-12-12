@@ -1,34 +1,38 @@
 package com.example.studentbenchmark.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class LoggerEntity {
 
+    @Transient
+    private final java.util.Date utilDate = new java.util.Date();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLog;
+    private String user;
+    private Long userId;
+    private Date date;
+    private String context;
 
-    private String userLog;
+    public LoggerEntity(String user, Long userId, Date date, String context) {
+        this.user = user;
+        this.userId = userId;
+        this.date = date;
+        this.context = context;
+    }
 
-    private Date dateOfLog;
-
-    private String logContext;
-
-    public LoggerEntity(String userLog, Date dateOfLog, String logContext) {
-        this.userLog = userLog;
-        this.dateOfLog = dateOfLog;
-        this.logContext = logContext;
+    public LoggerEntity(String user, Long userId, String context) {
+        this.user = user;
+        this.userId = userId;
+        this.date = getCurrentDate();
+        this.context = context;
     }
 
     public LoggerEntity() {
 
     }
-
 
     public Long getIdLog() {
         return idLog;
@@ -38,28 +42,39 @@ public class LoggerEntity {
         this.idLog = idLog;
     }
 
-    public String getUserLog() {
-        return userLog;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserLog(String userLog) {
-        this.userLog = userLog;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-
-    public Date getDateOfLog() {
-        return dateOfLog;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDateOfLog(Date dateOfLog) {
-        this.dateOfLog = dateOfLog;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getLogContext() {
-        return logContext;
+    public Date getDate() {
+        return date;
     }
 
-    public void setLogContext(String logContext) {
-        this.logContext = logContext;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    private java.sql.Date getCurrentDate() {
+        return new java.sql.Date(utilDate.getTime());
     }
 }
