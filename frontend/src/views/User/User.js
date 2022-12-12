@@ -7,23 +7,23 @@ import userAvatar from '@resources/img/defaultAvatar.svg';
 
 function User() {
   return (
-    <Page background={true}>
+    <Page background={true} titlebar={false} user={false}>
       <img src={userAvatar} className={style.userAvatar} alt={'Default Avatar'} />
       <div className={style.userBar}>
         <span className={style.username}>UserWithLongUsername</span>
       </div>
       <div className={style.buttons}>
         <Link to='/dashboard'>
-          <ButtonGrey text={'Dashboard'} width={'32rem'}/>
+          <ButtonGrey className={style.buttonGrey} text={'Dashboard'}/>
         </Link>
         <Link to='/password'>
-          <ButtonGrey text={'Change Password'} width={'32rem'}/>
+          <ButtonGrey className={style.buttonGrey} text={'Change Password'}/>
         </Link>
         <Link to='/delete'>
-          <ButtonGrey text={'Delete Account'} width={'32rem'} />
+          <ButtonGrey className={style.buttonGrey} text={'Delete Account'}/>
         </Link>
       </div>
-      <ButtonMedium text={'Log Out'} width={'25rem'}/>
+      <ButtonMedium className={style.buttonMedium} text={'Log Out'}/>
     </Page>
   );
 }

@@ -33,6 +33,42 @@
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
-    gap: 3.5em;
+    gap: 3.5rem;
     margin-bottom: 4rem;
 }
+
+.buttonGrey {
+    width: 32rem;
+}
+
+.buttonMedium {
+    width: 25rem;
+}
+
+@media (max-width: 500px) {
+    .userAvatar {
+        height: 12rem;
+        margin-bottom: 3rem;
+        margin-top: 2rem;
+    }
+    .userBar {
+        width: 30rem;
+        height: 3.5rem;
+    }
+    .username {
+        font-size: 2.5rem;
+    }
+    .buttons {
+        gap: 3rem;
+    }
+    .buttonGrey {
+        width: 27rem;
+        height: 3.5rem;
+        font-size: 2.5rem;
+    }
+    .buttonMedium {
+        width: 23rem;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+    }
+  }
