@@ -33,7 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/", "/register", "/result/*", "/passwordRecovery", "/resetPassword").permitAll()
+                .mvcMatchers("/", "/register", "/result/*","/tests/*", "/passwordRecovery", "/resetPassword").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(new LoginSuccessHandler(userRepo, logsRepo))
