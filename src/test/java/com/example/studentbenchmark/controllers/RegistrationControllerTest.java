@@ -14,9 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import static com.example.studentbenchmark.TestConstants.USER_NICKNAME;
-import static com.example.studentbenchmark.TestConstants.USER_PASSWORD;
+import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,9 +35,6 @@ public class RegistrationControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static RequestPostProcessor basicAuth() {
-        return httpBasic(USER_NICKNAME, USER_PASSWORD);
-    }
 
     private JsonObject createRegisterRequest(String nickname, String email, String password, String passwordConfirmation) {
         JsonObject jsonObject = new JsonObject();
@@ -46,11 +43,6 @@ public class RegistrationControllerTest {
         jsonObject.addProperty("password", password);
         jsonObject.addProperty("passwordConfirmation", passwordConfirmation);
         return jsonObject;
-    }
-
-    @AfterEach
-    void clearRepo() {
-        userRepo.deleteAll();
     }
 
 
@@ -62,6 +54,7 @@ public class RegistrationControllerTest {
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User registered successfully")));
+        userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
     }
 
     @Test
@@ -124,6 +117,8 @@ public class RegistrationControllerTest {
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("This email is used by existing account")));
 
+        userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+
     }
 
     @Test
@@ -140,6 +135,7 @@ public class RegistrationControllerTest {
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("This nickname is used by existing account")));
 
+        userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
     }
 
     @ParameterizedTest
