@@ -9,7 +9,8 @@ export interface TextareaProps {
   name?: string,
   placeholder?: string,
   shadows?: boolean,
-  className?: string
+  className?: string,
+  useRef?: React.RefObject<HTMLInputElement>;
 }
 
 export interface TextareaState {
@@ -45,7 +46,7 @@ export default class Textarea extends Component<TextareaProps, TextareaState> {
 
   render() {
     return (
-      <div className={style.textareaContainer}>
+      <div ref={this.props.useRef} className={style.textareaContainer}>
         <textarea className={[style.textarea, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
           name={this.props.name} placeholder={this.props.placeholder} onChange={this.validateInput} />
         <span className={style.message}>{this.state.message}</span>
