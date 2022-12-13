@@ -36,33 +36,39 @@ public class RegistrationController {
         this.logsRepo = logsRepo;
     }
 
+    //Metoda zapisuje do bazy danych nowego użytkownika
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody RegistrationRequest request) {
-
+        //Sprawdzenie czy poodane w formularzu hasła są takie same
         if (!request.password().equals(request.passwordConfirmation())) {
             logger.error("User has entered not matching passwords");
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
 
+        //Sprawdzenie czy użytkownik o podanym adresie email już istnieje
         if (userRepo.findByEmail(request.email()) != null) {
             logger.error("User has entered the email which is already in use");
             return new ResponseEntity<>("This email is used by existing account", HttpStatus.BAD_REQUEST);
         }
 
+        //Sprawdzenie czy użytkownik o podanej nazwie użytkownika już istnieje
         if (!userRepo.findByNickname(request.nickname()).isEmpty()) {
             logger.error("User has entered the nickname which is already in use");
             return new ResponseEntity<>("This nickname is used by existing account", HttpStatus.BAD_REQUEST);
         }
 
-
+        //Zapisanie nowego użytkownika do bazy danych
         userRepo.save(new AppUser(request.nickname(), request.email(), passwordEncoder.encode(request.password()), AppUser.Role.USER));
         AppUser user = userRepo.findByEmail(request.email());
+
+        //Zapisanie do bazy danych loga o rejestracji nowego użytkownika
         logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), "User has successfully registered the account"));
         logger.info("User has successfully registered the account");
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 
     }
 
+    //Klasa reprezentująca dane z formularza rejestracji z walidacją
     private record RegistrationRequest(
             @NotNull
             @NotBlank(message = "nickname is mandatory")

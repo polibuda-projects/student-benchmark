@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,7 @@ import static com.example.studentbenchmark.entity.AppUser.Role.ADMIN;
 import static com.example.studentbenchmark.entity.AppUser.Role.USER;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class AdminDashboardControllerTest {
     @Autowired
     private LogsRepo logsRepo;
@@ -27,7 +29,6 @@ class AdminDashboardControllerTest {
     private SupportRepo supportRepo;
     @Autowired
     private AdminDashboardController adminDashboardController;
-    @Autowired
     private Authentication authentication;
 
     @BeforeEach
