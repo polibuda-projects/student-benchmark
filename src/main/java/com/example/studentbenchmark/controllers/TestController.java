@@ -43,6 +43,10 @@ public class TestController {
         this.visualTestRepo = visualTestRepo;
     }
 
+    public TestController() {
+
+    }
+
     @PostMapping("/result/sequence")
     ResponseEntity<String> addResultSequenceTest(@RequestBody SequenceTest test) {
         if (test.isScoreValid()) {
@@ -78,6 +82,7 @@ public class TestController {
 
     @PostMapping("/result/number")
     ResponseEntity<String> addResultNumberTest(@RequestBody NumberTest test) {
+
         if (test.isScoreValid()) {
             numberTestRepo.save((NumberTest) modifyTest(test));
             logger.info("Results added successfully");
@@ -109,7 +114,7 @@ public class TestController {
         return visualTestRepo.getAllScores().stream().map(p -> p.getScore()).toList();
     }
 
-    AppTest modifyTest(AppTest test) {
+    public AppTest modifyTest(AppTest test) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
