@@ -7,6 +7,7 @@ import logo from '@resources/img/sequenceTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import { isDisabled } from '@testing-library/user-event/dist/utils';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/sequence`;
 
 const testDescription = 'Memorize the sequence of buttons that light up, then press them in order. '+
 'Every time you finish the pattern, it gets longer. '+
@@ -23,6 +24,25 @@ export default function SequenceTest() {
     data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
     range: [10, 30],
   });
+
+  async function sendResultRequest() {
+    console.log(userScore);
+    const response = await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
+  useEffect(() => {
+    if (state === 'end') {
+      sendResultRequest();
+    }
+  }, [state]);
 
   useEffect(() => {
     if (state === 'playing') {

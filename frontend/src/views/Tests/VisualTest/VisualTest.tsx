@@ -5,6 +5,7 @@ import TestStart from '@components/Test/TestStart';
 import logo from '@resources/img/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import SquaresBoard from '@views/Tests/VisualTest/SquaresBoard/SquaresBoard';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/visual`;
 
 const testDescription = 'Every level, a number of tiles will flash white. Memorize them, and pick them again after the tiles are reset! ' +
   'Levels get progressively more difficult, to challenge your skills. You have three lives. Make it as far as you can!';
@@ -102,6 +103,25 @@ export default function VisualTest() {
       showWinnerSquares();
     }
   }, [testActiveState]);
+
+  async function sendResultRequest() {
+    console.log(userScore);
+    const response = await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
+  useEffect(() => {
+    if (state === 'end') {
+      sendResultRequest();
+    }
+  }, [state]);
 
   const showWinnerSquares = () => {
     randomWinnersIdx.forEach((val) => {

@@ -7,6 +7,7 @@ import logo from '@resources/img/numberTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/number`;
 
 const testDescription = 'The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
 
@@ -76,6 +77,19 @@ export default function NumberTest() {
     updateState('playing');
   };
 
+  async function sendResultRequest() {
+    console.log(userScore);
+    const response = await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
   return (<Test testName='Number Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
@@ -134,6 +148,7 @@ export default function NumberTest() {
           <NumberProperties className={style.textToScale} text={'You entered wrong number'} />
           <div className={style.buttons}>
             <ButtonMedium text='save score' onClick={() => {
+              sendResultRequest();
               updateState('end');
             }} />
             <ButtonMedium text='try again' onClick={() => updateState('start')} />

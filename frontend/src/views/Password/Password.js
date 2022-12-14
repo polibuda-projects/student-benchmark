@@ -35,9 +35,7 @@ function Password() {
     const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' } );
     try {
       if (response.ok) {
-        oldPassword.current.value = '';
-        newPassword.current.value = '';
-        newPasswordRepeated.current.value = '';
+        document.location.replace('/dashboard');
         alert('Password changed successfully!');
       } else {
         alert('Invalid request!');
