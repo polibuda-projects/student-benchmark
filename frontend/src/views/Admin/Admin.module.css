@@ -1,0 +1,80 @@
+.ContainerBox {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.messagesContainer {
+    display: flex;
+    flex-direction: column;
+    align-self: left;
+    justify-self: left;
+    width: inherit;
+}
+
+.logsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: inherit;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: 400;
+    align-self: left;
+    margin: 0.4em 0 .4em 0;
+}
+
+.messages, .logs {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    width: 100%;
+    height: 30em;
+    overflow-y: auto;
+    border: 1px solid #fff;
+}
+
+.placeholder {
+    align-self: center;
+    justify-self: center;
+}
+
+.message, .log {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: #8685EF solid 1px;
+}
+
+.messageText, .logText {
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: 400;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    margin: 1em 0 1em 0;
+    width: 70%;
+}
+
+.messageID, .logID, .messageTimestamp, .logTimestamp {
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: 300;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+    margin: 1em 0 1em 0;
+    width: 20%;
+}
+
+.messageID, .logID {
+    width: 10%;
+}
+

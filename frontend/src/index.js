@@ -20,6 +20,7 @@ import VisualTest from '@views/Tests/VisualTest/VisualTest';
 import VerbalTest from '@views/Tests/VerbalTest/VerbalTest';
 import SequenceTest from '@views/Tests/SequenceTest/SequenceMemory';
 import NumberTest from '@views/Tests/NumberTest/NumberTest';
+import Admin from '@views/Admin/Admin';
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
   {
     path: '/donate',
     element: <Donate />,
+  },
+  {
+    path: '/admin',
+    element: <Admin />,
   },
 ]);
 
