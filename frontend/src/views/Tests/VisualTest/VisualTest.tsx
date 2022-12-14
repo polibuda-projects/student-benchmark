@@ -1,7 +1,6 @@
 import style from './VisualTest.module.css';
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
 import logo from '@resources/img/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
@@ -132,10 +131,10 @@ export default function VisualTest() {
 
         <div className={style.testInfo}>
           <span className={style.testLives}>
-              Lives | {userLives}
+            <p>Lives |</p> {userLives}
           </span>
           <span className={style.testScore}>
-              Score | {userScore === null ? 0 : userScore}
+            <p>Score |</p> {userScore === null ? 0 : userScore}
           </span>
         </div>
 
