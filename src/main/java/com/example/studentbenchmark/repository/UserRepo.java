@@ -24,7 +24,7 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
     AppUser findByID(@Param("idUser") Long idUser);
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(nativeQuery = true, value = "UPDATE app_user SET password= :newPassword WHERE id_user= :idUser")
     void changeUserPassword(@Param("idUser") Long idUser, @Param("newPassword") String newPassword);
 
