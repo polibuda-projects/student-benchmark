@@ -6,6 +6,9 @@ import TestStart from '@components/Test/TestStart';
 import logo from '@resources/img/verbalTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import VerbalComponent from '@components/Test/VerbalComponent/VerbalComponent';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/verbal`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/verbal`;
+const fetchUrlWord = `${process.env.REACT_APP_BACKEND_URL}/verbaltest`;
 
 
 const shortTestDescription='You will be shown words, one at a time. If you\'ve seen a word during the test, click SEEN. If it\'s a new word, click NEW.';
@@ -18,6 +21,7 @@ const testDescription='This test measures how many words you can keep in short t
 const exampleWord: string[] = ['dupajana', 'heja', 'piwo', 'polibuda', 'marek', 'jarek', 'satan', 'akordeon', 'tralala', 'andrzej', 'polokokta', 'ok', 'json', 'bombowo', 'jan13', 'pozdro600', 'grzechuy', 'student', 'benchmark'];
 const words = new Set<string>();
 
+
 export default function VerbalTest() {
   const randomWordPicker = (): string => exampleWord[Math.floor(Math.random() * exampleWord.length)];
 
@@ -26,7 +30,6 @@ export default function VerbalTest() {
   const [userLives, updateLives] = useState<number>(3);
   const [seenWords, updateSeenWords] = useState<Set<string>>(new Set<string>([]));
   const [activeWord, updateActiveWord] = useState<string>(randomWordPicker());
-
 
   const [chartData, updateChart] = useState<TestProps>({
     data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
@@ -55,6 +58,31 @@ export default function VerbalTest() {
     updateSeenWords(new Set<string>([activeWord, ...seenWords]));
   };
 
+  async function sendResultRequest() {
+    const response = await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
+  // async function getChartData() {}
+
+  // async function getWords() {
+  //   const wordsData = await fetch(fetchUrlWord, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
+  //   const exampleWord = (await wordsData.json()) as string[];
+  //   return exampleWord;
+  // };
+
 
   useEffect(() => {
     if (state === 'playing') {
@@ -81,6 +109,12 @@ export default function VerbalTest() {
       updateScore(0);
       updateLives(3);
       updateSeenWords(new Set<string>([]));
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (state === 'end') {
+      sendResultRequest();
     }
   }, [state]);
 
