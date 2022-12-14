@@ -1,4 +1,4 @@
-package com.example.studentbenchmark.entity;
+package com.example.studentbenchmark;
 
 import com.google.gson.JsonObject;
 

@@ -14,6 +14,14 @@ public abstract class AppTest {
     public static final int MAX_VALID_SCORE = 100;
     public static final int MAX_VALID_SCORE_GRAPH = 30;
     protected final int score;
+
+    public AppTest(int score, Long idTest, Long idUser, Date dateOfSubmission) {
+        this.score = score;
+        this.idTest = idTest;
+        this.idUser = idUser;
+        this.dateOfSubmission = dateOfSubmission;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTest;

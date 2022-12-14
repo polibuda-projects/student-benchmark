@@ -36,9 +36,6 @@ public class DeleteAccountController {
 
     Logger logger = LoggerFactory.getLogger(DeleteAccountController.class);
 
-    java.util.Date utilDate = new java.util.Date();
-    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
     @Autowired
     public DeleteAccountController(UserRepo userRepo, PasswordEncoder passwordEncoder, LogsRepo logsRepo) {
 
@@ -63,7 +60,7 @@ public class DeleteAccountController {
         }
 
         userRepo.deleteAccount(email);
-        logsRepo.save(new LoggerEntity(((AppUserEntityDetails) principal).getUsername(), ((AppUserEntityDetails) principal).getId(), sqlDate, "User has deleted the account"));
+        logsRepo.save(new LoggerEntity(((AppUserEntityDetails) principal).getUsername(), ((AppUserEntityDetails) principal).getId(), "User has deleted the account"));
         logger.info("User has deleted the account");
         http.logout();
         return new ResponseEntity<>("User Deleted", HttpStatus.OK);

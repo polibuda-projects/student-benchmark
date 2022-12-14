@@ -38,9 +38,6 @@ public class PasswordRecoveryController {
 
     Logger logger = LoggerFactory.getLogger(PasswordRecoveryController.class);
 
-    java.util.Date utilDate = new java.util.Date();
-    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
     @Autowired
     public PasswordRecoveryController(UserRepo userRepo, PasswordResetTokenRepo tokenRepo, PasswordEncoder passwordEncoder, JavaMailSender mailSender, LogsRepo logsRepo) {
         this.userRepo = userRepo;
@@ -73,7 +70,7 @@ public class PasswordRecoveryController {
         email.setSubject("Password reset");
         email.setText(url + "/resetPassword?token=" + token.getToken());
         mailSender.send(email);
-        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "Password reset email has been sent to the user"));
+        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), "Password reset email has been sent to the user"));
         logger.info("Password reset email has been sent to the user");
         return new ResponseEntity<>("Password reset email sent successfully", HttpStatus.OK);
     }
@@ -97,7 +94,7 @@ public class PasswordRecoveryController {
 
         AppUser user = passwordResetToken.getUser();
         userRepo.changeUserPassword(user.getIdUser(), passwordEncoder.encode(request.newPassword()));
-        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), sqlDate, "User's password has changed successfully"));
+        logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), "User's password has changed successfully"));
         logger.info("User's password has changed successfully");
         return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
     }

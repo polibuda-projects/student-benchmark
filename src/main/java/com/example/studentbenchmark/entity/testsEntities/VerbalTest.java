@@ -1,6 +1,7 @@
 package com.example.studentbenchmark.entity.testsEntities;
 
 import javax.persistence.Entity;
+import java.util.Date;
 
 @Entity(name = "verbal_test")
 public final class VerbalTest extends AppTest {
@@ -12,6 +13,18 @@ public final class VerbalTest extends AppTest {
     @Override
     public boolean isScoreValid() {
         return score >= MIN_VALID_SCORE && score <= MAX_VALID_SCORE;
+    }
+
+    public VerbalTest() {
+
+    }
+
+    public VerbalTest(int score, Long idTest, Long idUser, Date dateOfSubmission) {
+        super(score, idTest, idUser, dateOfSubmission);
+    }
+
+    public VerbalTest(int score) {
+        super(score);
     }
 
 }

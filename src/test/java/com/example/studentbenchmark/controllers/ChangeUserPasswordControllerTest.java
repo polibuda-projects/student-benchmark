@@ -1,5 +1,6 @@
-package com.example.studentbenchmark.entity;
+package com.example.studentbenchmark.controllers;
 
+import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.repository.UserRepo;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.AfterEach;
@@ -17,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import static com.example.studentbenchmark.entity.TestConstants.*;
+import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
