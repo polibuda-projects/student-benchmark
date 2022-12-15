@@ -92,6 +92,8 @@ export default class Inputs extends Component<InputProps, InputState> {
     if (input.name.includes('title')) {
       if (value.length > 64) {
         this.setState({ message: 'Title is too long' });
+      } else if (value.length < 5) {
+        this.setState({ message: 'Title is too short' });
       } else {
         this.setState({ message: '' });
       }
