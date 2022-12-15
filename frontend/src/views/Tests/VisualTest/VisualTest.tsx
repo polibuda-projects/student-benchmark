@@ -6,6 +6,7 @@ import logo from '@resources/img/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import SquaresBoard from '@views/Tests/VisualTest/SquaresBoard/SquaresBoard';
 const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/visual`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/visual`;
 
 const testDescription = 'Every level, a number of tiles will flash white. Memorize them, and pick them again after the tiles are reset! ' +
   'Levels get progressively more difficult, to challenge your skills. You have three lives. Make it as far as you can!';
@@ -34,8 +35,8 @@ export default function VisualTest() {
   const [testActiveState, updateTestActiveState] = useState<TestActiveState>('generate');
 
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
@@ -111,14 +112,54 @@ export default function VisualTest() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        test: userScore,
+        score: userScore,
       }),
+    });
+  }
+
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Error! status: ${response.status}');
+    }
+
+    const result = (await response.json()) as number[];
+
+    const max = Math.max(...result);
+    const counts = new Map();
+
+    for (let i = 0; i <= max; i++) {
+      counts.set(i, 0);
+    }
+
+    for (const n of result) {
+      counts.set(n, counts.get(n) + 1);
+    }
+
+    const countArray = Array.from(counts.values());
+    console.log(result);
+    console.log(countArray);
+
+    updateChart({
+      data: countArray,
+      range: [0, countArray.length - 1],
     });
   }
 
   useEffect(() => {
     if (state === 'end') {
       sendResultRequest();
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (state === 'start') {
+      getChartData();
     }
   }, [state]);
 

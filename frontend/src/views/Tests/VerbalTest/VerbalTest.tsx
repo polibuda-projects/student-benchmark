@@ -23,15 +23,15 @@ export default function VerbalTest() {
   const randomWordPicker = (): string => wordList[Math.floor(Math.random() * wordList.length)];
 
   const [state, updateState] = useState<TestState>('start');
-  const [userScore, updateScore] = useState<number | null>(0);
+  const [userScore, updateScore] = useState<number | null>(null);
   const [userLives, updateLives] = useState<number>(3);
   const [wordList, setWordList] = useState<string[]>([]);
   const [seenWords, updateSeenWords] = useState<Set<string>>(new Set<string>([]));
   const [activeWord, updateActiveWord] = useState<string>(randomWordPicker());
 
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
 
 
@@ -68,7 +68,39 @@ export default function VerbalTest() {
     });
   }
 
-  async function getChartData() {}
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Error! status: ${response.status}');
+    }
+
+    const result = (await response.json()) as number[];
+
+    const max = Math.max(...result);
+    const counts = new Map();
+
+    for (let i = 0; i <= max; i++) {
+      counts.set(i, 0);
+    }
+
+    for (const n of result) {
+      counts.set(n, counts.get(n) + 1);
+    }
+
+    const countArray = Array.from(counts.values());
+    console.log(result);
+    console.log(countArray);
+
+    updateChart({
+      data: countArray,
+      range: [0, countArray.length - 1],
+    });
+  }
 
   async function getWords() {
     const wordsData = await fetch(fetchUrlWord, {
@@ -82,7 +114,8 @@ export default function VerbalTest() {
 
   useEffect(() => {
     if (state === 'start') {
-      updateScore(0);
+      updateScore(null);
+      getChartData();
       updateLives(3);
       updateSeenWords(new Set<string>([]));
     }
