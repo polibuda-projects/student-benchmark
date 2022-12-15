@@ -162,6 +162,54 @@ public class LogInAndLogOutTest {
     }
 
     @Test
+    public void shouldReturnRedirection_whenEmailOrNicknameFieldIsEmpty() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user("").password(USER_PASSWORD))
+                .andDo(print()).andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void redirectedUrlShouldBeCorrect_whenEmailOrNicknameFieldIsEmpty() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user("").password(USER_PASSWORD))
+                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+    }
+
+    @Test
+    public void shouldReturnRedirection_whenPasswordFieldIsEmptyWithNickname() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user(USER_NICKNAME).password(""))
+                .andDo(print()).andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    public void redirectedUrlShouldBeCorrect_whenPasswordFieldIsEmptyWithNickname() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user(USER_NICKNAME).password(""))
+                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+    }
+
+    @Test
+    public void shouldReturnRedirection_whenPasswordFieldIsEmptyWithEmail() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user(USER_EMAIL).password(""))
+                .andDo(print()).andExpect(status().is3xxRedirection());
+    }
+    @Test
+    public void redirectedUrlShouldBeCorrect_whenPasswordFieldIsEmptyWithEmail() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user(USER_EMAIL).password(""))
+                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+    }
+
+
+    @Test
     public void shouldReturnRedirection_whenLogoutIsSuccessful() throws Exception {
         mvc
                 .perform(logout())
