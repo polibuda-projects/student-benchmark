@@ -49,6 +49,10 @@
   width: 40rem;
 }
 
+.resetMessage{
+  padding-top: 1em;
+}
+
 @media (max-width: 1024px) {
   .logo {
     display: none;
