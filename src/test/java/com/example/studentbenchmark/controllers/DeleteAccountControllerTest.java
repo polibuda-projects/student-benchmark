@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class DeleteAccountControllerTest {
 
     private final static String PATH = "/deleteAccount";
@@ -55,12 +57,6 @@ public class DeleteAccountControllerTest {
     public void addTestUser() {
         userRepo.save(new AppUser(USER_NICKNAME, USER_EMAIL, passwordEncoder.encode(USER_PASSWORD),
                 AppUser.Role.USER));}
-
-
-    @AfterEach
-    void clear(){
-        userRepo.deleteAll();
-    }
 
         @Test
         public void shouldReturnOk_whenSuccessfuly () throws Exception {
