@@ -20,7 +20,7 @@ const testDescription='This test measures how many words you can keep in short t
 
 export default function VerbalTest() {
   const words = new Set<string>();
-  const randomWordPicker = (): string => wordList[Math.floor(Math.random() * 8167)];
+  const randomWordPicker = (): string => wordList[Math.floor(Math.random() * wordList.length)];
 
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<number | null>(0);
@@ -77,8 +77,7 @@ export default function VerbalTest() {
         'Content-Type': 'application/json',
       },
     });
-    const dupa = (await wordsData.json()) as string[];
-    return dupa;
+    return (await wordsData.json()) as string[];
   };
 
   useEffect(() => {
