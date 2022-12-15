@@ -8,6 +8,7 @@ import TestEnd from '@components/Test/TestEnd';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import { isDisabled } from '@testing-library/user-event/dist/utils';
 const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/sequence`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/sequence`;
 
 const testDescription = 'Memorize the sequence of buttons that light up, then press them in order. '+
 'Every time you finish the pattern, it gets longer. '+
@@ -19,10 +20,10 @@ export default function SequenceTest() {
   const [state, updateState] = useState<TestState>('start');
   const [sequenceList, updateSequenceList] = useState<number[]>([]);
   const [inputList, updateInputList] = useState<number[]>([]);
-  const [userScore, updateScore] = useState<null | number>(0);
+  const [userScore, updateScore] = useState<null | number>(null);
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
 
   async function sendResultRequest() {
@@ -32,16 +33,56 @@ export default function SequenceTest() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        test: userScore,
+        score: userScore,
       }),
     });
   }
+
+  useEffect(() => {
+    if (state === 'start') {
+      getChartData();
+    }
+  });
 
   useEffect(() => {
     if (state === 'end') {
       sendResultRequest();
     }
   }, [state]);
+
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Error! status: ${response.status}');
+    }
+
+    const result = (await response.json()) as number[];
+
+    const max = Math.max(...result);
+    const counts = new Map();
+
+    for (let i = 0; i <= max; i++) {
+      counts.set(i, 0);
+    }
+
+    for (const n of result) {
+      counts.set(n, counts.get(n) + 1);
+    }
+
+    const countArray = Array.from(counts.values());
+    console.log(result);
+    console.log(countArray);
+
+    updateChart({
+      data: countArray,
+      range: [0, countArray.length - 1],
+    });
+  }
 
   useEffect(() => {
     if (state === 'playing') {

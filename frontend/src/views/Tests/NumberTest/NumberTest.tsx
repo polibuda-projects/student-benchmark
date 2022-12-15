@@ -7,7 +7,9 @@ import logo from '@resources/img/numberTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';
+import { count } from 'console';
 const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/number`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/number`;
 
 const testDescription = 'The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
 
@@ -15,14 +17,14 @@ const shortTestDescription = 'Remember the longest number you can.';
 
 export default function NumberTest() {
   const [state, updateState] = useState<TestState>('start');
-  const [userScore, updateScore] = useState<null | number>(0);
+  const [userScore, updateScore] = useState<null | number>(null);
   const [currentLevel, updateLevel] = useState<number>(1);
   const [currentNumber, updateNumber] = useState<number>(Math.floor(Math.random() * 10));
   let [yourNumber, updateYourNumber] = useState<number>(0);
 
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
   const move = () => {
     const elem = document.getElementById('inner');
@@ -46,8 +48,9 @@ export default function NumberTest() {
 
   useEffect(() => {
     if (state === 'start') {
+      updateScore(null);
+      getChartData();
       updateLevel(1);
-      updateScore(0);
       updateNumber(Math.floor(Math.random() * 10));
     }
   }, [state]);
@@ -78,14 +81,49 @@ export default function NumberTest() {
   };
 
   async function sendResultRequest() {
+    console.log(userScore);
     await fetch(fetchUrlResult, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        test: userScore,
+        score: userScore,
       }),
+    });
+  }
+
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Error! status: ${response.status}');
+    }
+
+    const result = (await response.json()) as number[];
+
+    const max = Math.max(...result);
+    const counts = new Map();
+
+    for (let i = 0; i <= max; i++) {
+      counts.set(i, 0);
+    }
+
+    for (const n of result) {
+      counts.set(n, counts.get(n) + 1);
+    }
+
+    const countArray = Array.from(counts.values());
+    console.log(result);
+    console.log(countArray);
+
+    updateChart({
+      data: countArray,
+      range: [0, countArray.length - 1],
     });
   }
 
