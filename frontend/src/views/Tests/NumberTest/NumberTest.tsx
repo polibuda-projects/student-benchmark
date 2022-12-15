@@ -48,8 +48,8 @@ export default function NumberTest() {
 
   useEffect(() => {
     if (state === 'start') {
-      updateScore(null);
       getChartData();
+      updateScore(0);
       updateLevel(1);
       updateNumber(Math.floor(Math.random() * 10));
     }

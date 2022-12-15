@@ -42,7 +42,7 @@ export default function SequenceTest() {
     if (state === 'start') {
       getChartData();
     }
-  });
+  }, [state]);
 
   useEffect(() => {
     if (state === 'end') {
