@@ -17,17 +17,15 @@ const testDescription='This test measures how many words you can keep in short t
 'Go as long as you can. You have 3 strikes until game over'+
 'Your score is how many turns you lasted.';
 
-// eslint-disable-next-line max-len
-const exampleWord: string[] = ['dupajana', 'heja', 'piwo', 'polibuda', 'marek', 'jarek', 'satan', 'akordeon', 'tralala', 'andrzej', 'polokokta', 'ok', 'json', 'bombowo', 'jan13', 'pozdro600', 'grzechuy', 'student', 'benchmark'];
-const words = new Set<string>();
-
 
 export default function VerbalTest() {
-  const randomWordPicker = (): string => exampleWord[Math.floor(Math.random() * exampleWord.length)];
+  const words = new Set<string>();
+  const randomWordPicker = (): string => wordList[Math.floor(Math.random() * 8167)];
 
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<number | null>(0);
   const [userLives, updateLives] = useState<number>(3);
+  const [wordList, setWordList] = useState<string[]>([]);
   const [seenWords, updateSeenWords] = useState<Set<string>>(new Set<string>([]));
   const [activeWord, updateActiveWord] = useState<string>(randomWordPicker());
 
@@ -65,24 +63,31 @@ export default function VerbalTest() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        test: userScore,
+        score: userScore,
       }),
     });
   }
 
-  // async function getChartData() {}
+  async function getChartData() {}
 
-  // async function getWords() {
-  //   const wordsData = await fetch(fetchUrlWord, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  //   const exampleWord = (await wordsData.json()) as string[];
-  //   return exampleWord;
-  // };
+  async function getWords() {
+    const wordsData = await fetch(fetchUrlWord, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const dupa = (await wordsData.json()) as string[];
+    return dupa;
+  };
 
+  useEffect(() => {
+    if (state === 'start') {
+      updateScore(0);
+      updateLives(3);
+      updateSeenWords(new Set<string>([]));
+    }
+  }, [state]);
 
   useEffect(() => {
     if (state === 'playing') {
@@ -100,21 +105,18 @@ export default function VerbalTest() {
   useEffect(() => {
     if (userLives === 0 && state === 'playing') {
       updateState('end');
+      sendResultRequest();
     }
   }, [userLives, state]);
 
 
   useEffect(() => {
     if (state === 'start') {
-      updateScore(0);
-      updateLives(3);
-      updateSeenWords(new Set<string>([]));
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (state === 'end') {
-      sendResultRequest();
+      async function getWordsAsync() {
+        const result = getWords();
+        setWordList(await result);
+      }
+      getWordsAsync();
     }
   }, [state]);
 
