@@ -1,7 +1,10 @@
 package com.example.studentbenchmark.selenium;
 
 import com.example.studentbenchmark.selenium.forms.LoginForm;
+import com.example.studentbenchmark.selenium.forms.SignupForm;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -53,5 +56,38 @@ public class LoginAutomatedTest {
 
         String expectedUrl = "https://www.studentbenchmark.pl";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/invalidEmails.csv")
+    public void shouldWarnUser_whenEmailIsInvalid(String invalidEmail) {
+        LoginForm loginForm = new LoginForm(driver);
+        loginForm.clearInputs();
+
+        loginForm.getEmailInput().sendKeys(invalidEmail);
+
+        Assertions.assertTrue(driver.getPageSource().contains("Email is not valid"));
+    }
+
+    @Test
+    public void shouldWarnUser_whenEmailIsTooLong() {
+        String invalidEmail = "user@TooLongEmaildo8f0myI34jvrKGyqLHWtZGLfTDuPa7uUwRpwVtBPyBj.com";
+        LoginForm loginForm = new LoginForm(driver);
+        loginForm.clearInputs();
+
+        loginForm.getEmailInput().sendKeys(invalidEmail);
+
+        Assertions.assertTrue(driver.getPageSource().contains("Email is too long"));
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/invalidPasswords.csv")
+    public void shouldWarnUser_whenPasswordIsInvalid(String invalidPassword, String warningMessage) {
+        LoginForm loginForm = new LoginForm(driver);
+        loginForm.clearInputs();
+
+        loginForm.getPasswordInput().sendKeys(invalidPassword);
+
+        Assertions.assertTrue(driver.getPageSource().contains(warningMessage));
     }
 }
