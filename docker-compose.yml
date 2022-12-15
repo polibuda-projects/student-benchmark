@@ -32,6 +32,8 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - MAIL_SMTP_AUTH=${MAIL_SMTP_AUTH}
       - MAIL_SMTP_TLS=${MAIL_SMTP_TLS}
+    volumes:
+      - ./ListOfWordsForVerbalTest.csv:/app/src/main/resources/ListOfWordsForVerbalTest.csv:ro
 
   db:
     image: mysql:latest

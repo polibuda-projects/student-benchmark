@@ -26,14 +26,13 @@ export default function SequenceTest() {
   });
 
   async function sendResultRequest() {
-    console.log(userScore);
-    const response = await fetch(fetchUrlResult, {
+    await fetch(fetchUrlResult, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        score: userScore,
+        test: userScore,
       }),
     });
   }
