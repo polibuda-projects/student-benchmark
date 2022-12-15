@@ -85,13 +85,13 @@ public class DeleteAccountControllerTest {
 
 
     @Test
-    public void shouldDelateUser () throws Exception {
+    public void shouldDeleteUser () throws Exception {
         mvc.
                 perform(post(PATH).with(basicAuth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(delateAccountRequest("nickname", "email@email.com", "P@ssw0rd").toString()))
                 .andDo(print());
-        assertEquals(null,userRepo.findUser("email@email.com","P@ssw0rd"));
+        assertTrue(userRepo.findByNickname("nickname").isEmpty());
     }
 
     @Test//do zastanowiena się
