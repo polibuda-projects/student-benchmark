@@ -1,5 +1,6 @@
 package com.example.studentbenchmark.repository;
 
+import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,8 +14,16 @@ public class AppUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByNickname(username).map(AppUserEntityDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+        UserDetails user = userRepo.findByNickname(usernameOrEmail).map(AppUserEntityDetails::new).orElse(null);
+        if (user == null) {
+            AppUser userByEmail = userRepo.findByEmail(usernameOrEmail);
+            if (userByEmail == null) {
+                throw new UsernameNotFoundException(usernameOrEmail);
+            }
+            user =  new AppUserEntityDetails(userByEmail);
+        }
+
+        return user;
     }
 }
