@@ -1,6 +1,7 @@
 package com.example.studentbenchmark.controllers;
 
 
+import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.LoggerEntity;
 import com.example.studentbenchmark.repository.LogsRepo;
@@ -49,9 +50,9 @@ public class DeleteAccountController {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-
         String email = ((AppUserEntityDetails) principal).getEmail();
-        String password = ((AppUserEntityDetails) principal).getPassword();
+        AppUser user = userRepo.findByEmail(email);
+        String password = user.getPassword();
 
 
         if (!passwordEncoder.matches(request.password(), password)) {
