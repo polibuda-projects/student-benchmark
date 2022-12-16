@@ -31,6 +31,7 @@ public class RegistrationController {
 
     @Autowired
     public RegistrationController(UserRepo userRepo, PasswordEncoder passwordEncoder, LogsRepo logsRepo) {
+
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.logsRepo = logsRepo;
@@ -43,6 +44,12 @@ public class RegistrationController {
         if (!request.password().equals(request.passwordConfirmation())) {
             logger.error("User has entered not matching passwords");
             return new ResponseEntity<>("Passwords do not match", HttpStatus.BAD_REQUEST);
+        }
+
+        //Sprawdzenie czy użytkownik podal nasz email
+        if (request.email().equals("support@studentbenchmark.pl")) {
+            logger.error("User has entered the email which is not allowed");
+            return new ResponseEntity<>("5", HttpStatus.BAD_REQUEST);
         }
 
         //Sprawdzenie czy użytkownik o podanym adresie email już istnieje
@@ -70,28 +77,27 @@ public class RegistrationController {
 
     //Klasa reprezentująca dane z formularza rejestracji z walidacją
     private record RegistrationRequest(
-            @NotNull
-            @NotBlank(message = "nickname is mandatory")
-            @Size(min = 3, max = 64)
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
+            @Size(min = 3, max = 64, message ="2" )
             String nickname,
 
-            @Email
-            @NotBlank
-            @NotNull
-            @Size(min = 3, max = 64)
+            @Email(message = "3")
+            @Pattern(regexp=".+@.+\\..+", message="3")
+            @NotBlank(message = "1")
+            @NotNull(message = "0")
+            @Size(min = 3, max = 64, message = "2")
             String email,
 
-            @NotNull
-            @NotBlank(message = "password is mandatory")
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
             @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
-                    "<br/>" + "   Password must contain at least one digit [0-9]." +
-                            "<br/>" + "   Password must contain at least one lowercase Latin character [a-z]." +
-                            "<br/>" + "    Password must contain at least one uppercase Latin character [A-Z]." +
-                            "<br/>" + "    Password must contain at least one special character like ! @ # & ( )." +
-                            "<br/>" + "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
+                    "4")
             String password,
-            @NotNull
-            @NotBlank(message = "password confirmation is mandatory")
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+                    "4")
             String passwordConfirmation) {
     }
 }

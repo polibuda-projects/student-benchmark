@@ -14,23 +14,21 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-    @NotNull
-    @NotBlank(message = "nickname is mandatory")
-    @Size(min = 3, max = 64)
+    @NotNull(message = "0")
+    @NotBlank(message = "1")
+    @Size(min = 3, max = 64, message ="2" )
     private String nickname;
-    @Email
-    @NotBlank
-    @NotNull
-    @Size(min = 3, max = 64)
+    @Email(message = "3")
+    @Pattern(regexp=".+@.+\\..+", message="3")
+    @NotBlank(message = "1")
+    @NotNull(message = "0")
+    @Size(min = 3, max = 64, message = "2")
     private String email;
-    @NotNull
-    @NotBlank(message = "password is mandatory")
+
+    @NotNull(message = "0")
+    @NotBlank(message = "1")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
-            "<br/>" + "   Password must contain at least one digit [0-9]." +
-                    "<br/>" + "   Password must contain at least one lowercase Latin character [a-z]." +
-                    "<br/>" + "    Password must contain at least one uppercase Latin character [A-Z]." +
-                    "<br/>" + "    Password must contain at least one special character like ! @ # & ( )." +
-                    "<br/>" + "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
+            "4")
     private String password;
     private Role role;
     private Date creationDate;

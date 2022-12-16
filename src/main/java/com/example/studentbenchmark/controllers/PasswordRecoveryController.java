@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -77,7 +79,7 @@ public class PasswordRecoveryController {
 
     @PostMapping("/resetPassword")
     public ResponseEntity<String> resetPassword(@RequestParam(name = "token", required = false) String token,
-                                                @RequestBody ResetPasswordRequest request) {
+                                                @Valid @RequestBody ResetPasswordRequest request) {
         PasswordResetToken passwordResetToken = tokenRepo.findByToken(token).orElse(null);
         if (passwordResetToken == null) {
             logger.error("Token not found");
@@ -99,10 +101,25 @@ public class PasswordRecoveryController {
         return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
     }
 
-    private record ResetPasswordRequest(String newPassword,
-                                        String newPasswordRepeated) {
+    private record ResetPasswordRequest(
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+                    "4")
+            String newPassword,
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+                    "4")
+            String newPasswordRepeated) {
     }
 
-    private record PasswordRecoveryRequest(String email) {
+    private record PasswordRecoveryRequest(
+            @Email(message = "3")
+            @Pattern(regexp=".+@.+\\..+", message="3")
+            @NotBlank(message = "1")
+            @NotNull(message = "0")
+            @Size(min = 3, max = 64, message = "2")
+            String email) {
     }
 }

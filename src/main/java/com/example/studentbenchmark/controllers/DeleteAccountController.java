@@ -68,14 +68,10 @@ public class DeleteAccountController {
     }
 
     private record DeleteAccountRequest(
-            @NotNull
-            @NotBlank(message = "password is mandatory")
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
             @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
-                    "<br/>" + "   Password must contain at least one digit [0-9]." +
-                            "<br/>" + "   Password must contain at least one lowercase Latin character [a-z]." +
-                            "<br/>" + "    Password must contain at least one uppercase Latin character [A-Z]." +
-                            "<br/>" + "    Password must contain at least one special character like ! @ # & ( )." +
-                            "<br/>" + "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")
+                    "4")
             String password) {
     }
 }

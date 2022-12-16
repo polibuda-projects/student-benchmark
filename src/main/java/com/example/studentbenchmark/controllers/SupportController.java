@@ -48,7 +48,7 @@ public class SupportController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
-        System.out.println(userRepo.findByNickname(currentUser.getUsername()));
+
         if ((userRepo.findByNickname(currentUser.getUsername())).isEmpty()) {
             return new ResponseEntity<>("No email to send response", HttpStatus.UNAUTHORIZED);
         }
@@ -60,14 +60,14 @@ public class SupportController {
     }
 
     private record SupportRequest(
-            @NotNull
-            @NotBlank
-            @Size(min = 5, max = 256)
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
+            @Size(min = 5, max = 256, message = "2")
             String message,
 
-            @NotNull
-            @NotBlank
-            @Size(max = 64)
+            @NotNull(message = "0")
+            @NotBlank(message = "1")
+            @Size(min = 3, max = 64, message = "2")
             String messageTitle) {
     }
 }

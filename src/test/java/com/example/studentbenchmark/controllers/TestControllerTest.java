@@ -6,6 +6,7 @@ import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.testsEntities.*;
 import com.example.studentbenchmark.repository.testsRepositories.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,10 +24,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.studentbenchmark.entity.AppUser.Role.USER;
 import static org.hamcrest.Matchers.containsString;
@@ -56,19 +55,26 @@ public class TestControllerTest {
 
     Authentication authentication;
 
-    public void shouldSendAllScores(List<AppTest> appTests, TestRepo testRepo, String path) throws Exception {
+    public void shouldSendAllScores(List<AppTest> appTests, TestRepo testRepo, String path, Integer size) throws Exception {
         appTests = appTests.stream().sorted(Comparator.comparingInt(AppTest::getScore)).toList();
         when(testRepo.getAllScores()).thenReturn(appTests);
-        List<Integer> score = appTests.stream().map(p -> p.getScore()).toList();
-
-        MvcResult mvcResult = mockMvc.perform(get("/tests/".concat(path)))
+        Map<Integer, Long> scoresMap = appTests.stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
+        String json = mockMvc.perform(get("/tests/".concat(path)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").value(score.get(0)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(score.get(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2]").value(score.get(2)))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(size)))
+                .andReturn().getResponse().getContentAsString();
 
+        List<Integer> response= new ObjectMapper().readValue(json, List.class);
+        for(int i=0; i< response.size(); i++)
+        {
+            if(scoresMap.containsKey(i))
+            {
+                Assertions.assertTrue((long)scoresMap.get(i) == response.get(i));
+
+            }
+            else
+                Assertions.assertTrue(response.get(i)==0L);
+        }
     }
 
     @Test
@@ -79,7 +85,8 @@ public class TestControllerTest {
         sequenceTests.add(new SequenceTest(15, (long) 2, (long) 1, new Date()));
         sequenceTests.add(new SequenceTest(13, (long) 3, (long) 1, new Date()));
 
-        shouldSendAllScores(sequenceTests, sequenceTestRepo, "sequence");
+
+        shouldSendAllScores(sequenceTests, sequenceTestRepo, "sequence", 101);
 
 
     }
@@ -92,7 +99,7 @@ public class TestControllerTest {
         verbalTests.add(new VerbalTest(15, (long) 2, (long) 1, new Date()));
         verbalTests.add(new VerbalTest(13, (long) 3, (long) 1, new Date()));
 
-        shouldSendAllScores(verbalTests, verbalTestRepo, "verbal");
+        shouldSendAllScores(verbalTests, verbalTestRepo, "verbal", 1001);
 
 
     }
@@ -105,7 +112,7 @@ public class TestControllerTest {
         visualTests.add(new VisualTest(10, (long) 2, (long) 1, new Date()));
         visualTests.add(new VisualTest(12, (long) 3, (long) 1, new Date()));
 
-        shouldSendAllScores(visualTests, visualTestRepo, "visual");
+        shouldSendAllScores(visualTests, visualTestRepo, "visual", 101);
 
 
     }
@@ -118,7 +125,7 @@ public class TestControllerTest {
         numberTests.add(new NumberTest(15, (long) 2, (long) 1, new Date()));
         numberTests.add(new NumberTest(13, (long) 3, (long) 1, new Date()));
 
-        shouldSendAllScores(numberTests, numberTestRepo, "number");
+        shouldSendAllScores(numberTests, numberTestRepo, "number", 101);
 
 
     }
