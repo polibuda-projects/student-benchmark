@@ -81,24 +81,9 @@ export default function VerbalTest() {
 
     const result = (await response.json()) as number[];
 
-    const max = Math.max(...result);
-    const counts = new Map();
-
-    for (let i = 0; i <= max; i++) {
-      counts.set(i, 0);
-    }
-
-    for (const n of result) {
-      counts.set(n, counts.get(n) + 1);
-    }
-
-    const countArray = Array.from(counts.values());
-    console.log(result);
-    console.log(countArray);
-
     updateChart({
-      data: countArray,
-      range: [0, countArray.length - 1],
+      data: result,
+      range: [0, result.length - 1],
     });
   }
 
