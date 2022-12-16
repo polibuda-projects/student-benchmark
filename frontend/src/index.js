@@ -21,6 +21,9 @@ import VerbalTest from '@views/Tests/VerbalTest/VerbalTest';
 import SequenceTest from '@views/Tests/SequenceTest/SequenceMemory';
 import NumberTest from '@views/Tests/NumberTest/NumberTest';
 import Admin from '@views/Admin/Admin';
+import RestrictedRoute from '@components/RestrictedRoute/RestrictedRoute';
+import { isLoggedIn } from './auth';
+
 
 const router = createBrowserRouter([
   {
@@ -62,7 +65,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/delete',
-    element: <Delete />,
+    element: <RestrictedRoute
+      condition={isLoggedIn}
+      component={<Delete />}
+      invalidComponent={<Login />}
+    />,
   },
   {
     path: '/signup',
@@ -74,11 +81,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/settings',
-    element: <User />,
+    element: <RestrictedRoute
+      condition={isLoggedIn}
+      component={<User />}
+      invalidComponent={<Login />}
+    />,
   },
   {
     path: '/password',
-    element: <Password />,
+    element: <RestrictedRoute
+      condition={isLoggedIn}
+      component={<Password />}
+      invalidComponent={<Login />}
+    />,
   },
   {
     path: '/dashboard',
@@ -90,7 +105,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <Admin />,
+    element: <RestrictedRoute
+      condition={isLoggedIn}
+      component={<Admin />}
+      invalidComponent={<Login />}
+    />,
   },
 ]);
 

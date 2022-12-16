@@ -7,10 +7,11 @@ import logo from '@resources/img/logoVertical.svg';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import { Link } from 'react-router-dom';
 import { useState, useRef } from 'react';
-const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/login`;
+import { login as apiLogin } from '../../auth';
 
 function Login() {
   const [isShown, setIsSHown] = useState(false);
+  const [loginMessage, setLoginMessage] = useState('');
 
   const togglePassword = () => {
     setIsSHown((isShown) => !isShown);
@@ -20,22 +21,8 @@ function Login() {
   const password = useRef(null);
 
   async function sendRegisterRequest() {
-    const body = new FormData();
-    body.append('username', nickname.current.value);
-    body.append('password', password.current.value);
-
-    const requestOptions = {
-      method: 'POST',
-      body: body,
-    };
-
-
-    try {
-      await fetch(fetchUrl, requestOptions, { mode: 'cors' });
-      document.location.replace('/');
-    } catch (error) {
-      console.log('Login error');
-    }
+    const resp = await apiLogin(nickname.current.value, password.current.value);
+    setLoginMessage(resp);
   };
 
   return (
@@ -60,6 +47,7 @@ function Login() {
               </div>
             </div>
           </form>
+          <p1>{loginMessage}</p1>
         </ContainerBox>
         <img src={logo} className={style.logo} alt={'Student Benchmark'}/>
 

@@ -4,12 +4,11 @@ import style from './UserProfile.module.css';
 import defaultAvatar from '@resources/img/defaultAvatar.svg';
 import downArrow from '@resources/img/downArrow.svg';
 import { Link } from 'react-router-dom';
+import { getUserstate, logout } from '../../auth';
 
 
 export interface UserProfileProps {
   nodeRef: React.RefObject<HTMLDivElement>;
-  username?: string;
-  avatarUrl?: string;
 }
 
 export interface UserProfileState {
@@ -27,18 +26,22 @@ export class UserProfileComponent extends Component<UserProfileProps, UserProfil
   }
 
   public render() {
+    const userState = getUserstate();
+
+    if (userState === null) return <div style={{ height: '5rem' }}></div>;
+
     return (
       <div className={style.container}>
         <div className={style.profile} onClick={this.toggleDropdown}>
-          <img src={this.props.avatarUrl ?? defaultAvatar} className={style.avatar} alt='?'/>
-          <span className={style.username}>{this.props.username ?? 'Guest'}</span>
+          <img src={defaultAvatar} className={style.avatar} alt='?'/>
+          <span className={style.username}>{userState?.username ?? 'Guest'}</span>
           <img src={downArrow} className={this.burgerClasses} alt='more'/>
         </div>
 
         <div className={this.dropdownClasses}>
           <Link className={style.dropdownButton} to='/dashboard'>Dashboard</Link>
           <Link className={style.dropdownButton} to='/settings'>Settings</Link>
-          <Link className={style.dropdownButton} to='/logout'>Logout</Link>
+          <div style={{ cursor: 'pointer' }} className={style.dropdownButton} onClick={logout}>Logout</div>
         </div>
       </div>
     );

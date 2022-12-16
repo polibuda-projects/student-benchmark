@@ -44,7 +44,7 @@ export default class Page extends Component<PageProps> {
               <Link className={style.branding} to='/#'>
                 <img src={icon} className={style.icon} alt='' />
               </Link>
-              {this.props.user && <UserProfile username='UserWithLongUsername' />}
+              {this.props.user && <UserProfile />}
             </div>
           }
 

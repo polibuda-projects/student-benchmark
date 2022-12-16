@@ -4,13 +4,17 @@ import ButtonMedium from '@components/Buttons/ButtonMedium';
 import ButtonGrey from '@components/Buttons/ButtonGrey';
 import { Link } from 'react-router-dom';
 import userAvatar from '@resources/img/defaultAvatar.svg';
+import { getUserstate, logout } from '../../auth';
+
 
 function User() {
+  const userState = getUserstate();
+
   return (
     <Page background={true} titlebar={false} user={false}>
       <img src={userAvatar} className={style.userAvatar} alt={'Default Avatar'} />
       <div className={style.userBar}>
-        <span className={style.username}>UserWithLongUsername</span>
+        <span className={style.username}>{userState?.username}</span>
       </div>
       <div className={style.buttons}>
         <Link to='/dashboard'>
@@ -23,7 +27,7 @@ function User() {
           <ButtonGrey className={style.buttonGrey} text={'Delete Account'}/>
         </Link>
       </div>
-      <ButtonMedium className={style.buttonMedium} text={'Log Out'}/>
+      <ButtonMedium className={style.buttonMedium} onClick={logout} text={'Log Out'}/>
     </Page>
   );
 }
