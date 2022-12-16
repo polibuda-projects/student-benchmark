@@ -63,7 +63,7 @@ public class TestController {
     List<Long> getResultsFromSequenceTest() {
         List<Long> allPossibleScores=new ArrayList<>();
         Map<Integer, Long> scores = sequenceTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
-        for (int i = 0; i < SequenceTest.MAX_VALID_SCORE; i++) {
+        for (int i = 0; i <= SequenceTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
                 allPossibleScores.add(i,0L);
             }
@@ -89,7 +89,7 @@ public class TestController {
     List<Long> getResultsFromVerbalTest() {
         List<Long> allPossibleScores=new ArrayList<>();
         Map<Integer, Long> scores = verbalTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
-        for (int i = 0; i < VerbalTest.MAX_VALID_SCORE; i++) {
+        for (int i = 0; i <= VerbalTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
                 allPossibleScores.add(i,0L);
             }
@@ -117,7 +117,7 @@ public class TestController {
     List<Long> getResultsFromNumberTest() {
         List<Long> allPossibleScores=new ArrayList<>();
         Map<Integer, Long> scores = numberTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
-        for (int i = 0; i < NumberTest.MAX_VALID_SCORE; i++) {
+        for (int i = 0; i <= NumberTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
                 allPossibleScores.add(i,0L);
             }
@@ -144,7 +144,7 @@ public class TestController {
     List<Long> getResultsFromVisualTest() {
         List<Long> allPossibleScores=new ArrayList<>();
         Map<Integer, Long> scores = visualTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
-        for (int i = 0; i < VisualTest.MAX_VALID_SCORE; i++) {
+        for (int i = 0; i <= VisualTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
                 allPossibleScores.add(i,0L);
             }
