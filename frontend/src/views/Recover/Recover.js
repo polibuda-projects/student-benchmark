@@ -7,17 +7,22 @@ import logo from '@resources/img/logoVertical.svg';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 
 import { useRef, useState } from 'react';
+
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/passwordRecovery`;
 
 function Recover() {
+  const [validEmail, setValidEmail] = useState(false);
   const [resetMessage, setResetMessage] = useState('');
   const emailToWhichSendReset = useRef(null);
 
   async function sendResetRequest() {
+    if (!validEmail) {
+      return;
+    }
+
     const body = {
       email: emailToWhichSendReset.current.value,
     };
-    console.log(body);
 
     const requestOptions = {
       method: 'POST',
@@ -27,14 +32,18 @@ function Recover() {
 
     try {
       const response = await fetch(fetchUrl, requestOptions);
-      try {
-        console.log(await response.clone().json());
-      } catch (error) {
-        setResetMessage(await response.clone().text());
-      }
+      // Information about a non-existent account is not provided - for security reasons.
+      setResetMessage(`If a matching account was found an email was sent to ${body['email']} 
+        to allow you to reset your password. 
+        If you still don't see the email after a few minutes, please check your Spam folder.`);
+
+      // if (response.status === /*40number - documentation please*/) {
+      //   // The reset link message was not sent due to, for example, a server network connection issue.
+      //   setResetMessage('Something went wrong - try again later');
+      // }
     } catch (err) {
+      // Request cannot be made or a response cannot be retrieved - probably network connection issue.
       setResetMessage('Something went wrong - try again');
-      console.log('Reset password error - ' + err.message);
     }
   }
 
@@ -44,10 +53,11 @@ function Recover() {
         <ContainerBox width={'60em'}>
           <h1 className={style.title}>Enter your email</h1>
           <form method="post" action="#" className={style.form}>
-            <Input useRef={emailToWhichSendReset} className={style.formElement} type={'email'} name={'emailLog'} placeholder={'Address email'}/>
+            <Input useRef={emailToWhichSendReset} correctValue={setValidEmail} className={style.formElement}
+              type={'email'} name={'emailLog'} placeholder={'Address email'}/>
             <ButtonMedium onClick={sendResetRequest} className={style.formOptions} text={'SEND'} width={''}/>
+            <div className={style.resetMessage}>{resetMessage}</div>
           </form>
-          <div className={style.resetMessage}>{resetMessage}</div>
         </ContainerBox>
         <img src={logo} className={style.logo} alt={'Student Benchmark'}/>
       </section>

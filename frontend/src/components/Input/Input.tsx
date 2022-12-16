@@ -20,6 +20,7 @@ export interface InputProps {
   autoComplete?: string;
   required?: boolean;
   useRef?: React.RefObject<HTMLInputElement>;
+  correctValue?: (isCorrect: boolean) => void,
 }
 
 export interface InputState {
@@ -34,6 +35,7 @@ export default class Inputs extends Component<InputProps, InputState> {
 
   constructor(props: InputProps) {
     super(props);
+    this.props.correctValue?.(false);
 
     this.state = {
       message: '',
@@ -48,54 +50,71 @@ export default class Inputs extends Component<InputProps, InputState> {
     if (input.name.includes('email')) {
       if (!validEmailRegex.test(value)) {
         this.setState({ message: 'Email is not valid' });
+        this.props.correctValue?.(false);
       } else if (value.length > 64) {
         this.setState({ message: 'Email is too long' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
+        this.props.correctValue?.(true);
       }
     }
 
     if (input.name.includes('passwordLogin')) {
       if (!passwordLengthRegex.test(value)) {
         this.setState({ message: 'Password must be between 8 and 64 characters' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
+        this.props.correctValue?.(true);
       }
     }
 
     if (input.name.includes('passwordRegister')) {
       if (!passwordCapitalLetterRegex.test(value)) {
         this.setState({ message: 'Password must contain at least one capital letter' });
+        this.props.correctValue?.(false);
       } else if (!passwordLowercaseLetterRegex.test(value)) {
         this.setState({ message: 'Password must contain at least one lowercase letter' });
+        this.props.correctValue?.(false);
       } else if (!passwordNumberRegex.test(value)) {
         this.setState({ message: 'Password must contain at least one number' });
+        this.props.correctValue?.(false);
       } else if (!passwordSpecialCharacterRegex.test(value)) {
         this.setState({ message: 'Password must contain at least one special character' });
+        this.props.correctValue?.(false);
       } else if (!passwordLengthRegex.test(value)) {
         this.setState({ message: 'Password must be between 8 and 64 characters' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
+        this.props.correctValue?.(true);
       }
     }
 
     if (input.name.includes('username')) {
       if (value.length < 3) {
         this.setState({ message: 'Username is too short' });
+        this.props.correctValue?.(false);
       } else if (value.length > 64) {
         this.setState({ message: 'Username is too long' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
+        this.props.correctValue?.(true);
       }
     }
 
     if (input.name.includes('title')) {
       if (value.length > 64) {
         this.setState({ message: 'Title is too long' });
+        this.props.correctValue?.(false);
       } else if (value.length < 5) {
         this.setState({ message: 'Title is too short' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
+        this.props.correctValue?.(true);
       }
     }
   };
