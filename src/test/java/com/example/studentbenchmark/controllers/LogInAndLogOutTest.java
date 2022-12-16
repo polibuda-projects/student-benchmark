@@ -17,7 +17,6 @@ import static com.example.studentbenchmark.TestConstants.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -56,171 +55,111 @@ public class LogInAndLogOutTest {
                 .andDo(print()).andExpect(status().isOk());
     }
 
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void shouldReturnRedirection_whenPasswordIsIncorrectWithNickname(String invalidPassword) throws Exception {
+    @Test
+    public void shouldReturnUnauthorized_whenPasswordIsIncorrectWithNickname() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_NICKNAME).password(invalidPassword))
-                .andDo(print()).andExpect(status().is3xxRedirection());
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void redirectedUrlShouldBeCorrect_whenPasswordIsIncorrectWithNickname(String invalidPassword) throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_NICKNAME).password(invalidPassword))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void shouldReturnRedirection_whenPasswordIsIncorrectWithEmail(String invalidPassword) throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_EMAIL).password(invalidPassword))
-                .andDo(print()).andExpect(status().is3xxRedirection());
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void redirectedUrlShouldBeCorrect_whenPasswordIsIncorrectWithEmail(String invalidPassword) throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_EMAIL).password(invalidPassword))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+                .perform(formLogin("/login").user(USER_NICKNAME).password(USER_PASSWORD+"Betoniarz"))
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void shouldReturnRedirection_whenNicknameIsIncorrect() throws Exception {
+    public void shouldReturnUnauthorized_whenPasswordIsIncorrectWithEmail() throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user(USER_EMAIL).password(USER_PASSWORD+"Betoniarz"))
+                .andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenNicknameIsIncorrect() throws Exception {
 
         mvc
                 .perform(formLogin("/login").user(USER_NICKNAME + "Betoniarz").password(USER_PASSWORD))
-                .andDo(print()).andExpect(status().is3xxRedirection());
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void redirectedUrlShouldBeCorrect_whenNicknameIsIncorrect() throws Exception {
+    public void shouldReturnUnauthorized_whenEmailIsIncorrect() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_NICKNAME + "Betoniarz").password(USER_PASSWORD))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+                .perform(formLogin("/login").user(USER_EMAIL+"Betoniarz").password(USER_PASSWORD))
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void shouldReturnRedirection_whenEmailIsIncorrect() throws Exception {
+    public void shouldReturnUnauthorized_whenNicknameAndPasswordAreIncorrect() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL + "BBBBackend").password(USER_PASSWORD))
-                .andDo(print()).andExpect(status().is3xxRedirection());
+                .perform(formLogin("/login").user(USER_NICKNAME+"Betoniarz").password(USER_PASSWORD+"Betoniarz"))
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void redirectedUrlShouldBeCorrect_whenEmailIsIncorrect() throws Exception {
+    public void shouldReturnUnauthorized_whenEmailAndPasswordAreIncorrect() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL + "BBBBackend").password(USER_PASSWORD))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void shouldReturnRedirection_whenNicknameAndPasswordIsIncorrect(String invalidPassword) throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_NICKNAME + "Betoniarz").password(invalidPassword))
-                .andDo(print()).andExpect(status().is3xxRedirection());
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void redirectedUrlShouldBeCorrect_whenNicknameAndPasswordIsIncorrect(String invalidPassword) throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_NICKNAME + "Betoniarz").password(invalidPassword))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+                .perform(formLogin("/login").user(USER_EMAIL+"Betoniarz").password(USER_PASSWORD+"Betoniarz"))
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
 
     @ParameterizedTest
     @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void shouldReturnRedirection_whenEmailAndPasswordIsIncorrect(String invalidPassword) throws Exception {
+    public void shouldReturnUnauthorized_whenPasswordIsInvalidWithNickname(String invalidPassword) throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL + "BBBBackend").password(invalidPassword))
-                .andDo(print()).andExpect(status().is3xxRedirection());
+                .perform(formLogin("/login").user(USER_NICKNAME).password(invalidPassword))
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @ParameterizedTest
     @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void redirectedUrlShouldBeCorrect_whenEmailAndPasswordIsIncorrect(String invalidPassword) throws Exception {
+    public void shouldReturnUnauthorized_whenPasswordIsInvalidWithEmail(String invalidPassword) throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL + "BBBBackend").password(invalidPassword))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+                .perform(formLogin("/login").user(USER_EMAIL).password(invalidPassword))
+                .andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/invalidEmails.csv")
+    public void shouldReturnUnauthorized_whenEmailIsInvalid(String invalidEmails) throws Exception {
+
+        mvc
+                .perform(formLogin("/login").user(invalidEmails).password(USER_PASSWORD))
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void shouldReturnRedirection_whenEmailOrNicknameFieldIsEmpty() throws Exception {
+    public void shouldReturnUnauthorized_whenEmailOrNicknameFieldIsEmpty() throws Exception {
 
         mvc
                 .perform(formLogin("/login").user("").password(USER_PASSWORD))
-                .andDo(print()).andExpect(status().is3xxRedirection());
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void redirectedUrlShouldBeCorrect_whenEmailOrNicknameFieldIsEmpty() throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user("").password(USER_PASSWORD))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
-    }
-
-    @Test
-    public void shouldReturnRedirection_whenPasswordFieldIsEmptyWithNickname() throws Exception {
+    public void shouldReturnUnauthorized_whenPasswordFieldIsEmptyWithNickname() throws Exception {
 
         mvc
                 .perform(formLogin("/login").user(USER_NICKNAME).password(""))
-                .andDo(print()).andExpect(status().is3xxRedirection());
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void redirectedUrlShouldBeCorrect_whenPasswordFieldIsEmptyWithNickname() throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_NICKNAME).password(""))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
-    }
-
-    @Test
-    public void shouldReturnRedirection_whenPasswordFieldIsEmptyWithEmail() throws Exception {
+    public void shouldReturnUnauthorized_whenPasswordFieldIsEmptyWithEmail() throws Exception {
 
         mvc
                 .perform(formLogin("/login").user(USER_EMAIL).password(""))
-                .andDo(print()).andExpect(status().is3xxRedirection());
-    }
-    @Test
-    public void redirectedUrlShouldBeCorrect_whenPasswordFieldIsEmptyWithEmail() throws Exception {
-
-        mvc
-                .perform(formLogin("/login").user(USER_EMAIL).password(""))
-                .andDo(print()).andExpect(redirectedUrl("/login?error"));
+                .andDo(print()).andExpect(status().isUnauthorized());
     }
 
-
     @Test
-    public void shouldReturnRedirection_whenLogoutIsSuccessful() throws Exception {
+    public void shouldReturnOk_whenLogoutIsSuccessful() throws Exception {
         mvc
                 .perform(logout())
-                .andDo(print()).andExpect(status().is3xxRedirection());
-    }
-
-    @Test
-    public void redirectedUrlShouldBeCorrect_whenLogoutIsSuccessful() throws Exception {
-        mvc
-                .perform(logout())
-                .andDo(print()).andExpect(redirectedUrl("/"));
+                .andDo(print()).andExpect(status().isOk());
     }
 }
 
