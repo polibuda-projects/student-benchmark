@@ -55,7 +55,6 @@ function Support() {
       <ContainerBox className={style.container} width={'100%'}>
         <h1 className={style.title}>Support - contact us</h1>
         <form method="post" action="#" className={style.form}>
-          <Input useRef={email} required={true} type={'email'} name={'email'} placeholder={'Email'} className={style.formElement} />
           <Input useRef={title} required={true} type={'text'} name={'title'} placeholder={'Title'} className={style.formElement} />
           <Textarea useRef={message} required={true} name={'textSupport'} placeholder={'Your message...'} className={style.textElement} />
 
