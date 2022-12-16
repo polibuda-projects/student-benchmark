@@ -20,12 +20,15 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -57,7 +60,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                            AuthenticationException exception) throws IOException, ServletException {
+                                                        AuthenticationException exception) throws IOException, ServletException {
                         response.setContentType("text/plain");
                         response.getWriter().write("Invalid username or password");
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -72,7 +75,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
                     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                            org.springframework.security.core.Authentication authentication)
+                                                Authentication authentication)
                             throws IOException, ServletException {
                         response.setStatus(HttpServletResponse.SC_OK);
                     }
@@ -80,7 +83,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .sessionManagement().invalidSessionStrategy(new InvalidSessionStrategy() {
+                    @Override
+                    public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+                        response.setStatus(400);
+                        response.addHeader("session-expired", "true");
+                    }
+                })
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .maximumSessions(1).maxSessionsPreventsLogin(true);
     }
 
     @Override

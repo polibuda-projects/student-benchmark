@@ -48,7 +48,7 @@ public class SupportController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
-        System.out.println(userRepo.findByNickname(currentUser.getUsername()));
+
         if ((userRepo.findByNickname(currentUser.getUsername())).isEmpty()) {
             return new ResponseEntity<>("No email to send response", HttpStatus.UNAUTHORIZED);
         }
