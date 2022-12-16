@@ -35,9 +35,8 @@
     align-items: left;
     justify-content: left;
     width: 100%;
-    height: 30em;
+    height: 26em;
     overflow-y: auto;
-    border: 1px solid #fff;
 }
 
 .placeholder {
@@ -60,10 +59,11 @@
     justify-self: center;
     text-align: center;
     margin: 1em 0 1em 0;
-    width: 70%;
+    width: 60%;
 }
 
-.messageID, .logID, .messageTimestamp, .logTimestamp {
+.messageID, .logID, .messageTitle,
+.logTimestamp, .logUser, .messageEmail {
     display: inline-block;
     font-size: 1.5em;
     font-weight: 300;
@@ -71,10 +71,12 @@
     justify-self: center;
     text-align: center;
     margin: 1em 0 1em 0;
-    width: 20%;
 }
 
 .messageID, .logID {
-    width: 10%;
+    width: 6%;
 }
 
+.messageTitle, .logUser, .messageEmail, .logTimestamp{
+    width: 14%;
+}
