@@ -17,19 +17,20 @@ public interface UserRepo extends JpaRepository<AppUser, Long> {
 
     AppUser findByEmail(String email);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM app_user WHERE email= :email AND password= :password")
-    AppUser findUser(@Param("email") String email, @Param("password") String password);
+    // Hasło jest zakodowane, więc takie wyszukiwanie nie ma już sensu
+//    @Query(nativeQuery = true, value = "SELECT * FROM app_user WHERE email= :email AND password= :password")
+//    AppUser findUser(@Param("email") String email, @Param("password") String password);
 
     @Query(nativeQuery = true, value = "SELECT * FROM app_user WHERE id_user= :idUser")
     AppUser findByID(@Param("idUser") Long idUser);
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(nativeQuery = true, value = "UPDATE app_user SET password= :newPassword WHERE id_user= :idUser")
     void changeUserPassword(@Param("idUser") Long idUser, @Param("newPassword") String newPassword);
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(nativeQuery = true, value = "DELETE FROM app_user WHERE  email= :email")
     void deleteAccount(@Param("email") String email);
 

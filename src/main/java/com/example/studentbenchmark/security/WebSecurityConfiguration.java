@@ -34,6 +34,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers("/", "/register", "/result/*","/tests/*", "/passwordRecovery", "/resetPassword").permitAll()
+                .mvcMatchers("/adminDashboard/logs", "/adminDashboard/messages").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(new LoginSuccessHandler(userRepo, logsRepo))

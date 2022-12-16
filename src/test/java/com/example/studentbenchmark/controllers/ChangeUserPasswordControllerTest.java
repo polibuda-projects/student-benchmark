@@ -3,7 +3,6 @@ package com.example.studentbenchmark.controllers;
 import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.repository.UserRepo;
 import com.google.gson.JsonObject;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class ChangeUserPasswordControllerTest {
 
     private final static String PATH = "/changeUserPassword";
@@ -47,11 +48,6 @@ public class ChangeUserPasswordControllerTest {
     @BeforeEach
     public void addTestUser() {
         userRepo.save(new AppUser(USER_NICKNAME, USER_EMAIL, passwordEncoder.encode(USER_PASSWORD), AppUser.Role.USER));
-    }
-
-    @AfterEach
-    void clearRepo() {
-        userRepo.deleteAll();
     }
 
     @Test
