@@ -22,7 +22,7 @@ import SequenceTest from '@views/Tests/SequenceTest/SequenceMemory';
 import NumberTest from '@views/Tests/NumberTest/NumberTest';
 import Admin from '@views/Admin/Admin';
 import RestrictedRoute from '@components/RestrictedRoute/RestrictedRoute';
-import { isLoggedIn } from './auth';
+import { isAdmin, isLoggedIn } from './auth';
 
 
 const router = createBrowserRouter([
@@ -77,7 +77,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/support',
-    element: <Support />,
+    element: <RestrictedRoute
+      condition={isLoggedIn}
+      component={<Support />}
+      invalidComponent={<Login />}
+    />,
   },
   {
     path: '/settings',
@@ -106,9 +110,9 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <RestrictedRoute
-      condition={isLoggedIn}
+      condition={isAdmin}
       component={<Admin />}
-      invalidComponent={<Login />}
+      invalidComponent={<Home />}
     />,
   },
 ]);
