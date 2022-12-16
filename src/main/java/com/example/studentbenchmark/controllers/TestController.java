@@ -127,7 +127,7 @@ public class TestController {
         return test;
     }
 
-    @GetMapping("/verbalWords")
+    @GetMapping("/tests/verbalWords")
     public ArrayList<String> readFromCsvFile() {
         ArrayList<String> words = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File("src/main/resources/ListOfWordsForVerbalTest.csv"))) {

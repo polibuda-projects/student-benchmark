@@ -8,7 +8,7 @@ import TestEnd from '@components/Test/TestEnd';
 import VerbalComponent from '@components/Test/VerbalComponent/VerbalComponent';
 const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/verbal`;
 const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/verbal`;
-const fetchUrlWord = `${process.env.REACT_APP_BACKEND_URL}/verbalWords`;
+const fetchUrlWord = `${process.env.REACT_APP_BACKEND_URL}/tests/verbalWords`;
 
 
 const shortTestDescription='You will be shown words, one at a time. If you\'ve seen a word during the test, click SEEN. If it\'s a new word, click NEW.';
