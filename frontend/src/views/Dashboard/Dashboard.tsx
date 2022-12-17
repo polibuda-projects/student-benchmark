@@ -15,13 +15,13 @@ const fetchVisualChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/visual`;
 const fetchVerbalChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/verbal`;
 const fetchNumberChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/number`;
 
-const columnTitles = ['Lp', 'User ID', 'Date', 'Score'];
+const columnTitles = ['Lp', 'Nickname', 'Date', 'Score'];
 const columnTitlesPersonal = ['Scenario', 'Personal Best', 'Avg. Score', 'Percentile'];
 
 
 interface PublicData {
   idTest: number;
-  idUser: number;
+  nickname: string;
   score: number;
   dateOfSubmission: string;
 }
@@ -84,7 +84,6 @@ const Dashboard = (props: any) => {
         .then((response) => response.json())
         .then((data) => {
           setPersonalData(data);
-          console.log(data);
         })
         .catch((error) => {
           console.error(error);
@@ -179,9 +178,9 @@ const Dashboard = (props: any) => {
   }, []);
 
 
-  const toColumnData = (data: PublicData[]): PublicData[] => data.sort(sortFunction).slice(0, 6).map(({ dateOfSubmission, score, idUser }, i) => ({
+  const toColumnData = (data: PublicData[]): PublicData[] => data.sort(sortFunction).slice(0, 6).map(({ dateOfSubmission, score, nickname }, i) => ({
     idTest: i + 1,
-    idUser,
+    nickname,
     dateOfSubmission,
     score,
   }));
