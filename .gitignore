@@ -10,7 +10,6 @@
 
 # testing
 /coverage
-/src/main/resources
 
 # production
 /build
