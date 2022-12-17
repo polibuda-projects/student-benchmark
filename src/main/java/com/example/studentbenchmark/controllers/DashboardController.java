@@ -1,11 +1,13 @@
 package com.example.studentbenchmark.controllers;
 
+import com.example.studentbenchmark.entity.AppUser;
 import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.entity.testsEntities.*;
 import com.example.studentbenchmark.repository.testsRepositories.NumberTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.SequenceTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.VerbalTestRepo;
 import com.example.studentbenchmark.repository.testsRepositories.VisualTestRepo;
+import com.example.studentbenchmark.repository.UserRepo;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,20 +27,23 @@ public class DashboardController<T extends AppTest> {
     private final SequenceTestRepo sequenceTestRepo;
     private final VerbalTestRepo verbalTestRepo;
     private final VisualTestRepo visualTestRepo;
+    private final UserRepo userRepo;
 
     @Autowired
-    DashboardController(NumberTestRepo numberTestRepo, SequenceTestRepo sequenceTestRepo, VerbalTestRepo verbalTestRepo, VisualTestRepo visualTestRepo) {
+    DashboardController(NumberTestRepo numberTestRepo, SequenceTestRepo sequenceTestRepo, VerbalTestRepo verbalTestRepo, VisualTestRepo visualTestRepo, UserRepo userRepo) {
         this.numberTestRepo = numberTestRepo;
         this.sequenceTestRepo = sequenceTestRepo;
         this.verbalTestRepo = verbalTestRepo;
         this.visualTestRepo = visualTestRepo;
+        this.userRepo = userRepo;
     }
 
     //Funkcja zwraca dane w formacie JSON zawierajace top 100 kazdego z testow a nastapnie dane do tworzenia wykresow
     @GetMapping("/DashboardPublic")
     public String getDashboardPublicData() {
-        List<List<T>> data = new ArrayList<>();
+        List<List<PublicData>> data = new ArrayList<>();
         Gson gson = new Gson();
+        AppUser user = new AppUser();
 
         List<NumberTest> numberBestList = numberTestRepo.findBestScores();
         List<SequenceTest> sequenceBestList = sequenceTestRepo.findBestScores();
@@ -49,15 +55,66 @@ public class DashboardController<T extends AppTest> {
         List<VerbalTest> verbalGraphList = verbalTestRepo.findAllGraphValidScores();
         List<VisualTest> visualGraphList = visualTestRepo.findAllGraphValidScores();
 
-        data.add((List<T>) numberBestList);
-        data.add((List<T>) sequenceBestList);
-        data.add((List<T>) verbalBestList);
-        data.add((List<T>) visualBestList);
 
-        data.add((List<T>) numberGraphList);
-        data.add((List<T>) sequenceGraphList);
-        data.add((List<T>) verbalGraphList);
-        data.add((List<T>) visualGraphList);
+        List<PublicData> top100Number = new ArrayList<>();
+        List<PublicData> top100Sequence = new ArrayList<>();
+        List<PublicData> top100Verbal = new ArrayList<>();
+        List<PublicData> top100Visual = new ArrayList<>();
+
+        for(NumberTest numberTest : numberBestList){
+            user = userRepo.findByID(numberTest.getIdUser());
+            top100Number.add(new PublicData(user.getNickname(), numberTest.getDateOfSubmission(), numberTest.getScore()));
+        }
+
+        for(SequenceTest sequenceTest : sequenceBestList){
+            user = userRepo.findByID(sequenceTest.getIdUser());
+            top100Sequence.add(new PublicData(user.getNickname(), sequenceTest.getDateOfSubmission(), sequenceTest.getScore()));
+        }
+
+        for(VerbalTest verbalTest : verbalBestList){
+            user = userRepo.findByID(verbalTest.getIdUser());
+            top100Verbal.add(new PublicData(user.getNickname(), verbalTest.getDateOfSubmission(), verbalTest.getScore()));
+        }
+
+        for(VisualTest visualTest : visualBestList){
+            user = userRepo.findByID(visualTest.getIdUser());
+            top100Visual.add(new PublicData(user.getNickname(), visualTest.getDateOfSubmission(), visualTest.getScore()));
+        }
+
+        List<PublicData> graphNumber = new ArrayList<>();
+        List<PublicData> graphSequence = new ArrayList<>();
+        List<PublicData> graphVerbal = new ArrayList<>();
+        List<PublicData> graphVisual = new ArrayList<>();
+
+        for(NumberTest numberTest : numberGraphList){
+            user = userRepo.findByID(numberTest.getIdUser());
+            graphNumber.add(new PublicData(user.getNickname(), numberTest.getDateOfSubmission(), numberTest.getScore()));
+        }
+
+        for(SequenceTest sequenceTest : sequenceGraphList){
+            user = userRepo.findByID(sequenceTest.getIdUser());
+            graphSequence.add(new PublicData(user.getNickname(), sequenceTest.getDateOfSubmission(), sequenceTest.getScore()));
+        }
+
+        for(VerbalTest verbalTest : verbalGraphList){
+            user = userRepo.findByID(verbalTest.getIdUser());
+            graphVerbal.add(new PublicData(user.getNickname(), verbalTest.getDateOfSubmission(), verbalTest.getScore()));
+        }
+
+        for(VisualTest visualTest : visualGraphList){
+            user = userRepo.findByID(visualTest.getIdUser());
+            graphVisual.add(new PublicData(user.getNickname(), visualTest.getDateOfSubmission(), visualTest.getScore()));
+        }
+
+        data.add(top100Number);
+        data.add(top100Sequence);
+        data.add(top100Verbal);
+        data.add(top100Visual);
+
+        data.add(graphNumber);
+        data.add(graphSequence);
+        data.add(graphVerbal);
+        data.add(graphVisual);
 
         return gson.toJson(data);
     }
@@ -230,4 +287,15 @@ public class DashboardController<T extends AppTest> {
         }
     }
 
+    private class PublicData {
+        private final String nickname;
+        private final Date dateOfSubmission;
+        private final int score;
+
+        PublicData(String nickname, Date dateOfSubmission, int score) {
+            this.nickname = nickname;
+            this.dateOfSubmission = dateOfSubmission;
+            this.score = score;
+        }
+    }
 }
