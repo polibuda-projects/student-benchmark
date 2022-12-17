@@ -86,24 +86,50 @@ public class DashboardController<T extends AppTest> {
         List<PublicData> graphVerbal = new ArrayList<>();
         List<PublicData> graphVisual = new ArrayList<>();
 
+        String name = "";
+
         for(NumberTest numberTest : numberGraphList){
-            user = userRepo.findByID(numberTest.getIdUser());
-            graphNumber.add(new PublicData(user.getNickname(), numberTest.getDateOfSubmission(), numberTest.getScore()));
+            if(numberTest.getIdUser()!=0){
+                user = userRepo.findByID(numberTest.getIdUser());
+                name = user.getNickname();
+            }
+            else{
+                name = "";
+            }
+            graphNumber.add(new PublicData(name, numberTest.getDateOfSubmission(), numberTest.getScore()));
         }
 
         for(SequenceTest sequenceTest : sequenceGraphList){
-            user = userRepo.findByID(sequenceTest.getIdUser());
-            graphSequence.add(new PublicData(user.getNickname(), sequenceTest.getDateOfSubmission(), sequenceTest.getScore()));
+            if(sequenceTest.getIdUser()!=0){
+                user = userRepo.findByID(sequenceTest.getIdUser());
+                name = user.getNickname();
+            }
+            else{
+                name = "";
+            }
+            graphSequence.add(new PublicData(name, sequenceTest.getDateOfSubmission(), sequenceTest.getScore()));
         }
 
         for(VerbalTest verbalTest : verbalGraphList){
-            user = userRepo.findByID(verbalTest.getIdUser());
-            graphVerbal.add(new PublicData(user.getNickname(), verbalTest.getDateOfSubmission(), verbalTest.getScore()));
+            if(verbalTest.getIdUser()!=0){
+                user = userRepo.findByID(verbalTest.getIdUser());
+                name = user.getNickname();
+            }
+            else{
+                name = "";
+            }
+            graphVerbal.add(new PublicData(name, verbalTest.getDateOfSubmission(), verbalTest.getScore()));
         }
 
         for(VisualTest visualTest : visualGraphList){
-            user = userRepo.findByID(visualTest.getIdUser());
-            graphVisual.add(new PublicData(user.getNickname(), visualTest.getDateOfSubmission(), visualTest.getScore()));
+            if(visualTest.getIdUser()!=0){
+                user = userRepo.findByID(visualTest.getIdUser());
+                name = user.getNickname();
+            }
+            else{
+                name = "";
+            }
+            graphVisual.add(new PublicData(name, visualTest.getDateOfSubmission(), visualTest.getScore()));
         }
 
         data.add(top100Number);
