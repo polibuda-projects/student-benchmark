@@ -33,7 +33,7 @@ function Login() {
         <ContainerBox width={'60em'}>
           <h1 className={style.title}>Log in</h1>
           <form method="post" action="#" className={style.form}>
-            <Input useRef={nickname} type={'text'} name={'usernameLog'} placeholder={'Username'} required className={style.formElement}/>
+            <Input useRef={nickname} type={'text'} name={'usernameLog'} placeholder={'Username or Email'} required className={style.formElement}/>
             <Input useRef={password} type={isShown ? 'text' : 'password'} name={'passwordLogin'} placeholder={'Password'} required className={style.formElement}/>
             <label className={style.checkboxLabel}>
               <input type="checkbox" checked={isShown} onChange={togglePassword}/>

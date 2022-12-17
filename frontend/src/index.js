@@ -15,6 +15,7 @@ import Support from '@views/Support/Support';
 import User from '@views/User/User';
 import TestsHome from '@views/Tests/Home/Home';
 import Password from '@views/Password/Password';
+import ResetPassword from '@views/Password/ResetPassword';
 import Dashboard from '@views/Dashboard/Dashboard';
 import VisualTest from '@views/Tests/VisualTest/VisualTest';
 import VerbalTest from '@views/Tests/VerbalTest/VerbalTest';
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
   {
     path: '/recover',
     element: <Recover />,
+  },
+  {
+    path: '/resetPassword',
+    element: <ResetPassword />,
   },
   {
     path: '/delete',

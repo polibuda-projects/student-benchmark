@@ -20,20 +20,32 @@ const testDescription='This test measures how many words you can keep in short t
 
 export default function VerbalTest() {
   const words = new Set<string>();
-  const randomWordPicker = (): string => wordList[Math.floor(Math.random() * wordList.length)];
+  const randomWordPickerNew = (): string => wordList[Math.floor(Math.random() * wordList.length)];
+  const randomWordPickerSeen = (): string => [...seenWords][Math.floor(Math.random() * seenWords.size)];
 
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<number | null>(null);
   const [userLives, updateLives] = useState<number>(3);
   const [wordList, setWordList] = useState<string[]>([]);
   const [seenWords, updateSeenWords] = useState<Set<string>>(new Set<string>([]));
-  const [activeWord, updateActiveWord] = useState<string>(randomWordPicker());
+  const [activeWord, updateActiveWord] = useState<string>(randomWordPickerNew());
 
   const [chartData, updateChart] = useState<TestProps>({
     data: [],
     range: [0, 0],
   });
 
+  const randomWordPicker = () => {
+    if (Math.random() < 0.6) {
+      return randomWordPickerNew();
+    } else {
+      if (seenWords.size === 0) {
+        return randomWordPickerNew();
+      } else {
+        return randomWordPickerSeen();
+      }
+    }
+  };
 
   const handleNewClick = () => {
     if (seenWords.has(activeWord)) {
@@ -76,7 +88,7 @@ export default function VerbalTest() {
       },
     });
     if (!response.ok) {
-      throw new Error('Error! status: ${response.status}');
+      throw new Error(`Error! status: ${response.status}`);
     }
 
     const result = (await response.json()) as number[];
@@ -94,6 +106,10 @@ export default function VerbalTest() {
         'Content-Type': 'application/json',
       },
     });
+
+    if (!wordsData.ok) {
+      throw new Error(`Error! status: ${wordsData.status}`);
+    }
     return (await wordsData.json()) as string[];
   };
 
@@ -147,11 +163,6 @@ export default function VerbalTest() {
 
     {state === 'playing' &&
         <>
-          {/* <ButtonMedium text='Change Score' onClick={() => updateScore(Math.round(Math.random() * 30))} />
-          <ButtonMedium text='Change Chart Data' onClick={() => updateChart({
-            data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-            range: [10, 30],
-          })} /> */}
           <VerbalComponent
             textLives="Lives |"
             lives={userLives}
@@ -164,10 +175,6 @@ export default function VerbalTest() {
 
             <ButtonMedium className={style.newButton} text='NEW' onClick={handleNewClick} />
           </div>
-          {/* <ButtonMedium text='End Test' onClick={() => {
-            updateState('end');
-            updateScore(Math.round(Math.random() * 50));
-          }} /> */}
         </>
     }
   </Test>);
