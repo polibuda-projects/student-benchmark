@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "spring.jpa.hibernate.ddl-auto=create" > application.properties
+echo "spring.jpa.hibernate.ddl-auto=update" > application.properties
 echo "spring.datasource.url=jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME" >> application.properties
 
 echo "spring.datasource.username=$MYSQL_USER" >> application.properties
