@@ -73,17 +73,54 @@ public class DashboardController<T extends AppTest> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
+
         //pobieranie najlepszego wyniku uzytkownika
-        NumberTest number = numberTestRepo.findPersonalBest(currentUser.getId());
-        SequenceTest sequence = sequenceTestRepo.findPersonalBest(currentUser.getId());
-        VerbalTest verbal = verbalTestRepo.findPersonalBest(currentUser.getId());
-        VisualTest visual = visualTestRepo.findPersonalBest(currentUser.getId());
+        List<NumberTest> userNumberList = numberTestRepo.findPersonal(currentUser.getId());
+        List<SequenceTest> userSequenceList = sequenceTestRepo.findPersonal(currentUser.getId());
+        List<VerbalTest> userVerbalList = verbalTestRepo.findPersonal(currentUser.getId());
+        List<VisualTest> userVisualList = visualTestRepo.findPersonal(currentUser.getId());
+
+        List<NumberTest> allUserNumberList = numberTestRepo.findAllPersonal(currentUser.getId());
+        List<SequenceTest> allUserSequenceList = sequenceTestRepo.findAllPersonal(currentUser.getId());
+        List<VerbalTest> allUserVerbalList = verbalTestRepo.findAllPersonal(currentUser.getId());
+        List<VisualTest> allUserVisualList = visualTestRepo.findAllPersonal(currentUser.getId());
+
+        boolean existNumber = false;
+        boolean existSequence = false;
+        boolean existVerbal = false;
+        boolean existVisual = false;
+
+        if(userNumberList.size()>0) existNumber = true;
+        if(userSequenceList.size()>0) existSequence = true;
+        if(userVerbalList.size()>0) existVerbal = true;
+        if(userVisualList.size()>0) existVisual = true;
+
+        NumberTest number = new NumberTest();
+        SequenceTest sequence = new SequenceTest();
+        VerbalTest verbal = new VerbalTest();
+        VisualTest visual = new VisualTest();
+
+        if(existNumber) {
+            number = userNumberList.get(0);
+        }
+        if(existSequence){
+            sequence = userSequenceList.get(0);
+        }
+        if(existVerbal){
+            verbal = userVerbalList.get(0);
+        }
+        if(existVisual){
+            visual = userVisualList.get(0);
+        }
+
 
         //pobieranie list wszystkich uzytkownikow do porownania
-        List<NumberTest> numberList = numberTestRepo.findAllGraphValidScores();
-        List<SequenceTest> sequenceList = sequenceTestRepo.findAllGraphValidScores();
-        List<VerbalTest> verbalList = verbalTestRepo.findAllGraphValidScores();
-        List<VisualTest> visualList = visualTestRepo.findAllGraphValidScores();
+        List<NumberTest> numberList = numberTestRepo.getAllScores();
+        List<SequenceTest> sequenceList = sequenceTestRepo.getAllScores();
+        List<VerbalTest> verbalList = verbalTestRepo.getAllScores();
+        List<VisualTest> visualList = visualTestRepo.getAllScores();
+
+
 
         //zmienne przechowujace srednie wyniki testow
         float numberAverage = 0;
@@ -96,46 +133,85 @@ public class DashboardController<T extends AppTest> {
         float verbalPercentile = 0;
         float visualPercentile = 0;
 
-        for (NumberTest numberTest : numberList) {
-            numberAverage += numberTest.getScore();
-            if (numberTest.getScore() <= number.getScore()) {
-                numberPercentile += 1;
+        if(existNumber) {
+            for (NumberTest numberTest : numberList) {
+                if (numberTest.getScore() <= number.getScore()) {
+                    numberPercentile += 1;
+                }
             }
-        }
-        numberAverage /= numberList.size();
-        numberPercentile /= numberList.size();
-
-        for (SequenceTest sequenceTest : sequenceList) {
-            sequenceAverage += sequenceTest.getScore();
-            if (sequenceTest.getScore() <= sequence.getScore()) {
-                sequencePercentile += 1;
+            for (NumberTest numberTest : allUserNumberList){
+                numberAverage += numberTest.getScore();
             }
+            numberAverage /= allUserNumberList.size();
+            numberPercentile /= numberList.size();
         }
-        sequenceAverage /= sequenceList.size();
-        sequencePercentile /= sequenceList.size();
 
-        for (VerbalTest verbalTest : verbalList) {
-            verbalAverage += verbalTest.getScore();
-            if (verbalTest.getScore() <= verbal.getScore()) {
-                verbalPercentile += 1;
+        if(existSequence) {
+            for (SequenceTest sequenceTest : sequenceList) {
+                if (sequenceTest.getScore() <= sequence.getScore()) {
+                    sequencePercentile += 1;
+                }
             }
-        }
-        verbalAverage /= verbalList.size();
-        verbalPercentile /= verbalList.size();
-
-        for (VisualTest visualTest : visualList) {
-            visualAverage += visualTest.getScore();
-            if (visualTest.getScore() <= visual.getScore()) {
-                visualPercentile += 1;
+            for(SequenceTest sequenceTest : allUserSequenceList){
+                sequenceAverage += sequenceTest.getScore();
             }
+            sequenceAverage /= allUserSequenceList.size();
+            sequencePercentile /= sequenceList.size();
         }
-        visualAverage /= visualList.size();
-        visualPercentile /= visualList.size();
 
-        data.add(new PersonalData("number memory", number.getScore(), numberAverage, (int) (100 * numberPercentile)));
-        data.add(new PersonalData("sequence memory", sequence.getScore(), sequenceAverage, (int) (100 * sequencePercentile)));
-        data.add(new PersonalData("verbal memory", verbal.getScore(), verbalAverage, (int) (100 * verbalPercentile)));
-        data.add(new PersonalData("visual memory", visual.getScore(), visualAverage, (int) (100 * visualPercentile)));
+
+        if(existVerbal) {
+            for (VerbalTest verbalTest : verbalList) {
+                if (verbalTest.getScore() <= verbal.getScore()) {
+                    verbalPercentile += 1;
+                }
+            }
+            for(VerbalTest verbalTest : allUserVerbalList){
+                verbalAverage += verbalTest.getScore();
+            }
+            verbalAverage /= allUserVerbalList.size();
+            verbalPercentile /= verbalList.size();
+        }
+
+        if(existVisual) {
+            for (VisualTest visualTest : visualList) {
+                if (visualTest.getScore() <= visual.getScore()) {
+                    visualPercentile += 1;
+                }
+            }
+            for(VisualTest visualTest : allUserVisualList) {
+                visualAverage += visualTest.getScore();
+            }
+            visualAverage /= allUserVisualList.size();
+            visualPercentile /= visualList.size();
+        }
+
+
+
+        if(existNumber){
+            data.add(new PersonalData("number memory", number.getScore(), numberAverage, (int) (100 * numberPercentile)));
+        }
+        else{
+            data.add(new PersonalData("number memory", 0, 0, 0));
+        }
+        if(existSequence){
+            data.add(new PersonalData("sequence memory", sequence.getScore(), sequenceAverage, (int) (100 * sequencePercentile)));
+        }
+        else{
+            data.add(new PersonalData("sequance memory", 0, 0, 0));
+        }
+        if(existVerbal){
+            data.add(new PersonalData("verbal memory", verbal.getScore(), verbalAverage, (int) (100 * verbalPercentile)));
+        }
+        else{
+            data.add(new PersonalData("verbal memory", 0, 0, 0));
+        }
+        if(existVisual){
+            data.add(new PersonalData("visual memory", visual.getScore(), visualAverage, (int) (100 * visualPercentile)));
+        }
+        else{
+            data.add(new PersonalData("visual memory", 0, 0, 0));
+        }
 
         return gson.toJson(data);
     }
