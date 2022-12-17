@@ -73,17 +73,49 @@ public class DashboardController<T extends AppTest> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserEntityDetails currentUser = (AppUserEntityDetails) authentication.getPrincipal();
 
+
         //pobieranie najlepszego wyniku uzytkownika
-        NumberTest number = numberTestRepo.findPersonalBest(currentUser.getId());
-        SequenceTest sequence = sequenceTestRepo.findPersonalBest(currentUser.getId());
-        VerbalTest verbal = verbalTestRepo.findPersonalBest(currentUser.getId());
-        VisualTest visual = visualTestRepo.findPersonalBest(currentUser.getId());
+        List<NumberTest> userNumberList = numberTestRepo.findPersonal(currentUser.getId());
+        List<SequenceTest> userSequenceList = sequenceTestRepo.findPersonal(currentUser.getId());
+        List<VerbalTest> userVerbalList = verbalTestRepo.findPersonal(currentUser.getId());
+        List<VisualTest> userVisualList = visualTestRepo.findPersonal(currentUser.getId());
+
+        boolean existNumber = false;
+        boolean existSequence = false;
+        boolean existVerbal = false;
+        boolean existVisual = false;
+
+        if(userNumberList.size()>0) existNumber = true;
+        if(userSequenceList.size()>0) existSequence = true;
+        if(userVerbalList.size()>0) existVerbal = true;
+        if(userVisualList.size()>0) existVisual = true;
+
+        NumberTest number = new NumberTest();
+        SequenceTest sequence = new SequenceTest();
+        VerbalTest verbal = new VerbalTest();
+        VisualTest visual = new VisualTest();
+
+        if(existNumber) {
+            number = userNumberList.get(0);
+        }
+        if(existSequence){
+            sequence = userSequenceList.get(0);
+        }
+        if(existVerbal){
+            verbal = userVerbalList.get(0);
+        }
+        if(existVisual){
+            visual = userVisualList.get(0);
+        }
+
 
         //pobieranie list wszystkich uzytkownikow do porownania
         List<NumberTest> numberList = numberTestRepo.findAllGraphValidScores();
         List<SequenceTest> sequenceList = sequenceTestRepo.findAllGraphValidScores();
         List<VerbalTest> verbalList = verbalTestRepo.findAllGraphValidScores();
         List<VisualTest> visualList = visualTestRepo.findAllGraphValidScores();
+
+
 
         //zmienne przechowujace srednie wyniki testow
         float numberAverage = 0;
@@ -98,8 +130,10 @@ public class DashboardController<T extends AppTest> {
 
         for (NumberTest numberTest : numberList) {
             numberAverage += numberTest.getScore();
-            if (numberTest.getScore() <= number.getScore()) {
-                numberPercentile += 1;
+            if(existNumber){
+                if (numberTest.getScore() <= number.getScore()) {
+                    numberPercentile += 1;
+                }
             }
         }
         numberAverage /= numberList.size();
@@ -107,8 +141,10 @@ public class DashboardController<T extends AppTest> {
 
         for (SequenceTest sequenceTest : sequenceList) {
             sequenceAverage += sequenceTest.getScore();
-            if (sequenceTest.getScore() <= sequence.getScore()) {
-                sequencePercentile += 1;
+            if(existSequence){
+                if (sequenceTest.getScore() <= sequence.getScore()) {
+                    sequencePercentile += 1;
+                }
             }
         }
         sequenceAverage /= sequenceList.size();
@@ -116,8 +152,10 @@ public class DashboardController<T extends AppTest> {
 
         for (VerbalTest verbalTest : verbalList) {
             verbalAverage += verbalTest.getScore();
-            if (verbalTest.getScore() <= verbal.getScore()) {
-                verbalPercentile += 1;
+            if(existVerbal){
+                if (verbalTest.getScore() <= verbal.getScore()) {
+                    verbalPercentile += 1;
+                }
             }
         }
         verbalAverage /= verbalList.size();
@@ -125,17 +163,39 @@ public class DashboardController<T extends AppTest> {
 
         for (VisualTest visualTest : visualList) {
             visualAverage += visualTest.getScore();
-            if (visualTest.getScore() <= visual.getScore()) {
-                visualPercentile += 1;
+            if(existVisual){
+                if (visualTest.getScore() <= visual.getScore()) {
+                    visualPercentile += 1;
+                }
             }
         }
         visualAverage /= visualList.size();
         visualPercentile /= visualList.size();
 
-        data.add(new PersonalData("number memory", number.getScore(), numberAverage, (int) (100 * numberPercentile)));
-        data.add(new PersonalData("sequence memory", sequence.getScore(), sequenceAverage, (int) (100 * sequencePercentile)));
-        data.add(new PersonalData("verbal memory", verbal.getScore(), verbalAverage, (int) (100 * verbalPercentile)));
-        data.add(new PersonalData("visual memory", visual.getScore(), visualAverage, (int) (100 * visualPercentile)));
+        if(existNumber){
+            data.add(new PersonalData("number memory", number.getScore(), numberAverage, (int) (100 * numberPercentile)));
+        }
+        else{
+            data.add(new PersonalData("number memory", 0, numberAverage, 0));
+        }
+        if(existSequence){
+            data.add(new PersonalData("sequence memory", sequence.getScore(), sequenceAverage, (int) (100 * sequencePercentile)));
+        }
+        else{
+            data.add(new PersonalData("sequance memory", 0, sequenceAverage, 0));
+        }
+        if(existVerbal){
+            data.add(new PersonalData("verbal memory", verbal.getScore(), verbalAverage, (int) (100 * verbalPercentile)));
+        }
+        else{
+            data.add(new PersonalData("verbal memory", 0, verbalAverage, 0));
+        }
+        if(existVisual){
+            data.add(new PersonalData("visual memory", visual.getScore(), visualAverage, (int) (100 * visualPercentile)));
+        }
+        else{
+            data.add(new PersonalData("visual memory", 0, visualAverage, 0));
+        }
 
         return gson.toJson(data);
     }
