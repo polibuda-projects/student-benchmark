@@ -6,9 +6,9 @@ import style from './DashboardTable.module.css';
 
 export type TableContent = {
   testName?: string;
-  personalBest?: string;
-  averageScore?: string;
-  percentile?: string;
+  personalBest?: number;
+  averageScore?: number | string;
+  percentile?: string | string;
   indexValue?: string;
   nickname?: string;
   date?: string;
