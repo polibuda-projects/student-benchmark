@@ -62,8 +62,8 @@ const Dashboard = (props: any) => {
   const scroller = useRef<HTMLDivElement>(null);
 
   const sortFunction = (a: any, b: any) => {
-    if (a.idTest < b.idTest) return 1;
-    if (a.idTest > b.idTest) return -1;
+    if (a.score < b.score) return 1;
+    if (a.score > b.score) return -1;
     return 0;
   };
 
