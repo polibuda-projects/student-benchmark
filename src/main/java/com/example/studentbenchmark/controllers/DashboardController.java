@@ -80,6 +80,11 @@ public class DashboardController<T extends AppTest> {
         List<VerbalTest> userVerbalList = verbalTestRepo.findPersonal(currentUser.getId());
         List<VisualTest> userVisualList = visualTestRepo.findPersonal(currentUser.getId());
 
+        List<NumberTest> allUserNumberList = numberTestRepo.findAllPersonal(currentUser.getId());
+        List<SequenceTest> allUserSequenceList = sequenceTestRepo.findAllPersonal(currentUser.getId());
+        List<VerbalTest> allUserVerbalList = verbalTestRepo.findAllPersonal(currentUser.getId());
+        List<VisualTest> allUserVisualList = visualTestRepo.findAllPersonal(currentUser.getId());
+
         boolean existNumber = false;
         boolean existSequence = false;
         boolean existVerbal = false;
@@ -110,10 +115,10 @@ public class DashboardController<T extends AppTest> {
 
 
         //pobieranie list wszystkich uzytkownikow do porownania
-        List<NumberTest> numberList = numberTestRepo.findAllGraphValidScores();
-        List<SequenceTest> sequenceList = sequenceTestRepo.findAllGraphValidScores();
-        List<VerbalTest> verbalList = verbalTestRepo.findAllGraphValidScores();
-        List<VisualTest> visualList = visualTestRepo.findAllGraphValidScores();
+        List<NumberTest> numberList = numberTestRepo.getAllScores();
+        List<SequenceTest> sequenceList = sequenceTestRepo.getAllScores();
+        List<VerbalTest> verbalList = verbalTestRepo.getAllScores();
+        List<VisualTest> visualList = visualTestRepo.getAllScores();
 
 
 
@@ -128,73 +133,84 @@ public class DashboardController<T extends AppTest> {
         float verbalPercentile = 0;
         float visualPercentile = 0;
 
-        for (NumberTest numberTest : numberList) {
-            numberAverage += numberTest.getScore();
-            if(existNumber){
+        if(existNumber) {
+            for (NumberTest numberTest : numberList) {
                 if (numberTest.getScore() <= number.getScore()) {
                     numberPercentile += 1;
                 }
             }
+            for (NumberTest numberTest : allUserNumberList){
+                numberAverage += numberTest.getScore();
+            }
+            numberAverage /= allUserNumberList.size();
+            numberPercentile /= numberList.size();
         }
-        numberAverage /= numberList.size();
-        numberPercentile /= numberList.size();
 
-        for (SequenceTest sequenceTest : sequenceList) {
-            sequenceAverage += sequenceTest.getScore();
-            if(existSequence){
+        if(existSequence) {
+            for (SequenceTest sequenceTest : sequenceList) {
                 if (sequenceTest.getScore() <= sequence.getScore()) {
                     sequencePercentile += 1;
                 }
             }
+            for(SequenceTest sequenceTest : allUserSequenceList){
+                sequenceAverage += sequenceTest.getScore();
+            }
+            sequenceAverage /= allUserSequenceList.size();
+            sequencePercentile /= sequenceList.size();
         }
-        sequenceAverage /= sequenceList.size();
-        sequencePercentile /= sequenceList.size();
 
-        for (VerbalTest verbalTest : verbalList) {
-            verbalAverage += verbalTest.getScore();
-            if(existVerbal){
+
+        if(existVerbal) {
+            for (VerbalTest verbalTest : verbalList) {
                 if (verbalTest.getScore() <= verbal.getScore()) {
                     verbalPercentile += 1;
                 }
             }
+            for(VerbalTest verbalTest : allUserVerbalList){
+                verbalAverage += verbalTest.getScore();
+            }
+            verbalAverage /= allUserVerbalList.size();
+            verbalPercentile /= verbalList.size();
         }
-        verbalAverage /= verbalList.size();
-        verbalPercentile /= verbalList.size();
 
-        for (VisualTest visualTest : visualList) {
-            visualAverage += visualTest.getScore();
-            if(existVisual){
+        if(existVisual) {
+            for (VisualTest visualTest : visualList) {
                 if (visualTest.getScore() <= visual.getScore()) {
                     visualPercentile += 1;
                 }
             }
+            for(VisualTest visualTest : allUserVisualList) {
+                visualAverage += visualTest.getScore();
+            }
+            visualAverage /= allUserVisualList.size();
+            visualPercentile /= visualList.size();
         }
-        visualAverage /= visualList.size();
-        visualPercentile /= visualList.size();
+
+
 
         if(existNumber){
             data.add(new PersonalData("number memory", number.getScore(), numberAverage, (int) (100 * numberPercentile)));
         }
         else{
-            data.add(new PersonalData("number memory", 0, numberAverage, 0));
+            data.add(new PersonalData("number memory", 0, 0, 0));
         }
         if(existSequence){
             data.add(new PersonalData("sequence memory", sequence.getScore(), sequenceAverage, (int) (100 * sequencePercentile)));
         }
         else{
-            data.add(new PersonalData("sequance memory", 0, sequenceAverage, 0));
+            data.add(new PersonalData("sequance memory", 0, 0, 0));
         }
         if(existVerbal){
             data.add(new PersonalData("verbal memory", verbal.getScore(), verbalAverage, (int) (100 * verbalPercentile)));
         }
         else{
-            data.add(new PersonalData("verbal memory", 0, verbalAverage, 0));
+            data.add(new PersonalData("verbal memory", 0, 0, 0));
         }
         if(existVisual){
             data.add(new PersonalData("visual memory", visual.getScore(), visualAverage, (int) (100 * visualPercentile)));
         }
         else{
-            data.add(new PersonalData("visual memory", 0, visualAverage, 0));
+            data.add(new PersonalData("visual memory", 0, 0, 0));
         }
 
         return gson.toJson(data);
