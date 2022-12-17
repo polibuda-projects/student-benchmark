@@ -5,7 +5,7 @@ import ButtonMedium from '@components/Buttons/ButtonMedium';
 import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import { useState, useRef } from 'react';
-const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/resetPassword`;
+const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/resetPassword?token=${window.location.search.slice(7)}`;
 
 function ResetPassword() {
   const [isShown, setIsSHown] = useState(false);

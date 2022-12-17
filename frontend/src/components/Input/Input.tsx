@@ -70,7 +70,7 @@ export default class Inputs extends Component<InputProps, InputState> {
       }
     }
 
-    if (input.name.includes('passwordRegister')) {
+    if (input.name.includes('passwordRegister') || input.name.includes('newPassword')) {
       if (!passwordCapitalLetterRegex.test(value)) {
         this.setState({ message: 'Password must contain at least one capital letter' });
         this.props.correctValue?.(false);
