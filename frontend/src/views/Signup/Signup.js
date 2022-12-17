@@ -5,12 +5,13 @@ import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
 import logo from '@resources/img/logoVertical.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/register`;
 
 function Signup() {
   const [isShown, setIsSHown] = useState(false);
+  const navigate = useNavigate();
 
   const togglePassword = () => {
     setIsSHown((isShown) => !isShown);
@@ -22,27 +23,24 @@ function Signup() {
   const passwordConfirmation = React.useRef(null);
 
   async function sendRegisterRequest() {
-    console.log('Sending request');
-
     const body = {
       nickname: nickname.current.value,
       email: email.current.value,
       password: password.current.value,
       passwordConfirmation: passwordConfirmation.current.value,
     };
-    console.log(body);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     };
 
-    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
     try {
-      console.log(await response.clone().json());
-    } catch (error) {
-      console.log(await response.clone().text());
-    }
+      const response = await fetch(fetchUrl, requestOptions);
+      if (!response.ok) throw response;
+
+      navigate('/login');
+    } catch (err) {}
   };
 
   return (
