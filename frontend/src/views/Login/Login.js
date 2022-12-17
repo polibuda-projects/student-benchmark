@@ -5,7 +5,7 @@ import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import logo from '@resources/img/logoVertical.svg';
 import ButtonMedium from '@components/Buttons/ButtonMedium';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { login as apiLogin } from '../../auth';
 
@@ -19,9 +19,10 @@ function Login() {
 
   const nickname = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
 
   async function sendRegisterRequest() {
-    const resp = await apiLogin(nickname.current.value, password.current.value);
+    const resp = await apiLogin(nickname.current.value, password.current.value, navigate);
     setLoginMessage(resp);
   };
 
@@ -47,7 +48,7 @@ function Login() {
               </div>
             </div>
           </form>
-          <p1>{loginMessage}</p1>
+          <p>{loginMessage}</p>
         </ContainerBox>
         <img src={logo} className={style.logo} alt={'Student Benchmark'}/>
 

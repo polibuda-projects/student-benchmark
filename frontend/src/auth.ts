@@ -1,3 +1,5 @@
+import { NavigateFunction } from 'react-router-dom';
+
 const loginUrl = `${process.env.REACT_APP_BACKEND_URL}/login`;
 const logoutUrl = `${process.env.REACT_APP_BACKEND_URL}/logout`;
 const fetchUserUrl = `${process.env.REACT_APP_BACKEND_URL}/user`;
@@ -102,7 +104,7 @@ export const isAdmin = (): boolean => {
   return userState.role === Role.ROLE_ADMIN;
 };
 
-export async function login(username: string, password: string): Promise<number | string> {
+export const login = async (username: string, password: string, navigate: NavigateFunction): Promise<number | string> => {
   const body = new FormData();
   body.append('username', username);
   body.append('password', password);
@@ -120,7 +122,7 @@ export async function login(username: string, password: string): Promise<number 
     if (user === null) return 'Login failed';
     setUserState(user.username, user.role);
 
-    document.location.href = '/';
+    navigate('/');
     return 0;
   } catch (err) { }
 
@@ -149,7 +151,6 @@ export const fetchUser = async (): Promise<User | null> => {
 
   try {
     const resp = await fetch(fetchUserUrl, requestOptions);
-    console.log(resp);
     if (resp.status !== 200) return null;
 
     const user = await resp.json();
@@ -159,4 +160,11 @@ export const fetchUser = async (): Promise<User | null> => {
   } catch (err) { }
 
   return null;
+};
+
+export const updateUserState = async (): Promise<void> => {
+  const user = await fetchUser();
+  if (user === null) return removeSesionData();
+
+  setUserState(user.username, user.role);
 };
