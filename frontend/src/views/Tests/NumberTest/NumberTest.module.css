@@ -35,14 +35,6 @@
     transition-timing-function: linear;
 }
 
-.buttons {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-}
-
 .numberInput {
     text-align: center;
     font-size: 5rem;
@@ -60,7 +52,6 @@
 .textToScale {
     font-size: 4rem;
 }
-
 
 @media (max-width: 500px) {
     .container {

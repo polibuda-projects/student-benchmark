@@ -168,13 +168,10 @@ export default function NumberTest() {
             <NumberProperties text={yourNumber} fontSize={'4rem'} />
           </div>
           <NumberProperties className={style.textToScale} text={'You entered wrong number'} />
-          <div className={style.buttons}>
-            <ButtonMedium text='save score' onClick={() => {
-              sendResultRequest();
-              updateState('end');
-            }} />
-            <ButtonMedium text='try again' onClick={() => updateState('start')} />
-          </div>
+          <ButtonMedium text='save score' onClick={() => {
+            sendResultRequest();
+            updateState('end');
+          }} />
         </div>
       </>
     }
