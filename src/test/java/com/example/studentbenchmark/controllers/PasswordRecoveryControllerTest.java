@@ -55,14 +55,16 @@ public class PasswordRecoveryControllerTest {
 
     @Test
     public void shouldReturnBadRequest_emailNotIn() throws Exception {
-        userRepo.save(new AppUser("nickname", "aaaa@aal", passwordEncoder.encode("aA@asdaki1"), AppUser.Role.USER));
+        userRepo.save(new AppUser("nickname", "aaaa@aal.com", passwordEncoder.encode("aA@asdaki1"), AppUser.Role.USER));
         mvc
                 .perform(post(PATH1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createPasswordRecoveryRequest( "").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Invalid email address")));
-        userRepo.delete(userRepo.findByEmail("aaaa@aal"));
+        if(userRepo.findByEmail("aaaa@aal.com")!=null){
+            userRepo.delete(userRepo.findByEmail("aaaa@aal.com"));
+        }
     }
 
     @Test
