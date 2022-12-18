@@ -1,6 +1,7 @@
 package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUser;
+import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.repository.UserRepo;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Assertions;
@@ -20,8 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,8 +41,8 @@ public class ChangeUserPasswordControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static RequestPostProcessor basicAuth() {
-        return httpBasic(USER_NICKNAME, USER_PASSWORD);
+    private RequestPostProcessor authorizedUser() {
+        return user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL)));
     }
 
     @BeforeEach
@@ -53,7 +53,7 @@ public class ChangeUserPasswordControllerTest {
     @Test
     public void shouldReturnOk_whenSuccessful() throws Exception {
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
                 .andDo(print()).andExpect(status().isOk())
@@ -63,7 +63,7 @@ public class ChangeUserPasswordControllerTest {
     @Test
     public void shouldChangeUserPassword() throws Exception {
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
                 .andDo(print());
@@ -81,12 +81,12 @@ public class ChangeUserPasswordControllerTest {
         nextRequest.addProperty("newPasswordRepeated", NEWER_PASSWORD);
 
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(CHANGE_USER_PASSWORD_REQUEST.toString()));
 
         mvc
-                .perform(post(PATH).with(httpBasic(USER_NICKNAME, USER_NEW_PASSWORD))
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(nextRequest.toString()))
                 .andDo(print());
@@ -101,7 +101,7 @@ public class ChangeUserPasswordControllerTest {
         badRequest.addProperty("oldPassword", USER_PASSWORD + "#");
 
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(badRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
@@ -114,7 +114,7 @@ public class ChangeUserPasswordControllerTest {
         badRequest.addProperty("newPasswordRepeated", USER_NEW_PASSWORD + "#");
 
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(badRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
@@ -129,7 +129,7 @@ public class ChangeUserPasswordControllerTest {
         badRequest.addProperty("newPasswordRepeated", invalidPassword);
 
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(badRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
@@ -144,33 +144,6 @@ public class ChangeUserPasswordControllerTest {
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
-    @Test
-    public void shouldReturnUnauthorized_withAnonymousAuthorization() throws Exception {
-        mvc
-                .perform(post(PATH).with(anonymous())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
-                .andDo(print()).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void shouldReturnUnauthorized_whenAuthorizationUsernameIsIncorrect() throws Exception {
-        mvc
-                .perform(post(PATH).with(httpBasic(USER_NICKNAME + "#", USER_PASSWORD))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
-                .andDo(print()).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void shouldReturnUnauthorized_whenAuthorizationPasswordIsIncorrect() throws Exception {
-        mvc
-                .perform(post(PATH).with(httpBasic(USER_NICKNAME, USER_PASSWORD + "#"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(CHANGE_USER_PASSWORD_REQUEST.toString()))
-                .andDo(print()).andExpect(status().isUnauthorized());
-    }
-
     @ParameterizedTest
     @ValueSource(strings = {"oldPassword", "newPassword", "newPasswordRepeated"})
     public void shouldReturnBadRequest_whenRequestPropertyIsNull(String nullKey) throws Exception {
@@ -178,7 +151,7 @@ public class ChangeUserPasswordControllerTest {
         incompleteRequest.remove(nullKey);
 
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(incompleteRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
@@ -191,7 +164,7 @@ public class ChangeUserPasswordControllerTest {
         incompleteRequest.addProperty(emptyKey, "");
 
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(authorizedUser())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(incompleteRequest.toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
