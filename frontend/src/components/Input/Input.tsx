@@ -2,7 +2,7 @@ import { ChangeEventHandler, Component, createRef, RefObject } from 'react';
 
 import style from './Input.module.css';
 
-const validEmailRegex = RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+const validEmailRegex = RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/);
 const passwordLengthRegex = RegExp(/^(?=.{8,64})/);
 const passwordCapitalLetterRegex = RegExp(/^(?=.*?[A-Z])/);
 const passwordLowercaseLetterRegex = RegExp(/^(?=.*?[a-z])/);
@@ -69,6 +69,7 @@ export default class Inputs extends Component<InputProps, InputState> {
     if (!input) return;
 
     const value = input.value;
+    if (value.length === 0) return;
 
     if (input.name.includes('email')) {
       if (!validEmailRegex.test(value)) {

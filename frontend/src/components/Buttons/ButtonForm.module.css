@@ -1,0 +1,56 @@
+.formButton {
+  transition: all 0.1s;
+}
+
+.disabled {
+  filter: saturate(50%);
+  opacity: 0.75;
+  transform: translateZ(1);
+
+  cursor: not-allowed !important;
+}
+
+.awaiting {
+  color: transparent;
+  position: relative;
+  transform: translateZ(0);
+}
+
+.awaiting::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  width: 100%;
+
+  background-image: url('@resources/img/spinner.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2.8rem;
+
+  animation: fade-in 0.1s ease forwards, spin 1s ease infinite;
+
+  transition: all 0.1s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
