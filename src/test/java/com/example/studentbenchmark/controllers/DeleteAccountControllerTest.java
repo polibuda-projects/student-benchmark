@@ -52,7 +52,7 @@ public class DeleteAccountControllerTest {
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
+
 
 
     private JsonObject delateAccountRequest (String password) {
@@ -61,9 +61,7 @@ public class DeleteAccountControllerTest {
         return jsonObject;
     }
 
-    private static RequestPostProcessor basicAuth() {
-        return httpBasic(USER_NICKNAME, USER_PASSWORD);
-    }
+
 
     @BeforeEach
     public void addTestUserAndSEtUp() {

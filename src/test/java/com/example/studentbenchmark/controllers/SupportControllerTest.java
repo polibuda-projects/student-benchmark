@@ -66,9 +66,6 @@ class SupportControllerTest {
         jsonObject.addProperty("message",message);
         return jsonObject;
     }
-    private static RequestPostProcessor basicAuth() {
-        return httpBasic(USER_NICKNAME, USER_PASSWORD);
-    }
 
     @BeforeEach
     public void addTestUser() {
