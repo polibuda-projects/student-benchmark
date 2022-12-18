@@ -1,6 +1,7 @@
 package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUser;
+import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.repository.UserRepo;
 import com.google.gson.JsonObject;
 import com.sun.jdi.event.ExceptionEvent;
@@ -19,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -76,8 +76,8 @@ class SupportControllerTest {
 
     @Test
     public void shouldReturnOk_whenSuccessfuly () throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(SupportRequest(TitleUnderTest,messageUnderTest).toString()))
                 .andDo(print()).andExpect(status().isOk())
@@ -86,8 +86,8 @@ class SupportControllerTest {
 
     @Test
     public void shouldReturnBad_whenMessageAndTitleAreBlank () throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(SupportRequest("","").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
@@ -95,8 +95,8 @@ class SupportControllerTest {
 
     @Test
     public void shouldRedurnBad_whenMessageIsToLong () throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(SupportRequest(TitleUnderTest2,messageUnderTest2).toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
@@ -104,8 +104,8 @@ class SupportControllerTest {
 
     @Test
     public void shouldReturnBad_whenLackOfMessage() throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(SupportRequest(TitleUnderTest,"").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
@@ -113,8 +113,8 @@ class SupportControllerTest {
 
     @Test
     public void shouldReturnBad_whenLackOfTitle() throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(SupportRequest("",messageUnderTest).toString()))
                 .andDo(print()).andExpect(status().isBadRequest());

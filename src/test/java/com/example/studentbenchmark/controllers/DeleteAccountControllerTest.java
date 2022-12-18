@@ -1,11 +1,13 @@
 package com.example.studentbenchmark.controllers;
 
 import com.example.studentbenchmark.entity.AppUser;
+import com.example.studentbenchmark.entity.AppUserEntityDetails;
 import com.example.studentbenchmark.repository.UserRepo;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +15,29 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static com.example.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,12 +52,11 @@ public class DeleteAccountControllerTest {
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
 
 
-    private JsonObject delateAccountRequest(String nickname, String email, String password) {
+    private JsonObject delateAccountRequest (String password) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("nickname", nickname);
-        jsonObject.addProperty("email", email);
         jsonObject.addProperty("password", password);
         return jsonObject;
     }
@@ -54,16 +66,22 @@ public class DeleteAccountControllerTest {
     }
 
     @BeforeEach
-    public void addTestUser() {
+    public void addTestUserAndSEtUp() {
         userRepo.save(new AppUser(USER_NICKNAME, USER_EMAIL, passwordEncoder.encode(USER_PASSWORD),
-                AppUser.Role.USER));}
+                AppUser.Role.USER));
+    }
+
+
+
+
 
         @Test
+        //@WithMockUser
         public void shouldReturnOk_whenSuccessfuly () throws Exception {
-            mvc.
-                    perform(post(PATH).with(basicAuth())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(delateAccountRequest("nickname", "email@email.com", "P@ssw0rd").toString()))
+            mvc
+                    .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(delateAccountRequest( "P@ssw0rd").toString()))
                     .andDo(print()).andExpect(status().isOk())
                     .andExpect(content().string(containsString("User Deleted")));
 
@@ -72,12 +90,13 @@ public class DeleteAccountControllerTest {
 
 
 
+
     @Test
     public void shouldReturnBadRequest_whenNotSuccessfuly () throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("nickname", "email@email.com", "P@ssw0rd123").toString()))
+                        .content(delateAccountRequest("P@ssw0rd123").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Incorrect user password")));
 
@@ -86,20 +105,20 @@ public class DeleteAccountControllerTest {
 
     @Test
     public void shouldDeleteUser () throws Exception {
-        mvc.
-                perform(post(PATH).with(basicAuth())
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("nickname", "email@email.com", "P@ssw0rd").toString()))
+                        .content(delateAccountRequest("P@ssw0rd").toString()))
                 .andDo(print());
         assertTrue(userRepo.findByNickname("nickname").isEmpty());
     }
 
     @Test//do zastanowiena się
     public void shouldReturnUnautorised_withoutAuthorization () throws Exception {
-        mvc.
-                perform(post(PATH)
+        mvc
+                .perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("nickname", "email@email.com", "P@ssw0rd").toString()))
+                        .content(delateAccountRequest("P@ssw0rd").toString()))
                 .andDo(print()).andExpect(status().isUnauthorized());
 
     }
@@ -107,9 +126,9 @@ public class DeleteAccountControllerTest {
     @Test
     public void shouldReturnBadRequest_whenPasswordIsEmpty() throws Exception {
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("nickname", "email@email.com", "").toString()))
+                        .content(delateAccountRequest( "").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
     }
 
@@ -120,17 +139,13 @@ public class DeleteAccountControllerTest {
             "@asapiski3sssssssssssssssssssssssssssssssssssssssssssssssssaaaaaaaaaasasasaaddddddddddddaaaaaaaaaaaaaaaaaas"})
     public void shouldReturnBadRequest_whenPasswordIsInvalid(String password) throws Exception {
         mvc
-                .perform(post(PATH).with(basicAuth())
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("nickname", "email@email.com", password).toString()))
-                .andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("<br/>" + "   Password must contain at least one digit [0-9]." +
-                        "<br/>" + "   Password must contain at least one lowercase Latin character [a-z]." +
-                        "<br/>" + "    Password must contain at least one uppercase Latin character [A-Z]." +
-                        "<br/>" + "    Password must contain at least one special character like ! @ # & ( )." +
-                        "<br/>" + "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")));
+                        .content(delateAccountRequest(password).toString()))
+                .andDo(print()).andExpect(status().isBadRequest());
 
     }
+
 
 
 }
