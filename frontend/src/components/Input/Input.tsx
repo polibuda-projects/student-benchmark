@@ -1,4 +1,4 @@
-import { ChangeEventHandler, Component } from 'react';
+import { ChangeEventHandler, Component, createRef, RefObject } from 'react';
 
 import style from './Input.module.css';
 
@@ -19,8 +19,9 @@ export interface InputProps {
   id?: string,
   autoComplete?: string;
   required?: boolean;
-  useRef?: React.RefObject<HTMLInputElement>;
+  useRef?: RefObject<HTMLInputElement>;
   correctValue?: (isCorrect: boolean) => void,
+  sibling?: RefObject<HTMLInputElement>,
 }
 
 export interface InputState {
@@ -28,6 +29,8 @@ export interface InputState {
 }
 
 export default class Inputs extends Component<InputProps, InputState> {
+  private inputRef: RefObject<HTMLInputElement>;
+
   private static defaultProps: InputProps = {
     shadows: true,
     focus: false,
@@ -40,11 +43,31 @@ export default class Inputs extends Component<InputProps, InputState> {
     this.state = {
       message: '',
     };
+
+    if (this.props.useRef === undefined) this.inputRef = createRef();
+    else this.inputRef = this.props.useRef;
   }
 
-  private validateInput: ChangeEventHandler = (event) => {
+  private validateSiblings = (): boolean => {
+    if (this.props.sibling === undefined) return true;
+
+    const input = this.inputRef.current;
+    const sibling = this.props.sibling?.current;
+
+    if (!input || !sibling) return false;
+
+    return input.value === sibling.value;
+  };
+
+  private changeEventHandler: ChangeEventHandler = (event) => {
     event.preventDefault();
-    const input = event.target as HTMLInputElement;
+    this.validateInput();
+  };
+
+  private validateInput = () => {
+    const input = this.inputRef.current;
+    if (!input) return;
+
     const value = input.value;
 
     if (input.name.includes('email')) {
@@ -86,6 +109,9 @@ export default class Inputs extends Component<InputProps, InputState> {
       } else if (!passwordLengthRegex.test(value)) {
         this.setState({ message: 'Password must be between 8 and 64 characters' });
         this.props.correctValue?.(false);
+      } else if (!this.validateSiblings()) {
+        this.setState({ message: 'Passwords do not match' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
         this.props.correctValue?.(true);
@@ -119,12 +145,33 @@ export default class Inputs extends Component<InputProps, InputState> {
     }
   };
 
+  public componentDidMount(): void {
+    if (this.props.sibling) {
+      this.props.sibling.current?.addEventListener('input', this.validateInput);
+    }
+  }
+
+  public componentWillUnmount(): void {
+    if (this.props.sibling) {
+      this.props.sibling.current?.removeEventListener('input', this.validateInput);
+    }
+  }
+
   render() {
     return (
       <div className={style.container}>
-        <input ref={this.props.useRef} className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
-          type={this.props.type} name={this.props.name} placeholder={this.props.placeholder} autoFocus ={this.props.focus} id={this.props.id}
-          autoComplete={this.props.autoComplete} required={this.props.required} onChange={this.validateInput} />
+        <input
+          ref={this.props.useRef}
+          className={[style.input, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
+          type={this.props.type}
+          name={this.props.name}
+          placeholder={this.props.placeholder}
+          autoFocus={this.props.focus}
+          id={this.props.id}
+          autoComplete={this.props.autoComplete}
+          required={this.props.required}
+          onChange={this.changeEventHandler}
+        />
         <span className={style.message}>{this.state.message}</span>
       </div>
     );
