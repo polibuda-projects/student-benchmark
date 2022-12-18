@@ -66,9 +66,4 @@
     .numberForm {
         gap: 2rem;
     }
-    .buttons {
-        margin-top: 2.5rem;
-        flex-direction: column;
-        width: 20rem;
-    }
   }
