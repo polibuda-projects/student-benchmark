@@ -14,7 +14,12 @@ export interface ButtonMediumProps {
 export default class ButtonMedium extends Component<ButtonMediumProps> {
   render() {
     return (
-      <button className={[style.button, this.props.className].join(' ')} style={{ width: this.props.width }} onClick={this.props.onClick} type='button' id={this.props.id}>
+      <button
+        className={[style.button, this.props.className].join(' ')}
+        style={{ width: this.props.width }}
+        onClick={this.props.onClick}
+        type='button'
+        id={this.props.id}>
         {this.props.text}
       </button>
     );

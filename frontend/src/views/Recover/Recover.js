@@ -33,7 +33,7 @@ function Recover() {
     };
 
     try {
-      const response = await fetch(fetchUrl, requestOptions);
+      await fetch(fetchUrl, requestOptions);
       // Information about a non-existent account is not provided - for security reasons.
       setResetMessage(`If a matching account was found an email was sent to ${body['email']} 
         to allow you to reset your password. 

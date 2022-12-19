@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import style from './VerbalTest.module.css';
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';

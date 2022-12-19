@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import style from './NumberTest.module.css';
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
@@ -7,7 +9,6 @@ import logo from '@resources/img/numberTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';
-import { count } from 'console';
 const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/number`;
 const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/number`;
 

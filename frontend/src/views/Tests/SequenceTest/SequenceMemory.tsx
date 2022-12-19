@@ -1,12 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
 import style from './SequenceMemory.module.css';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
 import logo from '@resources/img/sequenceTest.svg';
 import TestEnd from '@components/Test/TestEnd';
-import ContainerBox from '@components/ContainerBox/ContainerBox';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
 const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/sequence`;
 const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/sequence`;
 

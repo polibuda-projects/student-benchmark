@@ -2,7 +2,6 @@ import { Component } from 'react';
 
 import style from './SquaresBoard.module.css';
 import Square from '@views/Tests/VisualTest/Square/Square';
-import { TestActiveState } from '@views/Tests/VisualTest/VisualTest';
 
 
 export interface SquaresBoardProps {

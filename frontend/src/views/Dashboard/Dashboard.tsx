@@ -9,7 +9,6 @@ import DashboardTable from '@components/DashboardTable/DashboardTable';
 import TestBox, { TestBoxEnum } from '@components/TestBox/TestBox';
 import { useEffect, useRef, useState } from 'react';
 import TestChart, { TestChartProps } from '@components/TestChart/TestChart';
-import RestrictedRoute from '@components/RestrictedRoute/RestrictedRoute';
 const fetchSequenceChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/sequence`;
 const fetchVisualChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/visual`;
 const fetchVerbalChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/verbal`;

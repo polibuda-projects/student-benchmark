@@ -2,6 +2,7 @@ import { ChangeEventHandler, Component, createRef, RefObject } from 'react';
 
 import style from './Input.module.css';
 
+// eslint-disable-next-line max-len, no-useless-escape
 const validEmailRegex = RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{1,}))$/);
 const passwordLengthRegex = RegExp(/^(?=.{8,64})/);
 const passwordCapitalLetterRegex = RegExp(/^(?=.*?[A-Z])/);
