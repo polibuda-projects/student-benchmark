@@ -1,9 +1,12 @@
 package com.example.studentbenchmark.entity.testsEntities;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity(name = "verbal_test")
+@Access(AccessType.FIELD)
 public final class VerbalTest extends AppTest {
 
     public static final int MIN_VALID_SCORE = 0;
