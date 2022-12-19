@@ -45,28 +45,38 @@ public class DeleteAccountController {
         this.logsRepo = logsRepo;
     }
 
+    //Metoda usuwa dane użytkownika z bazy danych i go wylogowywuje
     @PostMapping("/deleteAccount")
     public ResponseEntity<String> registerUser(@Valid @RequestBody DeleteAccountRequest request, HttpServletRequest http) throws ServletException {
 
+        //Pobiera informacje z sesji (email)
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         String email = ((AppUserEntityDetails) principal).getEmail();
+
+        //Wyszukanie użytkownika w bazie i pobranie jego hasła
         AppUser user = userRepo.findByEmail(email);
         String password = user.getPassword();
 
-
+        //Sprawdznenie zgodności wpisanego hasła z obecnym hasłem użytkownika
         if (!passwordEncoder.matches(request.password(), password)) {
             logger.error("User has entered incorrect password");
             return new ResponseEntity<>("Incorrect user password", HttpStatus.BAD_REQUEST);
         }
 
+        //Akcja usunięcia rekordów użytkownika z bazy danych
         userRepo.deleteAccount(email);
+
+        //Zapisanie logów o pomyślnym usunięciu użytkownika z danych
         logsRepo.save(new LoggerEntity(((AppUserEntityDetails) principal).getUsername(), ((AppUserEntityDetails) principal).getId(), "User has deleted the account"));
         logger.info("User has deleted the account");
+
+        //Wylogowanie użytkownika
         http.logout();
+
         return new ResponseEntity<>("User Deleted", HttpStatus.OK);
     }
 
+    //Metoda reprezentująca dane z formularza rejestracji z walidacją
     private record DeleteAccountRequest(
             @NotNull(message = "0")
             @NotBlank(message = "1")

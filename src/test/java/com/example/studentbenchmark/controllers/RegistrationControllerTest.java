@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import static com.example.studentbenchmark.TestConstants.*;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -54,7 +55,9 @@ public class RegistrationControllerTest {
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User registered successfully")));
-        userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
     @Test
@@ -65,6 +68,9 @@ public class RegistrationControllerTest {
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "aA@asapisi2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Passwords do not match")));
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
     @Test
@@ -74,6 +80,9 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
     @Test
@@ -83,6 +92,9 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("", "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
     @Test
@@ -92,6 +104,7 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
+
     }
 
     @Test
@@ -101,6 +114,9 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
     @Test
@@ -117,7 +133,9 @@ public class RegistrationControllerTest {
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("This email is used by existing account")));
 
-        userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
 
     }
 
@@ -135,7 +153,9 @@ public class RegistrationControllerTest {
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("This nickname is used by existing account")));
 
-        userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
     @ParameterizedTest
@@ -145,12 +165,10 @@ public class RegistrationControllerTest {
                 .perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "nick2@email.pl", password, password).toString()))
-                .andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("<br/>" + "   Password must contain at least one digit [0-9]." +
-                        "<br/>" + "   Password must contain at least one lowercase Latin character [a-z]." +
-                        "<br/>" + "    Password must contain at least one uppercase Latin character [A-Z]." +
-                        "<br/>" + "    Password must contain at least one special character like ! @ # & ( )." +
-                        "<br/>" + "    Password must contain a length of at least 8 characters and a maximum of 64 characters.")));
+                .andDo(print()).andExpect(status().isBadRequest());
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
 
     }
 
@@ -162,6 +180,9 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", email, "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
+        if(userRepo.findByEmail(email)!=null){
+            userRepo.delete(userRepo.findByEmail(email));
+        }
     }
 
     @ParameterizedTest
@@ -171,8 +192,10 @@ public class RegistrationControllerTest {
                 .perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest(nick, "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
-                .andDo(print()).andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("size must be between 3 and 64")));
+                .andDo(print()).andExpect(status().isBadRequest());
+        if(userRepo.findByEmail("nick2@email.pl")!=null){
+            userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
+        }
     }
 
 }
