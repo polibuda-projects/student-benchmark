@@ -5,6 +5,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import java.util.Date;
 
+
 @Entity(name = "verbal_test")
 @Access(AccessType.FIELD)
 public final class VerbalTest extends AppTest {

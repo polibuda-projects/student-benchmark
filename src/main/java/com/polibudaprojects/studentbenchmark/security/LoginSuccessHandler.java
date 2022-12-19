@@ -10,11 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
+
 
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final UserRepo userRepo;
@@ -29,7 +28,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
         AppUserEntityDetails user = (AppUserEntityDetails) authentication.getPrincipal();
         AppUser currentUser = userRepo.findByEmail(user.getEmail());
         userRepo.changeLoginDate(currentUser.getIdUser(), new Date());

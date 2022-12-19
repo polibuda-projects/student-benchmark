@@ -11,15 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.Optional;
 
+
 @Repository
 public interface UserRepo extends JpaRepository<AppUser, Long> {
     Optional<AppUser> findByNickname(String username);
 
     AppUser findByEmail(String email);
-
-    // Hasło jest zakodowane, więc takie wyszukiwanie nie ma już sensu
-//    @Query(nativeQuery = true, value = "SELECT * FROM app_user WHERE email= :email AND password= :password")
-//    AppUser findUser(@Param("email") String email, @Param("password") String password);
 
     @Query(nativeQuery = true, value = "SELECT * FROM app_user WHERE id_user= :idUser")
     AppUser findByID(@Param("idUser") Long idUser);

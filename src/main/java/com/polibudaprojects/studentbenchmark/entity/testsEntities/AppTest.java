@@ -9,7 +9,6 @@ import java.util.Date;
 
 @MappedSuperclass
 public abstract class AppTest {
-
     public static final int MIN_VALID_SCORE = 0;
     public static final int MAX_VALID_SCORE = 100;
     public static final int MAX_VALID_SCORE_GRAPH = 30;

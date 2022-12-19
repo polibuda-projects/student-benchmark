@@ -3,6 +3,7 @@ package com.polibudaprojects.studentbenchmark.entity;
 import javax.persistence.*;
 import java.util.Date;
 
+
 @Entity
 public class LoggerEntity {
 

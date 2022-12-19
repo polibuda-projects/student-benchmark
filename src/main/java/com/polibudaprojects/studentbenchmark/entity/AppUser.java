@@ -1,6 +1,5 @@
 package com.polibudaprojects.studentbenchmark.entity;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,10 +15,10 @@ public class AppUser {
     private Long idUser;
     @NotNull(message = "0")
     @NotBlank(message = "1")
-    @Size(min = 3, max = 64, message ="2" )
+    @Size(min = 3, max = 64, message = "2")
     private String nickname;
     @Email(message = "3")
-    @Pattern(regexp=".+@.+\\..+", message="3")
+    @Pattern(regexp = ".+@.+\\..+", message = "3")
     @NotBlank(message = "1")
     @NotNull(message = "0")
     @Size(min = 3, max = 64, message = "2")
@@ -27,7 +26,7 @@ public class AppUser {
 
     @NotNull(message = "0")
     @NotBlank(message = "1")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[\\]{}:;',?/*~$^+=<>]).{8,64}$", message =
             "4")
     private String password;
     private Role role;

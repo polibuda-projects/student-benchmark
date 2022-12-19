@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 public class AppUserEntityDetails implements UserDetails {
     private final AppUser entity;
 

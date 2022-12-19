@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+
 public class AppUserDetailsService implements UserDetailsService {
     private final UserRepo userRepo;
 
@@ -21,7 +22,7 @@ public class AppUserDetailsService implements UserDetailsService {
             if (userByEmail == null) {
                 throw new UsernameNotFoundException(usernameOrEmail);
             }
-            user =  new AppUserEntityDetails(userByEmail);
+            user = new AppUserEntityDetails(userByEmail);
         }
 
         return user;

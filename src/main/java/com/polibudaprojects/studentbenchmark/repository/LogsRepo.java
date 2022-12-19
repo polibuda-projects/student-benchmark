@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 
+
 @Repository
 public interface LogsRepo extends JpaRepository<LoggerEntity, Long> {
 

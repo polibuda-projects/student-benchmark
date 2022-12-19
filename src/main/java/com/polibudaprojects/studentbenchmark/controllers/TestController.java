@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @RestController
 @Service
 public class TestController {
@@ -45,7 +46,6 @@ public class TestController {
     }
 
     public TestController() {
-
     }
 
     @PostMapping("/result/sequence")
@@ -61,14 +61,13 @@ public class TestController {
 
     @GetMapping("/tests/sequence")
     List<Long> getResultsFromSequenceTest() {
-        List<Long> allPossibleScores=new ArrayList<>();
+        List<Long> allPossibleScores = new ArrayList<>();
         Map<Integer, Long> scores = sequenceTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
         for (int i = 0; i <= SequenceTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
-                allPossibleScores.add(i,0L);
-            }
-            else
-                allPossibleScores.add(i,scores.get(i).longValue());
+                allPossibleScores.add(i, 0L);
+            } else
+                allPossibleScores.add(i, scores.get(i).longValue());
         }
 
         return allPossibleScores;
@@ -87,14 +86,13 @@ public class TestController {
 
     @GetMapping("/tests/verbal")
     List<Long> getResultsFromVerbalTest() {
-        List<Long> allPossibleScores=new ArrayList<>();
+        List<Long> allPossibleScores = new ArrayList<>();
         Map<Integer, Long> scores = verbalTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
         for (int i = 0; i <= VerbalTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
-                allPossibleScores.add(i,0L);
-            }
-            else
-                allPossibleScores.add(i,scores.get(i).longValue());
+                allPossibleScores.add(i, 0L);
+            } else
+                allPossibleScores.add(i, scores.get(i).longValue());
         }
 
         return allPossibleScores;
@@ -115,14 +113,13 @@ public class TestController {
 
     @GetMapping("/tests/number")
     List<Long> getResultsFromNumberTest() {
-        List<Long> allPossibleScores=new ArrayList<>();
+        List<Long> allPossibleScores = new ArrayList<>();
         Map<Integer, Long> scores = numberTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
         for (int i = 0; i <= NumberTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
-                allPossibleScores.add(i,0L);
-            }
-            else
-                allPossibleScores.add(i,scores.get(i).longValue());
+                allPossibleScores.add(i, 0L);
+            } else
+                allPossibleScores.add(i, scores.get(i).longValue());
         }
 
         return allPossibleScores;
@@ -142,14 +139,13 @@ public class TestController {
 
     @GetMapping("/tests/visual")
     List<Long> getResultsFromVisualTest() {
-        List<Long> allPossibleScores=new ArrayList<>();
+        List<Long> allPossibleScores = new ArrayList<>();
         Map<Integer, Long> scores = visualTestRepo.getAllScores().stream().collect(Collectors.groupingBy(p -> p.getScore(), Collectors.counting()));
         for (int i = 0; i <= VisualTest.MAX_VALID_SCORE; i++) {
             if (!scores.containsKey(i)) {
-                allPossibleScores.add(i,0L);
-            }
-            else
-                allPossibleScores.add(i,scores.get(i).longValue());
+                allPossibleScores.add(i, 0L);
+            } else
+                allPossibleScores.add(i, scores.get(i).longValue());
         }
 
         return allPossibleScores;

@@ -26,6 +26,7 @@ import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.UUID;
 
+
 @RestController
 @Service
 public class PasswordRecoveryController {
@@ -105,12 +106,12 @@ public class PasswordRecoveryController {
     private record ResetPasswordRequest(
             @NotNull(message = "0")
             @NotBlank(message = "1")
-            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[\\]{}:;',?/*~$^+=<>]).{8,64}$", message =
                     "4")
             String newPassword,
             @NotNull(message = "0")
             @NotBlank(message = "1")
-            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,64}$", message =
+            @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[\\]{}:;',?/*~$^+=<>]).{8,64}$", message =
                     "4")
             String newPasswordRepeated) {
     }

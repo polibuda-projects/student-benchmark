@@ -42,7 +42,6 @@ public class SupportController {
         this.logsRepo = logsRepo;
     }
 
-
     @PostMapping("/support")
     public ResponseEntity<String> Support(@Valid @RequestBody SupportRequest request) {
 
@@ -56,7 +55,7 @@ public class SupportController {
         supportRepo.save(new SupportMessage(request.message(), request.messageTitle(), currentUser.getEmail(), currentUser.getId()));
         logsRepo.save(new LoggerEntity(currentUser.getUsername(), currentUser.getId(), "User has send the support message"));
         logger.info("User has send the support message");
-        return new ResponseEntity<>("Support message send succesfully", HttpStatus.OK);
+        return new ResponseEntity<>("Support message send successfully", HttpStatus.OK);
     }
 
     private record SupportRequest(
