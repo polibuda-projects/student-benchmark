@@ -96,6 +96,7 @@ public class PasswordRecoveryController {
 
         AppUser user = passwordResetToken.getUser();
         userRepo.changeUserPassword(user.getIdUser(), passwordEncoder.encode(request.newPassword()));
+        tokenRepo.delete(passwordResetToken);
         logsRepo.save(new LoggerEntity(user.getNickname(), user.getIdUser(), "User's password has changed successfully"));
         logger.info("User's password has changed successfully");
         return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
