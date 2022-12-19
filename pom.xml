@@ -15,6 +15,7 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
+        <spring-security.version>5.7.5</spring-security.version>
     </properties>
     <dependencies>
         <dependency>
@@ -50,7 +51,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>5.7.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
