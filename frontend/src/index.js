@@ -8,6 +8,7 @@ import Home from '@views/Home/Home';
 import Login from '@views/Login/Login';
 import Policy from '@views/Policy/Policy';
 import Donate from '@views/Donate/Donate';
+import Github from '@views/Donate/Github';
 import Recover from '@views/Recover/Recover';
 import Delete from '@views/Delete/Delete';
 import Signup from '@views/Signup/Signup';
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
   {
     path: '/donate',
     element: <Donate />,
+  },
+  {
+    path: '/github',
+    element: <Github />,
   },
   {
     path: '/admin',

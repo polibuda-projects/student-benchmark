@@ -2,16 +2,6 @@ import style from './Donate.module.css';
 import { useEffect } from 'react';
 
 
-const Donate = () => {
-  useEffect(() => {
-    window.location.replace('https://www.buymeacoffee.com/polibudaproject');
-  }, []);
-
-  return <div className={style.Redirecting}>
-    <h2>Redirecting...</h2>
-  </div>;
-};
-
 const Github = () => {
   useEffect(() => {
     window.location.replace('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
@@ -22,5 +12,5 @@ const Github = () => {
   </div>;
 };
 
-export default Donate;
+export default Github;
 
