@@ -81,7 +81,6 @@ export default function NumberTest() {
   };
 
   async function sendResultRequest() {
-    console.log(userScore);
     await fetch(fetchUrlResult, {
       method: 'POST',
       headers: {

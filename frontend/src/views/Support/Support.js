@@ -6,12 +6,12 @@ import Page from '@components/Page/Page';
 import ButtonForm from '@components/Buttons/ButtonForm';
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/support`;
 
 function Support() {
   const title = useRef(null);
   const message = useRef(null);
-  const responseInfo = useRef(null);
 
   const [titleValid, setTitleValid] = useState(false);
   const [messageValid, setMessageValid] = useState(false);
@@ -33,16 +33,13 @@ function Support() {
     const response = await fetch(fetchUrl, requestOptions);
     try {
       if (response.ok) {
-        console.log(response);
         title.current.value = '';
         message.current.children[0].value = '';
-        responseInfo.current.innerText = 'Message has been sent to support';
+        InfoPopup.addMessage('Message sent successfully!');
       } else {
-        responseInfo.current.innerText = 'Invalid request';
+        InfoPopup.addMessage('Error: Invalid request');
       }
-    } catch (error) {
-      console.log(await response.clone().text());
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -87,7 +84,6 @@ function Support() {
           </label>
           <div className={style.formOptions}>
             <ButtonForm isActive={isFormValid} onClick={sendSupportRequest} text={'Send'} width={''}/>
-            <div className={style.responseInfo} ref={responseInfo}></div>
           </div>
         </form>
       </ContainerBox>

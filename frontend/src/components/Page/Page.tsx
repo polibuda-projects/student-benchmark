@@ -7,6 +7,7 @@ import UserProfile from '@components/UserProfile/UserProfile';
 import icon from '@resources/img/icon.svg';
 import { Link } from 'react-router-dom';
 import Bottombar from '@components/Bottombar/Bottombar';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
 
 
 interface PageProps {
@@ -44,6 +45,9 @@ export default class Page extends Component<PageProps> {
               <Link className={style.branding} to='/#'>
                 <img src={icon} className={style.icon} alt='' />
               </Link>
+
+              <InfoPopup />
+
               {this.props.user && <UserProfile />}
             </div>
           }

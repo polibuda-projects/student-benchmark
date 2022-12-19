@@ -104,7 +104,7 @@ export const isAdmin = (): boolean => {
   return userState.role === Role.ROLE_ADMIN;
 };
 
-export const login = async (username: string, password: string, navigate: NavigateFunction): Promise<number | string> => {
+export const login = async (username: string, password: string, navigate: NavigateFunction): Promise<string | void> => {
   const body = new FormData();
   body.append('username', username);
   body.append('password', password);
@@ -122,8 +122,7 @@ export const login = async (username: string, password: string, navigate: Naviga
     if (user === null) return 'Login failed';
     setUserState(user.username, user.role);
 
-    navigate('/');
-    return 0;
+    return navigate('/');
   } catch (err) { }
 
   return 'Login failed';

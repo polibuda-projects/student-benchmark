@@ -24,9 +24,7 @@ function Admin() {
         if (Array.isArray(logs)) {
           setLogs(logs);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
     fetchData();
   }, []);

@@ -8,10 +8,10 @@ import ButtonForm from '@components/Buttons/ButtonForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { login as apiLogin } from '../../auth';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
 
 function Login() {
   const [isShown, setIsSHown] = useState(false);
-  const [loginMessage, setLoginMessage] = useState('');
 
   const togglePassword = () => {
     setIsSHown((isShown) => !isShown);
@@ -28,7 +28,7 @@ function Login() {
 
   async function sendRegisterRequest() {
     const resp = await apiLogin(nickname.current.value, password.current.value, navigate);
-    setLoginMessage(resp);
+    if (resp !== undefined) InfoPopup.addMessage(`Error: ${resp}`);
   };
 
   useEffect(() => {
@@ -75,7 +75,6 @@ function Login() {
               </div>
             </div>
           </form>
-          <p>{loginMessage}</p>
         </ContainerBox>
         <img src={logo} className={style.logo} alt={'Student Benchmark'}/>
 

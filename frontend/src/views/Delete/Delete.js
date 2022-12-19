@@ -5,6 +5,8 @@ import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import ButtonForm from '@components/Buttons/ButtonForm';
 import { useState, useRef, useEffect } from 'react';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
+import { logout } from '../../auth';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/deleteAccount`;
 
 function Delete() {
@@ -19,28 +21,33 @@ function Delete() {
   const [passwordValid, setPasswordValid] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
+
   async function sendDeleteAccountRequest() {
     const body = {
       password: password.current.value,
     };
 
-    console.log(body);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     };
 
-    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' } );
-    try {
-      if (response.ok) {
-        alert('Your account has been deleted :(');
-        document.location.replace('/');
-      } else {
-        alert('You entered wrong password!');
+    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
+    if (response.ok) {
+      InfoPopup.addMessage('Your account has been deleted. Redirecting to home page...');
+      setTimeout(() => {
+        logout();
+      }, 5000);
+    } else if (response.status === 400) {
+      try {
+        await response.clone().json(); // don't show verbose error message if it's a validation error
+        InfoPopup.addMessage('Error: Incorrect user password');
+      } catch (error) {
+        InfoPopup.addMessage(`Error: ${await response.text()}`);
       }
-    } catch (error) {
-      console.log(await response.clone().text());
+    } else {
+      InfoPopup.addMessage('Error: Unknown error');
     }
   }
 

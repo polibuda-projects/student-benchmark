@@ -5,10 +5,14 @@ import ButtonForm from '@components/Buttons/ButtonForm';
 import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/changeUserPassword`;
 
 function Password() {
   const [isShown, setIsSHown] = useState(false);
+
+  const navigate = useNavigate();
 
   const togglePassword = () => {
     setIsSHown((isShown) => !isShown);
@@ -31,24 +35,21 @@ function Password() {
       newPasswordRepeated: newPasswordRepeated.current.value,
     };
 
-    console.log(body);
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     };
 
-    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' } );
+    const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
     try {
       if (response.ok) {
-        document.location.replace('/dashboard');
-        alert('Password changed successfully!');
+        InfoPopup.addMessage('Password changed successfully!');
+        navigate('/settings');
       } else {
-        alert('Invalid request!');
+        InfoPopup.addMessage(`Error: ${await response.text()}`);
       }
-    } catch (error) {
-      console.log(await response.clone().text());
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -75,6 +76,7 @@ function Password() {
           />
           <Input
             useRef={newPassword}
+            sibling={newPasswordRepeated}
             correctValue={setPasswordValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegister'}
@@ -84,6 +86,7 @@ function Password() {
           />
           <Input
             useRef={newPasswordRepeated}
+            sibling={newPassword}
             correctValue={setPasswordConfirmationValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegisterRepeat'}

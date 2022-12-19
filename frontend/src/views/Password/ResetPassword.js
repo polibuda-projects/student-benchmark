@@ -5,10 +5,13 @@ import ButtonForm from '@components/Buttons/ButtonForm';
 import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/resetPassword?token=${window.location.search.slice(7)}`;
 
 function ResetPassword() {
   const [isShown, setIsSHown] = useState(false);
+  const navigate = useNavigate();
 
   const togglePassword = () => {
     setIsSHown((isShown) => !isShown);
@@ -28,8 +31,7 @@ function ResetPassword() {
       newPassword: newPassword.current.value,
       newPasswordRepeated: newPasswordRepeated.current.value,
     };
-
-    console.log(body);
+    ;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,14 +41,12 @@ function ResetPassword() {
     const response = await fetch(fetchUrl, requestOptions, { mode: 'cors' });
     try {
       if (response.ok) {
-        document.location.replace('/dashboard');
-        alert('Password changed successfully!');
+        InfoPopup.addMessage('Password changed successfully!');
+        navigate('/login');
       } else {
-        alert('Invalid request!');
+        InfoPopup.addMessage('Error: Unknown error');
       }
-    } catch (error) {
-      console.log(await response.clone().text());
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {

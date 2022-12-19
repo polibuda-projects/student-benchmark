@@ -6,6 +6,7 @@ import logo from '@resources/img/logoVertical.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import ButtonForm from '@components/Buttons/ButtonForm';
+import InfoPopup from '@components/InfoPopup/InfoPopup';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/register`;
 
 function Signup() {
@@ -48,7 +49,14 @@ function Signup() {
       if (!response.ok) throw response;
 
       navigate('/login');
-    } catch (err) {}
+      InfoPopup.addMessage('Registration successful! Please log in to continue.');
+    } catch (err) {
+      if (err instanceof Response) {
+        const message = await err.text();
+        if (message === '5') InfoPopup.addMessage('Error: Unknown error');
+        else InfoPopup.addMessage(`Error: ${message}`);
+      }
+    }
   };
 
   useEffect(() => {
@@ -81,7 +89,7 @@ function Signup() {
             <Input
               useRef={email}
               correctValue={setEmailValid}
-              type={'email'}
+              type='email'
               name={'emailLog'}
               placeholder={'Address email'}
               required
