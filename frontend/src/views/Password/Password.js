@@ -1,10 +1,10 @@
 import style from './Password.module.css';
 
 import Input from '@components/Input/Input';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
+import ButtonForm from '@components/Buttons/ButtonForm';
 import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/changeUserPassword`;
 
 function Password() {
@@ -17,6 +17,12 @@ function Password() {
   const oldPassword = useRef(null);
   const newPassword = useRef(null);
   const newPasswordRepeated = useRef(null);
+
+  const [currentPasswordValid, setCurrentPasswordValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordConfirmationValid, setPasswordConfirmationValid] = useState(false);
+
+  const [isFormValid, setIsFormValid] = useState(false);
 
   async function sendChangePasswordRequest() {
     const body = {
@@ -44,6 +50,15 @@ function Password() {
       console.log(await response.clone().text());
     }
   }
+
+  useEffect(() => {
+    setIsFormValid(currentPasswordValid&& passwordValid && passwordConfirmationValid);
+  }, [
+    currentPasswordValid,
+    passwordValid,
+    passwordConfirmationValid,
+  ]);
+
   return (
     <Page title="">
       <ContainerBox width={'60em'} className={style.passwordContainer}>
@@ -51,6 +66,7 @@ function Password() {
           <h1 className={style.title}>Change Password</h1>
           <Input
             useRef={oldPassword}
+            correctValue={setCurrentPasswordValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordLogin'}
             placeholder={'Current Password'}
@@ -59,6 +75,7 @@ function Password() {
           />
           <Input
             useRef={newPassword}
+            correctValue={setPasswordValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegister'}
             placeholder={'New Password'}
@@ -67,6 +84,7 @@ function Password() {
           />
           <Input
             useRef={newPasswordRepeated}
+            correctValue={setPasswordConfirmationValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegisterRepeat'}
             placeholder={'Repeat New Password'}
@@ -81,7 +99,8 @@ function Password() {
             />
             <em>Show password?</em>
           </label>
-          <ButtonMedium
+          <ButtonForm
+            isActive={isFormValid}
             onClick={sendChangePasswordRequest}
             className={style.changePasswordSubmit}
             text={'UPDATE'}

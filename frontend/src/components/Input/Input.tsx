@@ -69,7 +69,7 @@ export default class Inputs extends Component<InputProps, InputState> {
     if (!input) return;
 
     const value = input.value;
-    if (value.length === 0) return;
+    if (value.length === 0) return this.props.correctValue?.(false);
 
     if (input.name.includes('email')) {
       if (!validEmailRegex.test(value)) {

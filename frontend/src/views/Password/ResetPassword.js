@@ -1,10 +1,10 @@
 import style from './Password.module.css';
 
 import Input from '@components/Input/Input';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
+import ButtonForm from '@components/Buttons/ButtonForm';
 import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/resetPassword?token=${window.location.search.slice(7)}`;
 
 function ResetPassword() {
@@ -16,6 +16,12 @@ function ResetPassword() {
 
   const newPassword = useRef(null);
   const newPasswordRepeated = useRef(null);
+
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordConfirmationValid, setPasswordConfirmationValid] = useState(false);
+
+
+  const [isFormValid, setIsFormValid] = useState(false);
 
   async function sendChangePasswordRequest() {
     const body = {
@@ -42,6 +48,14 @@ function ResetPassword() {
       console.log(await response.clone().text());
     }
   }
+
+  useEffect(() => {
+    setIsFormValid(passwordValid && passwordConfirmationValid);
+  }, [
+    passwordValid,
+    passwordConfirmationValid,
+  ]);
+
   return (
     <Page title="">
       <ContainerBox width={'60em'} className={style.passwordContainer}>
@@ -49,6 +63,7 @@ function ResetPassword() {
           <h1 className={style.title}>Set new Password</h1>
           <Input
             useRef={newPassword}
+            correctValue={setPasswordValid}
             type={isShown ? 'text' : 'password'}
             name={'newPassword'}
             placeholder={'New Password'}
@@ -57,6 +72,7 @@ function ResetPassword() {
           />
           <Input
             useRef={newPasswordRepeated}
+            correctValue={setPasswordConfirmationValid}
             type={isShown ? 'text' : 'password'}
             name={'newPasswordRepeated'}
             placeholder={'Repeat New Password'}
@@ -71,7 +87,8 @@ function ResetPassword() {
             />
             <em>Show password?</em>
           </label>
-          <ButtonMedium
+          <ButtonForm
+            isActive={isFormValid}
             onClick={sendChangePasswordRequest}
             className={style.changePasswordSubmit}
             text={'UPDATE'}

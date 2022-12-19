@@ -4,16 +4,18 @@ import Page from '@components/Page/Page';
 import ContainerBox from '@components/ContainerBox/ContainerBox';
 import Input from '@components/Input/Input';
 import logo from '@resources/img/logoVertical.svg';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
-
-import { useRef, useState } from 'react';
+import ButtonForm from '@components/Buttons/ButtonForm';
+import { useRef, useState, useEffect } from 'react';
 
 const fetchUrl = `${process.env.REACT_APP_BACKEND_URL}/passwordRecovery`;
 
 function Recover() {
+  const emailToWhichSendReset = useRef(null);
+
   const [validEmail, setValidEmail] = useState(false);
   const [resetMessage, setResetMessage] = useState('');
-  const emailToWhichSendReset = useRef(null);
+
+  const [isFormValid, setIsFormValid] = useState(false);
 
   async function sendResetRequest() {
     if (!validEmail) {
@@ -47,15 +49,26 @@ function Recover() {
     }
   }
 
+  useEffect(() => {
+    setIsFormValid(validEmail);
+  }, [
+    validEmail,
+  ]);
+
   return (
     <Page title='Recover'>
       <section className={style.section}>
         <ContainerBox width={'60em'}>
           <h1 className={style.title}>Enter your email</h1>
           <form method="post" action="#" className={style.form}>
-            <Input useRef={emailToWhichSendReset} correctValue={setValidEmail} className={style.formElement}
-              type={'email'} name={'emailLog'} placeholder={'Address email'}/>
-            <ButtonMedium onClick={sendResetRequest} className={style.formOptions} text={'SEND'} width={''}/>
+            <Input
+              useRef={emailToWhichSendReset}
+              correctValue={setValidEmail}
+              className={style.formElement}
+              type={'email'} name={'emailLog'}
+              placeholder={'Address email'}
+            />
+            <ButtonForm isActive={isFormValid} onClick={sendResetRequest} className={style.formOptions} text={'SEND'} width={''}/>
             <div className={style.resetMessage}>{resetMessage}</div>
           </form>
         </ContainerBox>
