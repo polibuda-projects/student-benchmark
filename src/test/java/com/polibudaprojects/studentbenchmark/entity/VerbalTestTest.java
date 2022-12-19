@@ -8,7 +8,6 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VerbalTestTest {
-
     @Test
     public void shouldCreateVerbalTestWithCorrectData() {
         Date testingDate = new Date();

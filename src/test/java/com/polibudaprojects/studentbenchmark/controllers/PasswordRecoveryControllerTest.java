@@ -58,10 +58,10 @@ public class PasswordRecoveryControllerTest {
         mvc
                 .perform(post(PATH1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(createPasswordRecoveryRequest( "").toString()))
+                        .content(createPasswordRecoveryRequest("").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Invalid email address")));
-        if(userRepo.findByEmail("aaaa@aal.com")!=null){
+        if (userRepo.findByEmail("aaaa@aal.com") != null) {
             userRepo.delete(userRepo.findByEmail("aaaa@aal.com"));
         }
     }
@@ -71,7 +71,7 @@ public class PasswordRecoveryControllerTest {
         mvc
                 .perform(post(PATH2)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(createInvalidResetPasswordRequest( "aA@xdcf4", "aA@xdcf4").toString()))
+                        .content(createInvalidResetPasswordRequest("aA@xdcf4", "aA@xdcf4").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Token not found")));
     }
@@ -81,9 +81,8 @@ public class PasswordRecoveryControllerTest {
         mvc
                 .perform(post(PATH2)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(createResetPasswordRequest( "A5","aA@xdcf4", "aA@xdcf4").toString()))
+                        .content(createResetPasswordRequest("A5", "aA@xdcf4", "aA@xdcf4").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Token not found")));
     }
-
 }

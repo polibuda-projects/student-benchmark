@@ -4,6 +4,7 @@ import static com.polibudaprojects.studentbenchmark.entity.AppUser.Role.USER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 import com.polibudaprojects.studentbenchmark.entity.AppUser;
 import com.polibudaprojects.studentbenchmark.entity.AppUserEntityDetails;
 import com.polibudaprojects.studentbenchmark.entity.testsEntities.NumberTest;
@@ -21,7 +22,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
+
 import java.util.List;
+
 
 @SpringBootTest
 class DashboardControllerTest {
@@ -37,7 +40,7 @@ class DashboardControllerTest {
 
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         numberTestRepo = Mockito.mock(NumberTestRepo.class);
         sequenceTestRepo = Mockito.mock(SequenceTestRepo.class);
         verbalTestRepo = Mockito.mock(VerbalTestRepo.class);
@@ -110,7 +113,7 @@ class DashboardControllerTest {
     }
 
     @Test
-    void testNumberTest_ForPersonalData(){
+    void testNumberTest_ForPersonalData() {
         Gson gson = new Gson();
         AppUserEntityDetails currentUser = new AppUserEntityDetails(new AppUser("user", "user@email.com", "user1", USER));
         when(authentication.getPrincipal()).thenReturn(currentUser);
@@ -123,8 +126,9 @@ class DashboardControllerTest {
         assertEquals(expected, actual);
 
     }
+
     @Test
-    void testSequenceTest_ForPersonalData(){
+    void testSequenceTest_ForPersonalData() {
         Gson gson = new Gson();
         AppUserEntityDetails currentUser = new AppUserEntityDetails(new AppUser("user", "user@email.com", "user1", USER));
         when(authentication.getPrincipal()).thenReturn(currentUser);
@@ -137,8 +141,9 @@ class DashboardControllerTest {
         assertEquals(expected, actual);
 
     }
+
     @Test
-    void testVerbalTest_ForPersonalData(){
+    void testVerbalTest_ForPersonalData() {
         Gson gson = new Gson();
         AppUserEntityDetails currentUser = new AppUserEntityDetails(new AppUser("user", "user@email.com", "user1", USER));
         when(authentication.getPrincipal()).thenReturn(currentUser);
@@ -152,7 +157,7 @@ class DashboardControllerTest {
     }
 
     @Test
-    void testVisualTest_ForPersonalData(){
+    void testVisualTest_ForPersonalData() {
         Gson gson = new Gson();
         AppUserEntityDetails currentUser = new AppUserEntityDetails(new AppUser("user", "user@email.com", "user1", USER));
         when(authentication.getPrincipal()).thenReturn(currentUser);

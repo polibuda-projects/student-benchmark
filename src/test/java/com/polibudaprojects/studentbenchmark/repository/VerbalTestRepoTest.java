@@ -29,7 +29,7 @@ public class VerbalTestRepoTest {
     @Test
     public void shouldNotHaveNullInFunctionFindAllGraphValidScores() {
         List<VerbalTest> verbalTestList = verbalTestRepo.findAllGraphValidScores();
-        for (VerbalTest verbalTest: verbalTestList) {
+        for (VerbalTest verbalTest : verbalTestList) {
             assertNotNull(verbalTest.getIdTest());
             assertNotNull(verbalTest.getIdUser());
             assertNotNull(verbalTest.getScore());
@@ -40,7 +40,7 @@ public class VerbalTestRepoTest {
     @Test
     public void shouldNotHaveNullInFunctionFindBestScores() {
         List<VerbalTest> verbalTestList = verbalTestRepo.findBestScores();
-        for (VerbalTest verbalTest: verbalTestList) {
+        for (VerbalTest verbalTest : verbalTestList) {
             assertNotNull(verbalTest.getIdTest());
             assertNotNull(verbalTest.getIdUser());
             assertNotNull(verbalTest.getScore());
@@ -51,12 +51,11 @@ public class VerbalTestRepoTest {
     @Test
     public void shouldNotHaveNullInFunctionGetAllScores() {
         List<VerbalTest> verbalTestList = verbalTestRepo.getAllScores();
-        for (VerbalTest verbalTest: verbalTestList) {
+        for (VerbalTest verbalTest : verbalTestList) {
             assertNotNull(verbalTest.getIdTest());
             assertNotNull(verbalTest.getIdUser());
             assertNotNull(verbalTest.getScore());
             assertNotNull(verbalTest.getDateOfSubmission());
         }
     }
-
 }

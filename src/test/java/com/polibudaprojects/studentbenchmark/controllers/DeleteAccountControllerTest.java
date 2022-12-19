@@ -19,15 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.polibudaprojects.studentbenchmark.TestConstants.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 
 
 @SpringBootTest
@@ -44,15 +40,11 @@ public class DeleteAccountControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-
-    private JsonObject delateAccountRequest (String password) {
+    private JsonObject deleteAccountRequest(String password) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("password", password);
         return jsonObject;
     }
-
-
 
     @BeforeEach
     public void addTestUserAndSEtUp() {
@@ -60,54 +52,43 @@ public class DeleteAccountControllerTest {
                 AppUser.Role.USER));
     }
 
-
-
-
-
-        @Test
-        //@WithMockUser
-        public void shouldReturnOk_whenSuccessfuly () throws Exception {
-            mvc
-                    .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(delateAccountRequest( "P@ssw0rd").toString()))
-                    .andDo(print()).andExpect(status().isOk())
-                    .andExpect(content().string(containsString("User Deleted")));
-
-        }
-
-
-
-
-
     @Test
-    public void shouldReturnBadRequest_whenNotSuccessfuly () throws Exception {
+    public void shouldReturnOk_whenSuccessfully() throws Exception {
         mvc
                 .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("P@ssw0rd123").toString()))
+                        .content(deleteAccountRequest("P@ssw0rd").toString()))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("User Deleted")));
+    }
+
+    @Test
+    public void shouldReturnBadRequest_whenNotSuccessfully() throws Exception {
+        mvc
+                .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(deleteAccountRequest("P@ssw0rd123").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Incorrect user password")));
 
     }
 
-
     @Test
-    public void shouldDeleteUser () throws Exception {
+    public void shouldDeleteUser() throws Exception {
         mvc
                 .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("P@ssw0rd").toString()))
+                        .content(deleteAccountRequest("P@ssw0rd").toString()))
                 .andDo(print());
         assertTrue(userRepo.findByNickname("nickname").isEmpty());
     }
 
-    @Test//do zastanowiena się
-    public void shouldReturnUnautorised_withoutAuthorization () throws Exception {
+    @Test
+    public void shouldReturnUnauthorised_withoutAuthorization() throws Exception {
         mvc
                 .perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest("P@ssw0rd").toString()))
+                        .content(deleteAccountRequest("P@ssw0rd").toString()))
                 .andDo(print()).andExpect(status().isUnauthorized());
 
     }
@@ -117,11 +98,9 @@ public class DeleteAccountControllerTest {
         mvc
                 .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest( "").toString()))
+                        .content(deleteAccountRequest("").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
     }
-
-
 
     @ParameterizedTest
     @ValueSource(strings = {"aA@asapiski", "aAasapiski3", "a@asapiski3", "AA@ASAPISKI3", "aA@3p", "aA" +
@@ -130,13 +109,10 @@ public class DeleteAccountControllerTest {
         mvc
                 .perform(post(PATH).with(user(new AppUserEntityDetails(userRepo.findByEmail(USER_EMAIL))))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(delateAccountRequest(password).toString()))
+                        .content(deleteAccountRequest(password).toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
 
     }
-
-
-
 }
 
 

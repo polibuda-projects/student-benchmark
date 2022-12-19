@@ -12,13 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,7 +50,7 @@ public class RegistrationControllerTest {
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User registered successfully")));
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
@@ -64,7 +63,7 @@ public class RegistrationControllerTest {
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "aA@asapisi2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("Passwords do not match")));
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
@@ -76,7 +75,7 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "aA@asapiski2", "").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
@@ -88,7 +87,7 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("", "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
@@ -110,7 +109,7 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "nick2@email.pl", "", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
@@ -129,7 +128,7 @@ public class RegistrationControllerTest {
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("This email is used by existing account")));
 
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
 
@@ -149,7 +148,7 @@ public class RegistrationControllerTest {
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("This nickname is used by existing account")));
 
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
@@ -162,7 +161,7 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", "nick2@email.pl", password, password).toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
 
@@ -176,7 +175,7 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest("nick2", email, "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
-        if(userRepo.findByEmail(email)!=null){
+        if (userRepo.findByEmail(email) != null) {
             userRepo.delete(userRepo.findByEmail(email));
         }
     }
@@ -189,11 +188,8 @@ public class RegistrationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(createRegisterRequest(nick, "nick2@email.pl", "aA@asapiski2", "aA@asapiski2").toString()))
                 .andDo(print()).andExpect(status().isBadRequest());
-        if(userRepo.findByEmail("nick2@email.pl")!=null){
+        if (userRepo.findByEmail("nick2@email.pl") != null) {
             userRepo.delete(userRepo.findByEmail("nick2@email.pl"));
         }
     }
-
 }
-
-

@@ -62,16 +62,13 @@ public class TestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(size)))
                 .andReturn().getResponse().getContentAsString();
 
-        List<Integer> response= new ObjectMapper().readValue(json, List.class);
-        for(int i=0; i< response.size(); i++)
-        {
-            if(scoresMap.containsKey(i))
-            {
-                Assertions.assertTrue((long)scoresMap.get(i) == response.get(i));
+        List<Integer> response = new ObjectMapper().readValue(json, List.class);
+        for (int i = 0; i < response.size(); i++) {
+            if (scoresMap.containsKey(i)) {
+                Assertions.assertTrue((long) scoresMap.get(i) == response.get(i));
 
-            }
-            else
-                Assertions.assertTrue(response.get(i)==0L);
+            } else
+                Assertions.assertTrue(response.get(i) == 0L);
         }
     }
 
@@ -86,7 +83,6 @@ public class TestControllerTest {
 
         shouldSendAllScores(sequenceTests, sequenceTestRepo, "sequence", 101);
 
-
     }
 
     @Test
@@ -98,7 +94,6 @@ public class TestControllerTest {
         verbalTests.add(new VerbalTest(13, (long) 3, (long) 1, new Date()));
 
         shouldSendAllScores(verbalTests, verbalTestRepo, "verbal", 1001);
-
 
     }
 
@@ -112,7 +107,6 @@ public class TestControllerTest {
 
         shouldSendAllScores(visualTests, visualTestRepo, "visual", 101);
 
-
     }
 
     @Test
@@ -124,7 +118,6 @@ public class TestControllerTest {
         numberTests.add(new NumberTest(13, (long) 3, (long) 1, new Date()));
 
         shouldSendAllScores(numberTests, numberTestRepo, "number", 101);
-
 
     }
 
@@ -140,7 +133,6 @@ public class TestControllerTest {
                         .content(json))
                 .andExpect(result)
                 .andExpect(content().string(containsString(response)));
-
     }
 
     @Test
@@ -149,8 +141,6 @@ public class TestControllerTest {
         SequenceTest sequenceTest = new SequenceTest(10);
         checkAddResultsTestsMethods(sequenceTest, sequenceTestRepo, status().isOk(),
                 "sequence", "Result added successfully");
-
-
     }
 
     @Test
@@ -159,8 +149,6 @@ public class TestControllerTest {
         VisualTest visualTest = new VisualTest(10);
         checkAddResultsTestsMethods(visualTest, visualTestRepo, status().isOk(),
                 "visual", "Result added successfully");
-
-
     }
 
     @Test
@@ -169,8 +157,6 @@ public class TestControllerTest {
         VerbalTest verbalTest = new VerbalTest(400);
         checkAddResultsTestsMethods(verbalTest, verbalTestRepo, status().isOk(),
                 "verbal", "Result added successfully");
-
-
     }
 
     @Test
@@ -179,8 +165,6 @@ public class TestControllerTest {
         NumberTest numberTest = new NumberTest(10);
         checkAddResultsTestsMethods(numberTest, numberTestRepo, status().isOk(),
                 "number", "Result added successfully");
-
-
     }
 
     @Test
@@ -193,7 +177,6 @@ public class TestControllerTest {
         sequenceTest = new SequenceTest(200);
         checkAddResultsTestsMethods(sequenceTest, sequenceTestRepo, status().isBadRequest(),
                 "sequence", "Incorrect data");
-
     }
 
     @Test
@@ -206,7 +189,6 @@ public class TestControllerTest {
         verbalTest = new VerbalTest(200);
         checkAddResultsTestsMethods(verbalTest, verbalTestRepo, status().isBadRequest(),
                 "visual", "Incorrect data");
-
     }
 
     @Test
@@ -219,7 +201,6 @@ public class TestControllerTest {
         sequenceTest = new SequenceTest(1200);
         checkAddResultsTestsMethods(sequenceTest, sequenceTestRepo, status().isBadRequest(),
                 "verbal", "Incorrect data");
-
     }
 
     @Test
@@ -232,7 +213,6 @@ public class TestControllerTest {
         numberTest = new NumberTest(200);
         checkAddResultsTestsMethods(numberTest, numberTestRepo, status().isBadRequest(),
                 "number", "Incorrect data");
-
     }
 
     @Test
@@ -245,9 +225,7 @@ public class TestControllerTest {
         sequenceTest = new SequenceTest(200);
         checkAddResultsTestsMethods(sequenceTest, sequenceTestRepo, status().isBadRequest(),
                 "sequence", "Incorrect data");
-
     }
-
 
     @Test
     public void shouldSetIdUserAndDate() {
@@ -263,8 +241,6 @@ public class TestControllerTest {
         Assertions.assertTrue(appTest.getIdUser() == user.getIdUser());
         Assertions.assertTrue(appTest.getDateOfSubmission() != null);
         Assertions.assertTrue(test.getScore() == appTest.getScore());
-
-
     }
 
     @Test

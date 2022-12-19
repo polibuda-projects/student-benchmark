@@ -59,7 +59,7 @@ public class LogInAndLogOutTest {
     public void shouldReturnUnauthorized_whenPasswordIsIncorrectWithNickname() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_NICKNAME).password(USER_PASSWORD+"Betoniarz"))
+                .perform(formLogin("/login").user(USER_NICKNAME).password(USER_PASSWORD + "Betoniarz"))
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
@@ -67,7 +67,7 @@ public class LogInAndLogOutTest {
     public void shouldReturnUnauthorized_whenPasswordIsIncorrectWithEmail() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL).password(USER_PASSWORD+"Betoniarz"))
+                .perform(formLogin("/login").user(USER_EMAIL).password(USER_PASSWORD + "Betoniarz"))
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
@@ -83,7 +83,7 @@ public class LogInAndLogOutTest {
     public void shouldReturnUnauthorized_whenEmailIsIncorrect() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL+"Betoniarz").password(USER_PASSWORD))
+                .perform(formLogin("/login").user(USER_EMAIL + "Betoniarz").password(USER_PASSWORD))
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
@@ -91,7 +91,7 @@ public class LogInAndLogOutTest {
     public void shouldReturnUnauthorized_whenNicknameAndPasswordAreIncorrect() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_NICKNAME+"Betoniarz").password(USER_PASSWORD+"Betoniarz"))
+                .perform(formLogin("/login").user(USER_NICKNAME + "Betoniarz").password(USER_PASSWORD + "Betoniarz"))
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
@@ -99,7 +99,7 @@ public class LogInAndLogOutTest {
     public void shouldReturnUnauthorized_whenEmailAndPasswordAreIncorrect() throws Exception {
 
         mvc
-                .perform(formLogin("/login").user(USER_EMAIL+"Betoniarz").password(USER_PASSWORD+"Betoniarz"))
+                .perform(formLogin("/login").user(USER_EMAIL + "Betoniarz").password(USER_PASSWORD + "Betoniarz"))
                 .andDo(print()).andExpect(status().isUnauthorized());
     }
 
@@ -162,5 +162,3 @@ public class LogInAndLogOutTest {
                 .andDo(print()).andExpect(status().isOk());
     }
 }
-
-

@@ -130,5 +130,4 @@ class AppUserTest {
         int lengthPasswordTest = appUserAdmin.getPassword().length();
         Assertions.assertThat(lengthPasswordTest).isLessThan(65);
     }
-
 }
