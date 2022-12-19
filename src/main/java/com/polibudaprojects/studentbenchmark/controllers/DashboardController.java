@@ -62,7 +62,9 @@ public class DashboardController {
         List<PublicData> top100 = new ArrayList<>();
         for (AppTest test : bestScoresTests) {
             AppUser user = userRepo.findByID(test.getIdUser());
-            top100.add(new PublicData(user.getNickname(), test.getDateOfSubmission(), test.getScore()));
+            if(user != null){
+                top100.add(new PublicData(user.getNickname(), test.getDateOfSubmission(), test.getScore()));
+            }
         }
         return top100;
     }
@@ -73,7 +75,9 @@ public class DashboardController {
         for (AppTest test : graphValidTests) {
             if (test.getIdUser() != 0) {
                 AppUser user = userRepo.findByID(test.getIdUser());
-                name = user.getNickname();
+                if(user != null){
+                    name = user.getNickname();
+                }
             }
             graphValid.add(new PublicData(name, test.getDateOfSubmission(), test.getScore()));
         }
