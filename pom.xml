@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.polibudaprojects</groupId>
-    <artifactId>benchmark-aplha</artifactId>
+    <artifactId>studentbenchmark</artifactId>
     <version>1.0.0</version>
     <name>studentbenchmark</name>
     <description>Challenge your memory and cognitive skills</description>
