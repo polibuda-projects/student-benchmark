@@ -49,11 +49,11 @@
   color: #8685EF;
 }
 
-@media (max-width: 500px) {
 
-  .contentOverride {
-    justify-content: center;
-    height: 100%;
+@media screen and (max-width: 500px) {
+  .section {
+    height: calc(100vh - 25rem);
+    transform: scale(0.95);
   }
 
   .form {
@@ -61,11 +61,15 @@
     min-width: 30em;
   }
 
-  .formOptions {
+  .formOptions{
     align-self: center;
   }
 
-  .title {
+  .checkboxLabel {
+    align-self: center;
+  }
+
+  .title{
     font-size: 3em;
     align-self: center;
   }

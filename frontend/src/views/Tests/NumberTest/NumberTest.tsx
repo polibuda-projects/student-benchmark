@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import style from './NumberTest.module.css';
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
@@ -7,21 +9,25 @@ import logo from '@resources/img/numberTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import { NumberProperties } from '@components/Test/NumberComponent/NumberComponent';
 import Input from '@components/Input/Input';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/number`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/number`;
 
-const testDescription='The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
+const testDescription = 'The average person can only remember 7 digit numbers reliably, but it\'s possible to do much better using mnemonic techniques.';
 
-const shortTestDescription='Remember the longest number you can.';
+const shortTestDescription = 'Remember the longest number you can.';
 
 export default function NumberTest() {
   const [state, updateState] = useState<TestState>('start');
-  const [userScore, updateScore] = useState<null | number>(0);
+  const [userScore, updateScore] = useState<number>(0);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
+
   const [currentLevel, updateLevel] = useState<number>(1);
   const [currentNumber, updateNumber] = useState<number>(Math.floor(Math.random() * 10));
   let [yourNumber, updateYourNumber] = useState<number>(0);
 
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
   const move = () => {
     const elem = document.getElementById('inner');
@@ -31,32 +37,35 @@ export default function NumberTest() {
       if (elem) elem.style.width = '0%';
     });
 
-    if (elem) elem.style.transition = 'width ' + 2 * currentLevel* 0.5 +'s linear';
+    if (elem) elem.style.transition = 'width ' + 2 * currentLevel * 0.5 + 's linear';
     setTimeout(() => {
       updateState('numberInput');
-    }, 2000 * currentLevel*0.5);
+    }, 2000 * currentLevel * 0.5);
   };
 
   useEffect(() => {
-    if (state === 'playing') {
-      move();
-    }
-  }, [state]);
-
-  useEffect(() => {
     if (state === 'start') {
-      updateLevel(1);
+      getChartData();
       updateScore(0);
+      updateChartScore(null);
+      updateLevel(1);
       updateNumber(Math.floor(Math.random() * 10));
+    } else if (state === 'playing') {
+      move();
+    } else if (state === 'end') {
+      updateChartScore(userScore);
     }
   }, [state]);
 
   const handleSubmitClick = () => {
-    updateYourNumber(yourNumber = (document.getElementById('numberToCheck') as HTMLInputElement).value as unknown as number);
-    if (yourNumber == currentNumber) {
-      updateState('numberCorrect');
-    } else {
-      updateState('numberIncorrect');
+    const check = (document.getElementById('numberToCheck') as HTMLInputElement).value;
+    if (check.length != 0) {
+      updateYourNumber(yourNumber = check as unknown as number);
+      if (yourNumber == currentNumber) {
+        updateState('numberCorrect');
+      } else {
+        updateState('numberIncorrect');
+      }
     }
   };
 
@@ -73,20 +82,51 @@ export default function NumberTest() {
     updateState('playing');
   };
 
+  async function sendResultRequest() {
+    await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    }
+
+    const result = (await response.json()) as number[];
+
+    updateChart({
+      data: result,
+      range: [0, result.length - 1],
+    });
+  }
+
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Number Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+  return (<Test testName='Number Memory' testDescription={testDescription} chartData={chartData} userScore={chartScore}>
 
     {state === 'start' && <TestStart logoUrl={logo} shortDescription={shortTestDescription} updateState={updateState} />}
 
-    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState}/>}
 
     {state === 'playing' &&
       <>
         <span className={style.levelText}>Level {currentLevel}</span>
         <div className={style.container}>
           <div className={style.testNumber}>
-            <NumberProperties text={currentNumber} fontSize={'7rem'}/>
+            <NumberProperties text={currentNumber} fontSize={'7rem'} />
             <div className={style.outer}>
               <div className={style.inner} id={'inner'}>
               </div>
@@ -99,7 +139,7 @@ export default function NumberTest() {
       <>
         <span className={style.levelText}>Level {currentLevel}</span>
         <div className={style.container}>
-          <NumberProperties text={'Enter the showed number'} fontSize={'4rem'} />
+          <NumberProperties className={style.textToScale} text={'Enter the showed number'} />
           <form onSubmit={handleSubmitClick} className={style.numberForm}>
             <Input className={style.numberInput} focus={true} id={'numberToCheck'} autoComplete={'off'} required={true} />
             <ButtonMedium width={'auto'} text='submit' onClick={handleSubmitClick} />
@@ -128,15 +168,14 @@ export default function NumberTest() {
             <NumberProperties text={'Your answer'} fontSize={'2rem'} />
             <NumberProperties text={yourNumber} fontSize={'4rem'} />
           </div>
-          <NumberProperties text={'You entered wrong number'} fontSize={'4rem'} />
-          <div className={style.buttons}>
-            <ButtonMedium text='save score' onClick={() => {
-              updateState('end');
-            }} />
-            <ButtonMedium text='try again' onClick={() => updateState('start')} />
-          </div>
+          <NumberProperties className={style.textToScale} text={'You entered wrong number'} />
+          <ButtonMedium text='save score' onClick={() => {
+            sendResultRequest();
+            updateState('end');
+          }} />
         </div>
       </>
     }
   </Test>);
 }
+

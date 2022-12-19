@@ -32,6 +32,8 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - MAIL_SMTP_AUTH=${MAIL_SMTP_AUTH}
       - MAIL_SMTP_TLS=${MAIL_SMTP_TLS}
+    volumes:
+      - ./src/main/resources/ListOfWordsForVerbalTest.csv:/app/src/main/resources/ListOfWordsForVerbalTest.csv:ro
 
   db:
     image: mysql:latest
@@ -41,3 +43,4 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+

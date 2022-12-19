@@ -8,6 +8,15 @@
   grid-template-rows: repeat(var(--squares-count), 1fr);
   gap: calc(3em / var(--squares-count));
 
-  width: 26em;
-  height: 26em;
+  width: 35em;
+  height: 35em;
+  max-width: 35em;
+  max-height: 35em;
+}
+
+@media (max-width: 800px) {
+  .squaresBoard {
+    width: 65vw;
+    height: 65vw;
+  }
 }

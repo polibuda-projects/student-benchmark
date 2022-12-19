@@ -35,14 +35,6 @@
     transition-timing-function: linear;
 }
 
-.buttons {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    gap: 2rem;
-}
-
 .numberInput {
     text-align: center;
     font-size: 5rem;
@@ -57,3 +49,21 @@
     justify-content: center;
     align-items: center;
 }
+.textToScale {
+    font-size: 4rem;
+}
+
+@media (max-width: 500px) {
+    .container {
+        gap: 2rem;
+    }
+    .numberInput {
+        transform: scale(0.7);
+    }
+    .textToScale {
+        font-size: 2.4rem;
+    }
+    .numberForm {
+        gap: 2rem;
+    }
+  }

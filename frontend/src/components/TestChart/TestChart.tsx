@@ -22,6 +22,8 @@ export default class TestChart extends Component<TestChartProps> {
     aspectRatio: 3 / 2,
   };
 
+  private static readonly MAX_ZEROS_RIGHT = 2;
+
   render() {
     return (
       <Chart type='bar'
@@ -80,13 +82,15 @@ export default class TestChart extends Component<TestChartProps> {
     const maxx = typeof this.props.userScore !== 'number' ? chartData.range[1]: Math.max(chartData.range[1], this.props.userScore);
     const minn = typeof this.props.userScore !== 'number' ? chartData.range[0]: Math.min(chartData.range[0], this.props.userScore);
 
-    const lineData = [
+    let lineData = [
       ...Array.from({ length: chartData.range[0] - minn }, () => 0),
       ...chartData.data,
       ...Array.from({ length: maxx - chartData.range[1] }, () => 0),
     ];
 
-    const labels = Array.from({ length: maxx - minn + 1 }, (_, i) => minn + i);
+    lineData = this.trimRangeRight(lineData, 2, this.props.userScore);
+
+    const labels = Array.from({ length: lineData.length }, (_, i) => minn + i);
     const datasets: ChartDataJS['datasets'] = [];
 
     datasets.push({
@@ -120,4 +124,40 @@ export default class TestChart extends Component<TestChartProps> {
   private joinClasses(...classes: string[]) {
     return classes.join(' ');
   }
+
+  private trimZerosRight(data: number[]) {
+    const copy = data.slice();
+    let firstNonZero = copy.length;
+
+    for (let i = copy.length - 1; i >= 0; i -= 1) {
+      firstNonZero = i;
+
+      if (copy[i] !== 0) break;
+    }
+
+    for (let i = copy.length - 1; i > firstNonZero + TestChart.MAX_ZEROS_RIGHT; i -= 1) {
+      copy.pop();
+    }
+
+    return copy;
+  };
+
+  private trimRangeRight(data: number[], percent: number, userScore?: number | null) {
+    const copy = data.slice();
+    const maxx = Math.max(...copy);
+    let firstGreaterThan = copy.length;
+
+    for (let i = copy.length - 1; i >= 0; i -= 1) {
+      firstGreaterThan = i;
+
+      if (typeof userScore === 'number' && i === userScore) break;
+      if (100 * (copy[i] / maxx) > percent) break;
+    }
+
+    for (let i = copy.length - 1; i > firstGreaterThan + TestChart.MAX_ZEROS_RIGHT; i -= 1) {
+      copy.pop();
+    }
+
+    return copy;
+  };
 }

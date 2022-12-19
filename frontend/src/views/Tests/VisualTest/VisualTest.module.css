@@ -5,7 +5,12 @@
 .testInfo{
   text-align: center;
   padding-bottom: 1.8em;
-  font-size: 1.6em;
+  font-size: 3em;
+}
+
+.testInfo p{
+  display: inline;
+  opacity: 0.5;
 }
 
 .testLives, .testScore{

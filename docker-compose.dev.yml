@@ -5,11 +5,15 @@ services:
     extends:
       file: docker-compose.yml
       service: backend
+    ports:
+      - "8080:8080"
 
   db:
     extends:
       file: docker-compose.yml
       service: db
+    ports:
+      - "3306:3306"
 
   frontend_dev:
     build:

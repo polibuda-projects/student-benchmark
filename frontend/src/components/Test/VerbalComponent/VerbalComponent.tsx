@@ -40,5 +40,3 @@ export default class VerbalComponent extends Component<VerbalComponentProps> {
     );
   }
 }
-
-

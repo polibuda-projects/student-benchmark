@@ -46,3 +46,28 @@
 .shadow {
   background: #242425;
 }
+
+@media screen and (max-width: 500px) {
+  .dashboardTable {
+    width: 35rem;
+    height: 10rem;
+    font-size: 1rem;
+    line-height: 2rem;
+  }
+
+  .dashboardContainer {
+    width: 35rem !important;
+  }
+
+  .dashboardTableHeadRow {
+    height: 3rem;
+  }
+  
+  .dashboardTableBodyRow {
+    height: 3rem;
+  }
+
+  .dashboardTableCell {
+    text-align: center;
+  }
+}

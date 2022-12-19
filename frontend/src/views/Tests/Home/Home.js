@@ -15,7 +15,7 @@ function TestsHome() {
     <Page title='Get started'>
       <div className={style.blocks}>
         <div className={style.rowTests}>
-          <div className={style.nullButton} div/>
+          <div className={style.nullButton} />
           <Link className={style.testButton} to='/tests/sequence'>
             <TestButton text='sequence memory' src={sequence} alt='sequence memory'/>
           </Link>
@@ -32,7 +32,7 @@ function TestsHome() {
           <Link className={style.testButton} to='/tests/number'>
             <TestButton text='number memory' src={number} alt='number memory'/>
           </Link>
-          <div className={style.nullButton} div/>
+          <div className={style.nullButton} />
         </div>
         <div className={style.rowTests}>
           <div className={style.nullButtonMobile} />
@@ -49,3 +49,4 @@ function TestsHome() {
 
 
 export default TestsHome;
+

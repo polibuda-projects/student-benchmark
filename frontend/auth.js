@@ -46,3 +46,4 @@ export const reauthenticate = async (sessionId) => {
     return false;
   }
 };
+

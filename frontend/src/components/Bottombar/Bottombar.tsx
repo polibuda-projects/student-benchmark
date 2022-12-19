@@ -108,3 +108,4 @@ export default class BottombarComponent extends Component<BottombarProps, Bottom
     );
   }
 }
+

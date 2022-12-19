@@ -18,9 +18,12 @@ export default class ContainerBox extends Component<ContainerBoxProps> {
 
   render() {
     return (
-      <section className={[style.content, this.props.background ? style.contentBackground : '', this.props.className].join(' ')} style={{ width: this.props.width }}>
+      <section
+        className={[style.content, this.props.background ? style.contentBackground : '', this.props.className].join(' ')}
+        style={{ width: this.props.width }}>
         {this.props.children}
       </section>
     );
   }
 }
+

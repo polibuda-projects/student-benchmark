@@ -6,16 +6,144 @@ import number from '@resources/img/numberTest.svg';
 
 import Page from '@components/Page/Page';
 import DashboardTable from '@components/DashboardTable/DashboardTable';
-import { columnTitlesUpper, contentUpper, columnTitlesLower, contentSequenceLower, contentVisualLower } from './chwilowa-baza-danych';
-import { contentVerbalLower, contentNumberLower } from './chwilowa-baza-danych';
 import TestBox, { TestBoxEnum } from '@components/TestBox/TestBox';
 import { useEffect, useRef, useState } from 'react';
-import TestChart from '@components/TestChart/TestChart';
+import TestChart, { TestChartProps } from '@components/TestChart/TestChart';
+const fetchSequenceChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/sequence`;
+const fetchVisualChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/visual`;
+const fetchVerbalChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/verbal`;
+const fetchNumberChartUrl = `${process.env.REACT_APP_BACKEND_URL}/tests/number`;
+
+const columnTitles = ['Lp', 'Nickname', 'Date', 'Score'];
+const columnTitlesPersonal = ['Scenario', 'Personal Best', 'Avg. Score', 'Percentile'];
+
+
+interface PublicData {
+  idTest: number;
+  nickname: string;
+  score: number;
+  dateOfSubmission: string;
+}
+
+interface PersonalData {
+  testName: string;
+  personalBest: number;
+  averageScore: number | string;
+  percentile: string | string;
+}
+
 
 const Dashboard = (props: any) => {
   const [toggle, setToggle] = useState<TestBoxEnum>(TestBoxEnum.sequence);
+  const [sequenceData, setSequenceData] = useState<PublicData[]>([]);
+  const [visualData, setVisualData] = useState<PublicData[]>([]);
+  const [verbalData, setVerbalData] = useState<PublicData[]>([]);
+  const [numberData, setNumberData] = useState<PublicData[]>([]);
+  const [personalData, setPersonalData] = useState([]);
+
+  const [sequenceChartData, updateSequenceChartData] = useState<TestChartProps>({
+    data: [],
+    range: [0, 0],
+  });
+  const [visualChartData, updateVisualChartData] = useState<TestChartProps>({
+    data: [],
+    range: [0, 0],
+  });
+  const [verbalChartData, updateVerbalChartData] = useState<TestChartProps>({
+    data: [],
+    range: [0, 0],
+  });
+  const [numberChartData, updateNumberChartData] = useState<TestChartProps>({
+    data: [],
+    range: [0, 0],
+  });
+
   const scroller = useRef<HTMLDivElement>(null);
 
+  const sortFunction = (a: any, b: any) => {
+    if (a.score < b.score) return 1;
+    if (a.score > b.score) return -1;
+    return 0;
+  };
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/DashboardPublic`)
+        .then((response) => response.json())
+        .then((data) => {
+          setNumberData(data[0]);
+          setSequenceData(data[1]);
+          setVerbalData(data[2]);
+          setVisualData(data[3]);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/DashboardPersonal`)
+        .then((response) => response.json())
+        .then((data) => {
+          setPersonalData(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    fetch(fetchSequenceChartUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+        .then((response) => {
+          if (response.ok) return response.json(); throw response;
+        })
+        .then((data: number[]) => {
+          updateSequenceChartData({
+            data,
+            range: [0, data.length - 1],
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    fetch(fetchVisualChartUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+        .then((response) => {
+          if (response.ok) return response.json(); throw response;
+        })
+        .then((data: number[]) => {
+          updateVisualChartData({
+            data,
+            range: [0, data.length - 1],
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    fetch(fetchVerbalChartUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+        .then((response) => {
+          if (response.ok) return response.json(); throw response;
+        })
+        .then((data: number[]) => {
+          updateVerbalChartData({
+            data,
+            range: [0, data.length - 1],
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+    fetch(fetchNumberChartUrl, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+        .then((response) => {
+          if (response.ok) return response.json(); throw response;
+        })
+        .then((data: number[]) => {
+          updateNumberChartData({
+            data,
+            range: [0, data.length - 1],
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  }, []);
 
   const scrollHandler = () => {
     let target = '';
@@ -48,50 +176,65 @@ const Dashboard = (props: any) => {
     };
   }, []);
 
+
+  const toColumnData = (data: PublicData[]): PublicData[] => data.sort(sortFunction).slice(0, 6).map(({ dateOfSubmission, score, nickname }, i) => ({
+    idTest: i + 1,
+    nickname,
+    dateOfSubmission,
+    score,
+  }));
+
+  const toColumnDataPersonal = (data: PersonalData[]): PersonalData[] => data.map(({ testName, personalBest, averageScore, percentile }) => ({
+    testName,
+    personalBest,
+    averageScore: (averageScore as number).toFixed(1),
+    percentile: `${(percentile as unknown as number).toFixed(1)}%`,
+  }));
+
   return (
     <Page titlebar={false}>
       <div className={style.dashboardContainer}>
         <div className={style.dashboardContainerLeft}>
-          <DashboardTable tableContent={contentUpper} columnTitles={columnTitlesUpper} />
+          <DashboardTable tableContent={toColumnDataPersonal(personalData)} columnTitles={columnTitlesPersonal} />
           <div ref={scroller} className={style.scrollable}>
             <div id="sequence">
-              <DashboardTable tableContent={contentSequenceLower} columnTitles={columnTitlesLower}/>
+              <DashboardTable tableContent={toColumnData(sequenceData)} columnTitles={columnTitles}/>
               <div className={style.dashboardContainerChart}>
-                <TestChart aspectRatio={0} data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+                <TestChart aspectRatio={0} {...sequenceChartData} userScore={null} />
               </div>
             </div>
             <div id="visual">
-              <DashboardTable tableContent={contentVisualLower} columnTitles={columnTitlesLower}/>
+              <DashboardTable tableContent={toColumnData(visualData)} columnTitles={columnTitles} />
               <div className={style.dashboardContainerChart}>
-                <TestChart aspectRatio={0} data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+                <TestChart aspectRatio={0} {...visualChartData} userScore={null} />
               </div>
             </div>
             <div id="verbal">
-              <DashboardTable tableContent={contentVerbalLower} columnTitles={columnTitlesLower}/>
+              <DashboardTable tableContent={toColumnData(verbalData)} columnTitles={columnTitles} />
               <div className={style.dashboardContainerChart}>
-                <TestChart aspectRatio={0} data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+                <TestChart aspectRatio={0} {...verbalChartData} userScore={null} />
               </div>
             </div>
             <div id="number">
-              <DashboardTable tableContent={contentNumberLower} columnTitles={columnTitlesLower}/>
+              <DashboardTable tableContent={toColumnData(numberData)} columnTitles={columnTitles} />
               <div className={style.dashboardContainerChart}>
-                <TestChart aspectRatio={0} data={Array(30).fill(0).map(() => Math.random() * 100 + 10)} range={[1, 30]} userScore={null} />
+                <TestChart aspectRatio={0} {...numberChartData} userScore={null} />
               </div>
             </div>
           </div>
         </div>
         <div className={style.dashboardContainerRight}>
           <a href="#sequence">
-            <TestBox text={'sequence memory'} src={sequence} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.sequence}/>
+            <TestBox text={'sequence memory'} src={sequence} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.sequence} />
           </a>
           <a href="#visual">
-            <TestBox text={'visual memory'} src={visual} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.visual}/>
+            <TestBox text={'visual memory'} src={visual} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.visual} />
           </a>
           <a href="#verbal">
-            <TestBox text={'verbal memory'} src={verbal} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.verbal}/>
+            <TestBox text={'verbal memory'} src={verbal} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.verbal} />
           </a>
           <a href="#number">
-            <TestBox text={'number memory'} src={number} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.number}/>
+            <TestBox text={'number memory'} src={number} toggle={toggle} setToggle={setToggle} type={TestBoxEnum.number} />
           </a>
         </div>
       </div>

@@ -11,6 +11,7 @@ import donateBoxIcon from '@resources/img/donateBoxIcon.svg';
 import MediumButton from '@components/Buttons/ButtonMedium';
 import { Link, NavLink } from 'react-router-dom';
 import { Component, HTMLAttributes } from 'react';
+import { isLoggedIn } from '../../auth';
 
 
 export interface SidebarProps {
@@ -67,7 +68,7 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
 
             </div>
 
-            <div className={style.auth}>
+            <div className={style.auth} style={{ visibility: (isLoggedIn() ? 'hidden' : 'initial') }}>
               <Link to='/login'><MediumButton text='Login' width='100%'/></Link>
               <Link to='/signup'><MediumButton text='Sign up' width='100%'/></Link>
             </div>
@@ -151,3 +152,4 @@ export default class SidebarComponent extends Component<SidebarProps, SidebarSta
     }
   };
 }
+

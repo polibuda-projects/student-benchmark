@@ -1,6 +1,6 @@
 .square{
-  border: calc(2em / var(--squares-count)) solid var(--app-font-color);
-  border-radius: 1.2em;
+  border: calc(2.4em / var(--squares-count)) solid var(--app-font-color);
+  border-radius: calc(7em / var(--squares-count));
 
   cursor: pointer;
 }
@@ -19,4 +19,11 @@
   background-color: rgba(0, 0, 0, 100%) !important;
   opacity: 60%;
   transition: all 300ms;
+}
+
+@media (max-width: 600px) {
+  .square{
+    border: calc(4.2vw / var(--squares-count)) solid var(--app-font-color);
+    border-radius: calc(12vw / var(--squares-count));
+  }
 }

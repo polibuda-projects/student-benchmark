@@ -9,7 +9,9 @@ export interface TextareaProps {
   name?: string,
   placeholder?: string,
   shadows?: boolean,
-  className?: string
+  className?: string,
+  useRef?: React.RefObject<HTMLInputElement>;
+  correctValue?: (isCorrect: boolean) => void,
 }
 
 export interface TextareaState {
@@ -37,15 +39,17 @@ export default class Textarea extends Component<TextareaProps, TextareaState> {
     if (input.name.includes('text')) {
       if (!textLengthRegex.test(value)) {
         this.setState({ message: 'Message must be beetween 5 and 256 characters' });
+        this.props.correctValue?.(false);
       } else {
         this.setState({ message: '' });
+        this.props.correctValue?.(true);
       }
     }
   };
 
   render() {
     return (
-      <div className={style.textareaContainer}>
+      <div ref={this.props.useRef} className={style.textareaContainer}>
         <textarea className={[style.textarea, this.props.className, this.props.shadows ? style.shadow : ''].join(' ')}
           name={this.props.name} placeholder={this.props.placeholder} onChange={this.validateInput} />
         <span className={style.message}>{this.state.message}</span>

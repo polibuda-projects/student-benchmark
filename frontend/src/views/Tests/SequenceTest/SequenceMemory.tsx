@@ -1,12 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
 import style from './SequenceMemory.module.css';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
 import logo from '@resources/img/sequenceTest.svg';
 import TestEnd from '@components/Test/TestEnd';
-import ContainerBox from '@components/ContainerBox/ContainerBox';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/sequence`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/sequence`;
 
 const testDescription = 'Memorize the sequence of buttons that light up, then press them in order. '+
 'Every time you finish the pattern, it gets longer. '+
@@ -18,20 +18,60 @@ export default function SequenceTest() {
   const [state, updateState] = useState<TestState>('start');
   const [sequenceList, updateSequenceList] = useState<number[]>([]);
   const [inputList, updateInputList] = useState<number[]>([]);
-  const [userScore, updateScore] = useState<null | number>(0);
+  const [userScore, updateScore] = useState<number>(0);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
+
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
 
+  async function sendResultRequest() {
+    await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    }
+
+    const result = (await response.json()) as number[];
+
+    updateChart({
+      data: result,
+      range: [0, result.length - 1],
+    });
+  }
+
   useEffect(() => {
-    if (state === 'playing') {
+    if (state === 'start') {
       updateScore(0);
-      const tmp : number[] = sequenceList;
-      tmp.push(Math.round(Math.random() * 8)+1);
+      updateChartScore(null);
+      getChartData();
+    } else if (state === 'playing') {
+      updateScore(0);
+      const tmp: number[] = sequenceList;
+      tmp.push(Math.round(Math.random() * 8) + 1);
       updateSequenceList(tmp);
       updateInputList([]);
       showSequence();
+    } else if (state === 'end') {
+      sendResultRequest();
+      updateChartScore(userScore);
     }
   }, [state]);
 
@@ -91,11 +131,11 @@ export default function SequenceTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Sequence Memory' chartData={chartData} userScore={userScore} testDescription={testDescription}>
+  return (<Test testName='Sequence Memory' chartData={chartData} userScore={chartScore} testDescription={testDescription}>
 
     {state === 'start' && <TestStart logoUrl={logo} updateState={updateState} shortDescription={shortTestDescription}/>}
 
-    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} />}
 
     {state === 'playing' &&
       <>
@@ -116,3 +156,4 @@ export default function SequenceTest() {
     }
   </Test>);
 }
+

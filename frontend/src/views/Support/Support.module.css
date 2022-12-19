@@ -29,13 +29,16 @@
   width: fit-content;
 }
 .textElement{
-  height: 6em;
+  height: 10em;
 }
 .label a{
   font-weight: bold;
   color: #8685EF;
 }
-
+.responseInfo{
+  font-size: 12px;
+  margin:10px;
+}
 @media (max-width: 1400px) {
   .container {
     width:65em !important;
@@ -66,3 +69,4 @@
     margin-bottom: 2em;
   }
 }
+

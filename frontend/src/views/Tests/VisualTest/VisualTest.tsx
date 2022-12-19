@@ -1,11 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import style from './VisualTest.module.css';
 import Test, { TestProps, TestState } from '@components/Test/Test';
 import { useEffect, useState } from 'react';
-import ButtonMedium from '@components/Buttons/ButtonMedium';
 import TestStart from '@components/Test/TestStart';
 import logo from '@resources/img/visualTest.svg';
 import TestEnd from '@components/Test/TestEnd';
 import SquaresBoard from '@views/Tests/VisualTest/SquaresBoard/SquaresBoard';
+const fetchUrlResult = `${process.env.REACT_APP_BACKEND_URL}/result/visual`;
+const fetchUrlChart = `${process.env.REACT_APP_BACKEND_URL}/tests/visual`;
 
 const testDescription = 'Every level, a number of tiles will flash white. Memorize them, and pick them again after the tiles are reset! ' +
   'Levels get progressively more difficult, to challenge your skills. You have three lives. Make it as far as you can!';
@@ -16,6 +18,7 @@ export type TestActiveState = 'generate' | 'show' | 'resolve';
 export default function VisualTest() {
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<null | number>(null);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
 
   const maxNumberOfLives = 3;
   const [userLives, updateLives] = useState<number>(maxNumberOfLives);
@@ -34,8 +37,8 @@ export default function VisualTest() {
   const [testActiveState, updateTestActiveState] = useState<TestActiveState>('generate');
 
   const [chartData, updateChart] = useState<TestProps>({
-    data: Array(30).fill(0).map(() => Math.random() * 100 + 10),
-    range: [10, 30],
+    data: [],
+    range: [0, 0],
   });
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
@@ -87,14 +90,6 @@ export default function VisualTest() {
   };
 
   useEffect(() => {
-    if (state === 'playing') {
-      updateScore(0);
-      updateLives(maxNumberOfLives);
-      updateTestActiveState('generate');
-    }
-  }, [state]);
-
-  useEffect(() => {
     if (testActiveState === 'generate') {
       updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[userScore ? userScore : 0], numberOfSquaresSize[userScore ? userScore : 0]));
       updateActivatedWinnersCount(0);
@@ -103,6 +98,52 @@ export default function VisualTest() {
       showWinnerSquares();
     }
   }, [testActiveState]);
+
+  async function sendResultRequest() {
+    await fetch(fetchUrlResult, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        score: userScore,
+      }),
+    });
+  }
+
+  async function getChartData() {
+    const response = await fetch(fetchUrlChart, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    }
+
+    const result = (await response.json()) as number[];
+
+    updateChart({
+      data: result,
+      range: [0, result.length - 1],
+    });
+  }
+
+  useEffect(() => {
+    if (state === 'start') {
+      getChartData();
+      updateScore(0);
+      updateChartScore(null);
+    } else if (state === 'playing') {
+      updateScore(0);
+      updateLives(maxNumberOfLives);
+      updateTestActiveState('generate');
+    } else if (state === 'end') {
+      updateChartScore(userScore);
+      sendResultRequest();
+    }
+  }, [state]);
 
   const showWinnerSquares = () => {
     randomWinnersIdx.forEach((val) => {
@@ -120,22 +161,22 @@ export default function VisualTest() {
     });
   };
 
-  return (<Test testName='Visual Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+  return (<Test testName='Visual Memory' testDescription={testDescription} chartData={chartData} userScore={chartScore}>
 
     {state === 'start' && <TestStart shortDescription={shortTestDescription} logoUrl={logo} updateState={updateState}/>}
 
     {state === 'end' &&
-      <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore}/>}
+      <TestEnd logoUrl={logo} result={resultString} updateState={updateState}/>}
 
     {state === 'playing' &&
       <section>
 
         <div className={style.testInfo}>
           <span className={style.testLives}>
-              Lives | {userLives}
+            <p>Lives |</p> {userLives}
           </span>
           <span className={style.testScore}>
-              Score | {userScore === null ? 0 : userScore}
+            <p>Score |</p> {userScore === null ? 0 : userScore}
           </span>
         </div>
 
@@ -152,3 +193,4 @@ export default function VisualTest() {
     }
   </Test>);
 }
+

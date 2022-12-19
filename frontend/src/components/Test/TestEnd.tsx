@@ -9,7 +9,6 @@ export interface TestEndProps {
   result?: string,
 
   updateState: (state: TestState) => void,
-  updateScore: (score: number | null) => void,
 }
 
 export default class TestEnd extends Component<TestEndProps> {
@@ -18,7 +17,6 @@ export default class TestEnd extends Component<TestEndProps> {
     result: '[Test Summary]',
 
     updateState: () => {},
-    updateScore: () => {},
   };
 
   public render() {
@@ -36,7 +34,6 @@ export default class TestEnd extends Component<TestEndProps> {
   }
 
   private buttonAction =() => {
-    this.props.updateScore(null);
     this.props.updateState('start');
   };
 
@@ -44,3 +41,4 @@ export default class TestEnd extends Component<TestEndProps> {
     return classes.join(' ');
   }
 }
+
