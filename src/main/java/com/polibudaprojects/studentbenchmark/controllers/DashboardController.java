@@ -1,14 +1,14 @@
 package com.polibudaprojects.studentbenchmark.controllers;
 
+import com.google.gson.Gson;
 import com.polibudaprojects.studentbenchmark.entity.AppUser;
 import com.polibudaprojects.studentbenchmark.entity.AppUserEntityDetails;
 import com.polibudaprojects.studentbenchmark.entity.testsEntities.*;
+import com.polibudaprojects.studentbenchmark.repository.UserRepo;
 import com.polibudaprojects.studentbenchmark.repository.testsRepositories.NumberTestRepo;
 import com.polibudaprojects.studentbenchmark.repository.testsRepositories.SequenceTestRepo;
 import com.polibudaprojects.studentbenchmark.repository.testsRepositories.VerbalTestRepo;
 import com.polibudaprojects.studentbenchmark.repository.testsRepositories.VisualTestRepo;
-import com.polibudaprojects.studentbenchmark.repository.UserRepo;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,100 +44,40 @@ public class DashboardController {
     public String getDashboardPublicData() {
         List<List<PublicData>> data = new ArrayList<>();
         Gson gson = new Gson();
-        AppUser user;
 
-        List<NumberTest> numberBestList = numberTestRepo.findBestScores();
-        List<SequenceTest> sequenceBestList = sequenceTestRepo.findBestScores();
-        List<VerbalTest> verbalBestList = verbalTestRepo.findBestScores();
-        List<VisualTest> visualBestList = visualTestRepo.findBestScores();
+        data.add(top100PublicDataFrom(numberTestRepo.findBestScores()));
+        data.add(top100PublicDataFrom(sequenceTestRepo.findBestScores()));
+        data.add(top100PublicDataFrom(verbalTestRepo.findBestScores()));
+        data.add(top100PublicDataFrom(visualTestRepo.findBestScores()));
 
-        List<NumberTest> numberGraphList = numberTestRepo.findAllGraphValidScores();
-        List<SequenceTest> sequenceGraphList = sequenceTestRepo.findAllGraphValidScores();
-        List<VerbalTest> verbalGraphList = verbalTestRepo.findAllGraphValidScores();
-        List<VisualTest> visualGraphList = visualTestRepo.findAllGraphValidScores();
-
-        List<PublicData> top100Number = new ArrayList<>();
-        List<PublicData> top100Sequence = new ArrayList<>();
-        List<PublicData> top100Verbal = new ArrayList<>();
-        List<PublicData> top100Visual = new ArrayList<>();
-        List<PublicData> graphNumber = new ArrayList<>();
-        List<PublicData> graphSequence = new ArrayList<>();
-        List<PublicData> graphVerbal = new ArrayList<>();
-        List<PublicData> graphVisual = new ArrayList<>();
-
-        for (NumberTest numberTest : numberBestList) {
-            user = userRepo.findByID(numberTest.getIdUser());
-            top100Number.add(new PublicData(user.getNickname(), numberTest.getDateOfSubmission(), numberTest.getScore()));
-        }
-
-        for (SequenceTest sequenceTest : sequenceBestList) {
-            user = userRepo.findByID(sequenceTest.getIdUser());
-            top100Sequence.add(new PublicData(user.getNickname(), sequenceTest.getDateOfSubmission(), sequenceTest.getScore()));
-        }
-
-        for (VerbalTest verbalTest : verbalBestList) {
-            user = userRepo.findByID(verbalTest.getIdUser());
-            top100Verbal.add(new PublicData(user.getNickname(), verbalTest.getDateOfSubmission(), verbalTest.getScore()));
-        }
-
-        for (VisualTest visualTest : visualBestList) {
-            user = userRepo.findByID(visualTest.getIdUser());
-            top100Visual.add(new PublicData(user.getNickname(), visualTest.getDateOfSubmission(), visualTest.getScore()));
-        }
-
-        String name;
-
-        for (NumberTest numberTest : numberGraphList) {
-            if (numberTest.getIdUser() != 0) {
-                user = userRepo.findByID(numberTest.getIdUser());
-                name = user.getNickname();
-            } else {
-                name = "";
-            }
-            graphNumber.add(new PublicData(name, numberTest.getDateOfSubmission(), numberTest.getScore()));
-        }
-
-        for (SequenceTest sequenceTest : sequenceGraphList) {
-            if (sequenceTest.getIdUser() != 0) {
-                user = userRepo.findByID(sequenceTest.getIdUser());
-                name = user.getNickname();
-            } else {
-                name = "";
-            }
-            graphSequence.add(new PublicData(name, sequenceTest.getDateOfSubmission(), sequenceTest.getScore()));
-        }
-
-        for (VerbalTest verbalTest : verbalGraphList) {
-            if (verbalTest.getIdUser() != 0) {
-                user = userRepo.findByID(verbalTest.getIdUser());
-                name = user.getNickname();
-            } else {
-                name = "";
-            }
-            graphVerbal.add(new PublicData(name, verbalTest.getDateOfSubmission(), verbalTest.getScore()));
-        }
-
-        for (VisualTest visualTest : visualGraphList) {
-            if (visualTest.getIdUser() != 0) {
-                user = userRepo.findByID(visualTest.getIdUser());
-                name = user.getNickname();
-            } else {
-                name = "";
-            }
-            graphVisual.add(new PublicData(name, visualTest.getDateOfSubmission(), visualTest.getScore()));
-        }
-
-        data.add(top100Number);
-        data.add(top100Sequence);
-        data.add(top100Verbal);
-        data.add(top100Visual);
-
-        data.add(graphNumber);
-        data.add(graphSequence);
-        data.add(graphVerbal);
-        data.add(graphVisual);
+        data.add(graphValidPublicDataFrom(numberTestRepo.findAllGraphValidScores()));
+        data.add(graphValidPublicDataFrom(sequenceTestRepo.findAllGraphValidScores()));
+        data.add(graphValidPublicDataFrom(verbalTestRepo.findAllGraphValidScores()));
+        data.add(graphValidPublicDataFrom(visualTestRepo.findAllGraphValidScores()));
 
         return gson.toJson(data);
+    }
+
+    private <T extends AppTest> List<PublicData> top100PublicDataFrom(List<T> bestScoresTests) {
+        List<PublicData> top100 = new ArrayList<>();
+        for (AppTest test : bestScoresTests) {
+            AppUser user = userRepo.findByID(test.getIdUser());
+            top100.add(new PublicData(user.getNickname(), test.getDateOfSubmission(), test.getScore()));
+        }
+        return top100;
+    }
+
+    private <T extends AppTest> List<PublicData> graphValidPublicDataFrom(List<T> graphValidTests) {
+        List<PublicData> graphValid = new ArrayList<>();
+        String name = "";
+        for (AppTest test : graphValidTests) {
+            if (test.getIdUser() != 0) {
+                AppUser user = userRepo.findByID(test.getIdUser());
+                name = user.getNickname();
+            }
+            graphValid.add(new PublicData(name, test.getDateOfSubmission(), test.getScore()));
+        }
+        return graphValid;
     }
 
     @GetMapping("/DashboardPersonal")
