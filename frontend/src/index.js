@@ -106,7 +106,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <Dashboard />,
+    element: <RestrictedRoute
+      condition={isLoggedIn}
+      component={<Dashboard />}
+      invalidComponent={<Login />}
+    />,
   },
   {
     path: '/donate',
