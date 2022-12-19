@@ -25,7 +25,9 @@ export default function VerbalTest() {
   const randomWordPickerSeen = (): string => [...seenWords][Math.floor(Math.random() * seenWords.size)];
 
   const [state, updateState] = useState<TestState>('start');
-  const [userScore, updateScore] = useState<number | null>(null);
+  const [userScore, updateScore] = useState<number>(0);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
+
   const [userLives, updateLives] = useState<number>(3);
   const [wordList, setWordList] = useState<Set<string>>(new Set<string>([]));
   const [seenWords, updateSeenWords] = useState<Set<string>>(new Set<string>([]));
@@ -115,15 +117,6 @@ export default function VerbalTest() {
   };
 
   useEffect(() => {
-    if (state === 'start') {
-      updateScore(null);
-      getChartData();
-      updateLives(3);
-      updateSeenWords(new Set<string>([]));
-    }
-  }, [state]);
-
-  useEffect(() => {
     if (state === 'playing') {
       let word: string;
 
@@ -149,21 +142,30 @@ export default function VerbalTest() {
 
   useEffect(() => {
     if (state === 'start') {
+      updateScore(0);
+      updateChartScore(null);
+
+      getChartData();
+      updateLives(3);
+      updateSeenWords(new Set<string>([]));
+
       async function getWordsAsync() {
         const result = getWords();
         setWordList(new Set<string>(await result));
       }
       getWordsAsync();
+    } else if (state === 'end') {
+      updateChartScore(userScore);
     }
   }, [state]);
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Verbal Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+  return (<Test testName='Verbal Memory' testDescription={testDescription} chartData={chartData} userScore={chartScore}>
 
     {state === 'start' && <TestStart logoUrl={logo} updateState={updateState} shortDescription={shortTestDescription}/>}
 
-    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} />}
 
     {state === 'playing' &&
         <>

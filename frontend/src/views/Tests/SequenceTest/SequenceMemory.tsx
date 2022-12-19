@@ -18,7 +18,9 @@ export default function SequenceTest() {
   const [state, updateState] = useState<TestState>('start');
   const [sequenceList, updateSequenceList] = useState<number[]>([]);
   const [inputList, updateInputList] = useState<number[]>([]);
-  const [userScore, updateScore] = useState<null | number>(null);
+  const [userScore, updateScore] = useState<number>(0);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
+
   const [chartData, updateChart] = useState<TestProps>({
     data: [],
     range: [0, 0],
@@ -35,18 +37,6 @@ export default function SequenceTest() {
       }),
     });
   }
-
-  useEffect(() => {
-    if (state === 'start') {
-      getChartData();
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (state === 'end') {
-      sendResultRequest();
-    }
-  }, [state]);
 
   async function getChartData() {
     const response = await fetch(fetchUrlChart, {
@@ -68,13 +58,20 @@ export default function SequenceTest() {
   }
 
   useEffect(() => {
-    if (state === 'playing') {
+    if (state === 'start') {
       updateScore(0);
-      const tmp : number[] = sequenceList;
-      tmp.push(Math.round(Math.random() * 8)+1);
+      updateChartScore(null);
+      getChartData();
+    } else if (state === 'playing') {
+      updateScore(0);
+      const tmp: number[] = sequenceList;
+      tmp.push(Math.round(Math.random() * 8) + 1);
       updateSequenceList(tmp);
       updateInputList([]);
       showSequence();
+    } else if (state === 'end') {
+      sendResultRequest();
+      updateChartScore(userScore);
     }
   }, [state]);
 
@@ -134,11 +131,11 @@ export default function SequenceTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Sequence Memory' chartData={chartData} userScore={userScore} testDescription={testDescription}>
+  return (<Test testName='Sequence Memory' chartData={chartData} userScore={chartScore} testDescription={testDescription}>
 
     {state === 'start' && <TestStart logoUrl={logo} updateState={updateState} shortDescription={shortTestDescription}/>}
 
-    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} />}
 
     {state === 'playing' &&
       <>

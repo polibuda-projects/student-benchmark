@@ -88,7 +88,7 @@ export default class TestChart extends Component<TestChartProps> {
       ...Array.from({ length: maxx - chartData.range[1] }, () => 0),
     ];
 
-    lineData = this.trimRangeRight(lineData, 2);
+    lineData = this.trimRangeRight(lineData, 2, this.props.userScore);
 
     const labels = Array.from({ length: lineData.length }, (_, i) => minn + i);
     const datasets: ChartDataJS['datasets'] = [];
@@ -142,7 +142,7 @@ export default class TestChart extends Component<TestChartProps> {
     return copy;
   };
 
-  private trimRangeRight(data: number[], percent: number) {
+  private trimRangeRight(data: number[], percent: number, userScore?: number | null) {
     const copy = data.slice();
     const maxx = Math.max(...copy);
     let firstGreaterThan = copy.length;
@@ -150,6 +150,7 @@ export default class TestChart extends Component<TestChartProps> {
     for (let i = copy.length - 1; i >= 0; i -= 1) {
       firstGreaterThan = i;
 
+      if (typeof userScore === 'number' && i === userScore) break;
       if (100 * (copy[i] / maxx) > percent) break;
     }
 

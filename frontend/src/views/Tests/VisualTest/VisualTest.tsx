@@ -18,6 +18,7 @@ export type TestActiveState = 'generate' | 'show' | 'resolve';
 export default function VisualTest() {
   const [state, updateState] = useState<TestState>('start');
   const [userScore, updateScore] = useState<null | number>(null);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
 
   const maxNumberOfLives = 3;
   const [userLives, updateLives] = useState<number>(maxNumberOfLives);
@@ -89,14 +90,6 @@ export default function VisualTest() {
   };
 
   useEffect(() => {
-    if (state === 'playing') {
-      updateScore(0);
-      updateLives(maxNumberOfLives);
-      updateTestActiveState('generate');
-    }
-  }, [state]);
-
-  useEffect(() => {
     if (testActiveState === 'generate') {
       updateRandomWinnersIdx(randomWinnersIdxGen(numberOfWinners[userScore ? userScore : 0], numberOfSquaresSize[userScore ? userScore : 0]));
       updateActivatedWinnersCount(0);
@@ -138,14 +131,17 @@ export default function VisualTest() {
   }
 
   useEffect(() => {
-    if (state === 'end') {
-      sendResultRequest();
-    }
-  }, [state]);
-
-  useEffect(() => {
     if (state === 'start') {
       getChartData();
+      updateScore(0);
+      updateChartScore(null);
+    } else if (state === 'playing') {
+      updateScore(0);
+      updateLives(maxNumberOfLives);
+      updateTestActiveState('generate');
+    } else if (state === 'end') {
+      updateChartScore(userScore);
+      sendResultRequest();
     }
   }, [state]);
 
@@ -165,12 +161,12 @@ export default function VisualTest() {
     });
   };
 
-  return (<Test testName='Visual Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+  return (<Test testName='Visual Memory' testDescription={testDescription} chartData={chartData} userScore={chartScore}>
 
     {state === 'start' && <TestStart shortDescription={shortTestDescription} logoUrl={logo} updateState={updateState}/>}
 
     {state === 'end' &&
-      <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore}/>}
+      <TestEnd logoUrl={logo} result={resultString} updateState={updateState}/>}
 
     {state === 'playing' &&
       <section>

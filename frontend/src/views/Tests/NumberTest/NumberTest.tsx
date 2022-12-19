@@ -18,7 +18,9 @@ const shortTestDescription = 'Remember the longest number you can.';
 
 export default function NumberTest() {
   const [state, updateState] = useState<TestState>('start');
-  const [userScore, updateScore] = useState<null | number>(null);
+  const [userScore, updateScore] = useState<number>(0);
+  const [chartScore, updateChartScore] = useState<number | null>(null);
+
   const [currentLevel, updateLevel] = useState<number>(1);
   const [currentNumber, updateNumber] = useState<number>(Math.floor(Math.random() * 10));
   let [yourNumber, updateYourNumber] = useState<number>(0);
@@ -42,17 +44,16 @@ export default function NumberTest() {
   };
 
   useEffect(() => {
-    if (state === 'playing') {
-      move();
-    }
-  }, [state]);
-
-  useEffect(() => {
     if (state === 'start') {
       getChartData();
       updateScore(0);
+      updateChartScore(null);
       updateLevel(1);
       updateNumber(Math.floor(Math.random() * 10));
+    } else if (state === 'playing') {
+      move();
+    } else if (state === 'end') {
+      updateChartScore(userScore);
     }
   }, [state]);
 
@@ -114,11 +115,11 @@ export default function NumberTest() {
 
   const resultString = userScore === null ? '' : `${userScore} Point${userScore === 1 ? '' : 's'}`;
 
-  return (<Test testName='Number Memory' testDescription={testDescription} chartData={chartData} userScore={userScore}>
+  return (<Test testName='Number Memory' testDescription={testDescription} chartData={chartData} userScore={chartScore}>
 
     {state === 'start' && <TestStart logoUrl={logo} shortDescription={shortTestDescription} updateState={updateState} />}
 
-    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState} updateScore={updateScore} />}
+    {state === 'end' && <TestEnd logoUrl={logo} result={resultString} updateState={updateState}/>}
 
     {state === 'playing' &&
       <>
