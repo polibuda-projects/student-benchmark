@@ -36,38 +36,47 @@ const router = createBrowserRouter([
   {
     path: '/tests',
     element: <TestsHome />,
+    errorElement: <Home />,
   },
   {
     path: '/tests/number',
     element: <NumberTest />,
+    errorElement: <Home />,
   },
   {
     path: '/tests/sequence',
     element: <SequenceTest />,
+    errorElement: <Home />,
   },
   {
     path: '/tests/verbal',
     element: <VerbalTest />,
+    errorElement: <Home />,
   },
   {
     path: '/tests/visual',
     element: <VisualTest />,
+    errorElement: <Home />,
   },
   {
     path: '/login',
     element: <Login />,
+    errorElement: <Home />,
   },
   {
     path: '/privacy',
     element: <Policy />,
+    errorElement: <Home />,
   },
   {
     path: '/recover',
     element: <Recover />,
+    errorElement: <Home />,
   },
   {
     path: '/resetPassword',
     element: <ResetPassword />,
+    errorElement: <Home />,
   },
   {
     path: '/delete',
@@ -76,10 +85,12 @@ const router = createBrowserRouter([
       component={<Delete />}
       invalidComponent={<Login />}
     />,
+    errorElement: <Home />,
   },
   {
     path: '/signup',
     element: <Signup />,
+    errorElement: <Home />,
   },
   {
     path: '/support',
@@ -88,6 +99,7 @@ const router = createBrowserRouter([
       component={<Support />}
       invalidComponent={<Login />}
     />,
+    errorElement: <Home />,
   },
   {
     path: '/settings',
@@ -96,6 +108,7 @@ const router = createBrowserRouter([
       component={<User />}
       invalidComponent={<Login />}
     />,
+    errorElement: <Home />,
   },
   {
     path: '/password',
@@ -104,6 +117,7 @@ const router = createBrowserRouter([
       component={<Password />}
       invalidComponent={<Login />}
     />,
+    errorElement: <Home />,
   },
   {
     path: '/dashboard',
@@ -112,14 +126,17 @@ const router = createBrowserRouter([
       component={<Dashboard />}
       invalidComponent={<Login />}
     />,
+    errorElement: <Home />,
   },
   {
     path: '/donate',
     element: <Donate />,
+    errorElement: <Home />,
   },
   {
     path: '/github',
     element: <Github />,
+    errorElement: <Home />,
   },
   {
     path: '/admin',
@@ -128,6 +145,7 @@ const router = createBrowserRouter([
       component={<Admin />}
       invalidComponent={<Home />}
     />,
+    errorElement: <Home />,
   },
 ]);
 
