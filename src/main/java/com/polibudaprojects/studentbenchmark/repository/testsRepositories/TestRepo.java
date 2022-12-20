@@ -12,7 +12,7 @@ import java.util.List;
 @NoRepositoryBean
 public interface TestRepo<T extends AppTest> extends JpaRepository<T, Long> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName}  u WHERE u.id_user != 0 ORDER BY u.score DESC LIMIT 100")
+    @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName} u JOIN app_user ON u.id_user = app_user.id_user ORDER BY u.score DESC LIMIT 100")
     List<T> findBestScores();
 
     @Query(nativeQuery = true, value = "SELECT * FROM #{#entityName}  u ORDER BY u.score ASC")

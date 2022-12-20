@@ -21,7 +21,7 @@ const testDescription='This test measures how many words you can keep in short t
 
 export default function VerbalTest() {
   const words = new Set<string>();
-  const randomWordPickerNew = (): string => [...wordList][Math.floor(Math.random() * wordList.size)];
+  const randomWordPickerNew = (): string => wordList[Math.floor(Math.random() * wordList.length)];
   const randomWordPickerSeen = (): string => [...seenWords][Math.floor(Math.random() * seenWords.size)];
 
   const [state, updateState] = useState<TestState>('start');
@@ -29,7 +29,7 @@ export default function VerbalTest() {
   const [chartScore, updateChartScore] = useState<number | null>(null);
 
   const [userLives, updateLives] = useState<number>(3);
-  const [wordList, setWordList] = useState<Set<string>>(new Set<string>([]));
+  const [wordList, setWordList] = useState<string[]>([]);
   const [seenWords, updateSeenWords] = useState<Set<string>>(new Set<string>([]));
   const [activeWord, updateActiveWord] = useState<string>(randomWordPickerNew());
 
@@ -39,10 +39,10 @@ export default function VerbalTest() {
   });
 
   const randomWordPicker = () => {
-    if (Math.random() < 0.5) {
+    if (Math.random() < 0.53) {
       return randomWordPickerNew();
     } else {
-      if (seenWords.size < 2) {
+      if (seenWords.size < 3) {
         return randomWordPickerNew();
       } else {
         return randomWordPickerSeen();
@@ -122,9 +122,6 @@ export default function VerbalTest() {
 
       do {
         word = randomWordPicker();
-        try {
-          wordList.delete(word);
-        } catch (e) {}
       } while (words.has(word));
 
       updateActiveWord(word);
@@ -151,7 +148,7 @@ export default function VerbalTest() {
 
       async function getWordsAsync() {
         const result = getWords();
-        setWordList(new Set<string>(await result));
+        setWordList(await result);
       }
       getWordsAsync();
     } else if (state === 'end') {

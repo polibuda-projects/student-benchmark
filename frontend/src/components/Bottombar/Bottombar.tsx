@@ -9,6 +9,7 @@ import burgerIcon from '@resources/img/burgerIcon.svg';
 import MediumButton from '@components/Buttons/ButtonMedium';
 import { Link, NavLink } from 'react-router-dom';
 import { Component, HTMLAttributes } from 'react';
+import { isLoggedIn, logout } from '../../auth';
 
 
 export interface BottombarProps {
@@ -58,9 +59,14 @@ export default class BottombarComponent extends Component<BottombarProps, Bottom
           </div>
 
           <div className={this.dropdownStyleGenerator}>
-            <div className={style.auth}>
+            <div className={this.joinClasses(style.auth, isLoggedIn() ? style.disabled : '')}>
               <Link to='/login'><MediumButton text='Login' width='100%'/></Link>
               <Link to='/signup'><MediumButton text='Sign up' width='100%'/></Link>
+            </div>
+
+            <div className={this.joinClasses(style.auth, isLoggedIn() ? '' : style.disabled)}>
+              <Link className={style.dropdownButton} to='/settings'>Settings</Link>
+              <div style={{ cursor: 'pointer' }} className={style.dropdownButton} onClick={logout}>Logout</div>
             </div>
 
             <div className={style.links}>

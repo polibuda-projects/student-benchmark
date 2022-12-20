@@ -47,7 +47,11 @@ function Password() {
         InfoPopup.addMessage('Password changed successfully!');
         navigate('/settings');
       } else {
-        InfoPopup.addMessage(`Error: ${await response.text()}`);
+        if (response.headers.get('Content-Type')?.includes('text/plain')) {
+          InfoPopup.addMessage(`Error: ${await response.text()}`);
+        } else {
+          InfoPopup.addMessage('Error: Connection error. Please try again later.');
+        }
       }
     } catch (error) {}
   }
@@ -76,7 +80,7 @@ function Password() {
           />
           <Input
             useRef={newPassword}
-            sibling={newPasswordRepeated}
+            // sibling={newPasswordRepeated}
             correctValue={setPasswordValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegister'}
@@ -86,7 +90,7 @@ function Password() {
           />
           <Input
             useRef={newPasswordRepeated}
-            sibling={newPassword}
+            // sibling={newPassword}
             correctValue={setPasswordConfirmationValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegisterRepeat'}

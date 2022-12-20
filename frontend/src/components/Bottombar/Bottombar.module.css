@@ -144,9 +144,18 @@
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
 }
 
+.dropdownButton {
+  font-size: 2.4rem;
+  text-align: center;
+}
+
 .dropdownActive {
   transform: translateY(-100%);
   opacity: 1;
 
   pointer-events: initial;
+}
+
+.disabled {
+  display: none;
 }

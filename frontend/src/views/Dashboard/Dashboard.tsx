@@ -68,7 +68,9 @@ const Dashboard = (props: any) => {
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/DashboardPublic`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.ok) return response.json(); throw response;
+        })
         .then((data) => {
           setNumberData(data[0]);
           setSequenceData(data[1]);
@@ -80,8 +82,12 @@ const Dashboard = (props: any) => {
         });
 
     fetch(`${process.env.REACT_APP_BACKEND_URL}/DashboardPersonal`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.ok) return response.json(); throw response;
+        })
         .then((data) => {
+          [data[0], data[1]] = [data[1], data[0]];
+          [data[1], data[3]] = [data[3], data[1]];
           setPersonalData(data);
         })
         .catch((error) => {
@@ -177,7 +183,7 @@ const Dashboard = (props: any) => {
   }, []);
 
 
-  const toColumnData = (data: PublicData[]): PublicData[] => data.sort(sortFunction).slice(0, 6).map(({ dateOfSubmission, score, nickname }, i) => ({
+  const toColumnData = (data: PublicData[]): PublicData[] => data?.sort(sortFunction).slice(0, 6).map(({ dateOfSubmission, score, nickname }, i) => ({
     idTest: i + 1,
     nickname,
     dateOfSubmission,

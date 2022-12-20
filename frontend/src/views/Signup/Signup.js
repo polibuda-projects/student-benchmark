@@ -54,7 +54,11 @@ function Signup() {
       if (err instanceof Response) {
         const message = await err.text();
         if (message === '5') InfoPopup.addMessage('Error: Unknown error');
-        else InfoPopup.addMessage(`Error: ${message}`);
+        else if (err.headers.get('Content-Type')?.includes('text/plain')) {
+          InfoPopup.addMessage(`Error: ${message}`);
+        } else {
+          InfoPopup.addMessage('Error: Connection error. Please try again later.');
+        }
       }
     }
   };
@@ -98,7 +102,7 @@ function Signup() {
             <Input
               useRef={password}
               correctValue={setPasswordValid}
-              sibling={passwordConfirmation}
+              // sibling={passwordConfirmation}
               type={isShown ? 'text' : 'password'}
               name={'passwordRegister'}
               placeholder={'Password'}
@@ -108,7 +112,7 @@ function Signup() {
             <Input
               useRef={passwordConfirmation}
               correctValue={setPasswordConfirmationValid}
-              sibling={password}
+              // sibling={password}
               type={isShown ? 'text' : 'password'}
               name={'passwordRegisterRepeat'}
               placeholder={'Repeat your password'}
