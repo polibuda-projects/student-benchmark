@@ -83,6 +83,7 @@ const Dashboard = (props: any) => {
         .then((response) => response.json())
         .then((data) => {
           [data[0], data[1]] = [data[1], data[0]];
+          [data[1], data[3]] = [data[3], data[1]];
           setPersonalData(data);
         })
         .catch((error) => {
