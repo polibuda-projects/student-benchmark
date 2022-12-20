@@ -76,7 +76,7 @@ function Password() {
           />
           <Input
             useRef={newPassword}
-            sibling={newPasswordRepeated}
+            // sibling={newPasswordRepeated}
             correctValue={setPasswordValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegister'}
@@ -86,7 +86,7 @@ function Password() {
           />
           <Input
             useRef={newPasswordRepeated}
-            sibling={newPassword}
+            // sibling={newPassword}
             correctValue={setPasswordConfirmationValid}
             type={isShown ? 'text' : 'password'}
             name={'passwordRegisterRepeat'}

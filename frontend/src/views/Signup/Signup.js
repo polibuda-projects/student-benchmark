@@ -98,7 +98,7 @@ function Signup() {
             <Input
               useRef={password}
               correctValue={setPasswordValid}
-              sibling={passwordConfirmation}
+              // sibling={passwordConfirmation}
               type={isShown ? 'text' : 'password'}
               name={'passwordRegister'}
               placeholder={'Password'}
@@ -108,7 +108,7 @@ function Signup() {
             <Input
               useRef={passwordConfirmation}
               correctValue={setPasswordConfirmationValid}
-              sibling={password}
+              // sibling={password}
               type={isShown ? 'text' : 'password'}
               name={'passwordRegisterRepeat'}
               placeholder={'Repeat your password'}
