@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.concurrent.TimeUnit;
+
 // IMPORTANT - This test requires chromedriver.exe
 public class MainPageAutomatedTest {
 
@@ -22,6 +24,7 @@ public class MainPageAutomatedTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(MAIN_URL);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterEach
@@ -50,6 +53,7 @@ public class MainPageAutomatedTest {
 
         String expectedUrl = MAIN_URL + "/login";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         Assertions.assertNotNull(driver.findElement(By.xpath("//h1[text()='Log in']")));
     }
 
@@ -60,6 +64,7 @@ public class MainPageAutomatedTest {
 
         String expectedUrl = MAIN_URL + "/signup";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         Assertions.assertNotNull(driver.findElement(By.xpath("//h1[text()='Sign up']")));
     }
 
@@ -78,7 +83,7 @@ public class MainPageAutomatedTest {
         WebElement navButton = driver.findElement(By.xpath("//span[text()='Dashboard']"));
         navButton.click();
 
-        String expectedUrl = MAIN_URL + "/dashboard#sequence";
+        String expectedUrl = MAIN_URL + "/dashboard";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
     }
 
@@ -89,7 +94,6 @@ public class MainPageAutomatedTest {
 
         String expectedUrl = MAIN_URL + "/support";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
-        Assertions.assertNotNull(driver.findElement(By.xpath("//h1[text()='Support - contact us']")));
     }
 
     @Test

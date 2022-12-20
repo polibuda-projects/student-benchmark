@@ -6,23 +6,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class LoginForm {
-    private final WebElement emailInput;
+    private final WebElement usernameInput;
     private final WebElement passwordInput;
     private final WebElement submitButton;
 
     public LoginForm(WebDriver driver) throws NoSuchElementException {
-        emailInput = driver.findElement(By.xpath("//input[@name='emailLog']"));
+        usernameInput = driver.findElement(By.xpath("//input[@name='usernameLog']"));
         passwordInput = driver.findElement(By.xpath("//input[@name='passwordLogin']"));
-        submitButton = driver.findElement(By.xpath("//button[text()='Login']"));
+        submitButton = driver.findElement(By.xpath("//div/button[text()='Login']"));
     }
 
     public void clearInputs() {
-        emailInput.clear();
+        usernameInput.clear();
         passwordInput.clear();
     }
 
-    public WebElement getEmailInput() {
-        return emailInput;
+    public WebElement getUsernameInput() {
+        return usernameInput;
     }
 
     public WebElement getPasswordInput() {
