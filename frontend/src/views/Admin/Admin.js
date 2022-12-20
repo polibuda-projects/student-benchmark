@@ -42,7 +42,7 @@ function Admin() {
             <p className={style.messageText}>Message</p>
           </div>
           <div className={style.messages}>
-            {messages ? messages.map((message) => (
+            {messages ? messages.slice().reverse().map((message) => (
               <div className={style.message} key={message.id_Support}>
                 <p className={style.messageID}>{message.id_Support}</p>
                 <p className={style.messageID}>{message.id_user}</p>
@@ -65,7 +65,7 @@ function Admin() {
             <p className={style.logText}>Context</p>
           </div>
           <div className={style.logs}>
-            {logs ? logs.map((log) => (
+            {logs ? logs.slice().reverse().map((log) => (
               <div className={style.log} key={log.idLog}>
                 <p className={style.logID}>{log.idLog}</p>
                 <p className={style.logID}>{log.userId}</p>
