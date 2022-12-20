@@ -54,7 +54,11 @@ function Signup() {
       if (err instanceof Response) {
         const message = await err.text();
         if (message === '5') InfoPopup.addMessage('Error: Unknown error');
-        else InfoPopup.addMessage(`Error: ${message}`);
+        else if (err.headers.get('Content-Type')?.includes('text/plain')) {
+          InfoPopup.addMessage(`Error: ${message}`);
+        } else {
+          InfoPopup.addMessage('Error: Connection error. Please try again later.');
+        }
       }
     }
   };

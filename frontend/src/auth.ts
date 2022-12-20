@@ -116,7 +116,13 @@ export const login = async (username: string, password: string, navigate: Naviga
 
   try {
     const resp = await fetch(loginUrl, requestOptions);
-    if (resp.status !== 200) return await resp.text();
+    if (resp.status !== 200) {
+      if (resp.headers.get('Content-Type')?.includes('text/plain')) {
+        return await resp.text();
+      } else {
+        return 'Error: Connection error. Please try again later.';
+      }
+    }
     const user = await fetchUser();
 
     if (user === null) return 'Login failed';

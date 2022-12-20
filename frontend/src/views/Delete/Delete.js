@@ -44,7 +44,11 @@ function Delete() {
         await response.clone().json(); // don't show verbose error message if it's a validation error
         InfoPopup.addMessage('Error: Incorrect user password');
       } catch (error) {
-        InfoPopup.addMessage(`Error: ${await response.text()}`);
+        if (response.headers.get('Content-Type')?.includes('text/plain')) {
+          InfoPopup.addMessage(`Error: ${await response.text()}`);
+        } else {
+          InfoPopup.addMessage('Error: Connection error. Please try again later.');
+        }
       }
     } else {
       InfoPopup.addMessage('Error: Unknown error');
