@@ -82,6 +82,7 @@ const Dashboard = (props: any) => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/DashboardPersonal`)
         .then((response) => response.json())
         .then((data) => {
+          [data[0], data[1]] = [data[1], data[0]];
           setPersonalData(data);
         })
         .catch((error) => {
