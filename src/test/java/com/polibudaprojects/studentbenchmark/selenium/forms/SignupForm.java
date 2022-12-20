@@ -19,7 +19,7 @@ public class SignupForm {
         passwordInput = driver.findElement(By.xpath("//input[@name='passwordRegister']"));
         passwordRepeatInput = driver.findElement(By.xpath("//input[@name='passwordRegisterRepeat']"));
         termsCheckBox = driver.findElement(By.xpath("//input[@name='terms']"));
-        submitButton = driver.findElement(By.xpath("//button[text()='Sign up']"));
+        submitButton = driver.findElement(By.xpath("//div/button[text()='Sign up']"));
     }
 
     public void clearInputs() {

@@ -3,9 +3,11 @@ package com.polibudaprojects.studentbenchmark.selenium;
 import com.polibudaprojects.studentbenchmark.selenium.forms.LoginForm;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.polibudaprojects.studentbenchmark.TestConstants.USER_EMAIL;
 import static com.polibudaprojects.studentbenchmark.TestConstants.USER_PASSWORD;
@@ -26,6 +28,7 @@ public class LoginAutomatedTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(LOGIN_URL);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterEach
@@ -38,7 +41,7 @@ public class LoginAutomatedTest {
     public void shouldGetLoginPage() {
         Assertions.assertDoesNotThrow(() -> {
             LoginForm loginForm = new LoginForm(driver);
-            Assertions.assertNotNull(loginForm.getEmailInput());
+            Assertions.assertNotNull(loginForm.getUsernameInput());
             Assertions.assertNotNull(loginForm.getPasswordInput());
             Assertions.assertNotNull(loginForm.getSubmitButton());
         });
@@ -49,43 +52,52 @@ public class LoginAutomatedTest {
         LoginForm loginForm = new LoginForm(driver);
         loginForm.clearInputs();
 
-        loginForm.getEmailInput().sendKeys(USER_EMAIL);
+        loginForm.getUsernameInput().sendKeys(USER_EMAIL);
         loginForm.getPasswordInput().sendKeys(USER_PASSWORD);
         loginForm.getSubmitButton().click();
 
-        String expectedUrl = "https://www.studentbenchmark.pl";
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String expectedUrl = "https://www.studentbenchmark.pl/";
+        Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    public void shouldNotLogin_withoutEmail() {
+        LoginForm loginForm = new LoginForm(driver);
+        loginForm.clearInputs();
+
+        loginForm.getPasswordInput().sendKeys(USER_PASSWORD);
+        loginForm.getSubmitButton().click();
+
+        String expectedUrl = "https://www.studentbenchmark.pl/login";
+        Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    public void shouldNotLogin_withoutPassword() {
+        LoginForm loginForm = new LoginForm(driver);
+        loginForm.clearInputs();
+
+        loginForm.getUsernameInput().sendKeys(USER_EMAIL);
+        loginForm.getSubmitButton().click();
+
+        String expectedUrl = "https://www.studentbenchmark.pl/login";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/invalidEmails.csv")
-    public void shouldWarnUser_whenEmailIsInvalid(String invalidEmail) {
+    @CsvSource({"us, Username is too short",
+            "TooLongUsername#o8f0myI34jvrKGyqLHWtZGLfTDuPa7uUwRpwVtBPyBjA3PGhF, Username is too long"})
+    public void shouldWarnUser_whenUsernameIsInvalid(String invalidUsername, String warningMessage) {
         LoginForm loginForm = new LoginForm(driver);
         loginForm.clearInputs();
 
-        loginForm.getEmailInput().sendKeys(invalidEmail);
-
-        Assertions.assertTrue(driver.getPageSource().contains("Email is not valid"));
-    }
-
-    @Test
-    public void shouldWarnUser_whenEmailIsTooLong() {
-        String invalidEmail = "user@TooLongEmaildo8f0myI34jvrKGyqLHWtZGLfTDuPa7uUwRpwVtBPyBj.com";
-        LoginForm loginForm = new LoginForm(driver);
-        loginForm.clearInputs();
-
-        loginForm.getEmailInput().sendKeys(invalidEmail);
-
-        Assertions.assertTrue(driver.getPageSource().contains("Email is too long"));
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = "/invalidPasswords.csv")
-    public void shouldWarnUser_whenPasswordIsInvalid(String invalidPassword, String warningMessage) {
-        LoginForm loginForm = new LoginForm(driver);
-        loginForm.clearInputs();
-
-        loginForm.getPasswordInput().sendKeys(invalidPassword);
+        loginForm.getUsernameInput().sendKeys(invalidUsername);
 
         Assertions.assertTrue(driver.getPageSource().contains(warningMessage));
     }
