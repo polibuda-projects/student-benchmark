@@ -141,7 +141,7 @@ export default function NumberTest() {
         <div className={style.container}>
           <NumberProperties className={style.textToScale} text={'Enter the showed number'} />
           <form onSubmit={handleSubmitClick} className={style.numberForm}>
-            <Input className={style.numberInput} focus={true} id={'numberToCheck'} autoComplete={'off'} required={true} />
+            <Input type={'tel'} className={style.numberInput} focus={true} id={'numberToCheck'} autoComplete={'off'} required={true} />
             <ButtonMedium width={'auto'} text='submit' onClick={handleSubmitClick} />
           </form>
         </div>
