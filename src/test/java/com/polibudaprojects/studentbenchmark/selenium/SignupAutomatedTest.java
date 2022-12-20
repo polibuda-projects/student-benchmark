@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.polibudaprojects.studentbenchmark.TestConstants.*;
 
 // IMPORTANT - This test requires chromedriver.exe
@@ -26,6 +28,7 @@ public class SignupAutomatedTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(SIGNUP_URL);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
 
     @AfterEach
@@ -48,18 +51,76 @@ public class SignupAutomatedTest {
     }
 
     @Test
-    public void shouldSignup() {
+    public void shouldNotSignup_withoutUsername() {
         SignupForm signupForm = new SignupForm(driver);
         signupForm.clearInputs();
 
-        signupForm.getUsernameInput().sendKeys(USER_NICKNAME);
         signupForm.getEmailInput().sendKeys(USER_EMAIL);
         signupForm.getPasswordInput().sendKeys(USER_PASSWORD);
         signupForm.getPasswordRepeatInput().sendKeys(USER_PASSWORD);
         signupForm.getTermsCheckBox().click();
         signupForm.getSubmitButton().click();
 
-        String expectedUrl = "https://www.studentbenchmark.pl";
+        String expectedUrl = "https://www.studentbenchmark.pl/signup";
+        Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    public void shouldNotSignup_withoutEmail() {
+        SignupForm signupForm = new SignupForm(driver);
+        signupForm.clearInputs();
+
+        signupForm.getUsernameInput().sendKeys(USER_NICKNAME);
+        signupForm.getPasswordInput().sendKeys(USER_PASSWORD);
+        signupForm.getPasswordRepeatInput().sendKeys(USER_PASSWORD);
+        signupForm.getTermsCheckBox().click();
+        signupForm.getSubmitButton().click();
+
+        String expectedUrl = "https://www.studentbenchmark.pl/signup";
+        Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    public void shouldNotSignup_withoutPassword() {
+        SignupForm signupForm = new SignupForm(driver);
+        signupForm.clearInputs();
+
+        signupForm.getUsernameInput().sendKeys(USER_NICKNAME);
+        signupForm.getEmailInput().sendKeys(USER_EMAIL);
+        signupForm.getPasswordRepeatInput().sendKeys(USER_PASSWORD);
+        signupForm.getTermsCheckBox().click();
+        signupForm.getSubmitButton().click();
+
+        String expectedUrl = "https://www.studentbenchmark.pl/signup";
+        Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    public void shouldNotSignup_withoutPasswordRepeat() {
+        SignupForm signupForm = new SignupForm(driver);
+        signupForm.clearInputs();
+
+        signupForm.getUsernameInput().sendKeys(USER_NICKNAME);
+        signupForm.getEmailInput().sendKeys(USER_EMAIL);
+        signupForm.getPasswordInput().sendKeys(USER_PASSWORD);
+        signupForm.getTermsCheckBox().click();
+        signupForm.getSubmitButton().click();
+
+        String expectedUrl = "https://www.studentbenchmark.pl/signup";
+        Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
+    }
+
+    @Test
+    public void shouldNotSignup_withoutTermsConfirmation() {
+        SignupForm signupForm = new SignupForm(driver);
+        signupForm.clearInputs();
+
+        signupForm.getUsernameInput().sendKeys(USER_NICKNAME);
+        signupForm.getEmailInput().sendKeys(USER_EMAIL);
+        signupForm.getPasswordInput().sendKeys(USER_PASSWORD);
+        signupForm.getSubmitButton().click();
+
+        String expectedUrl = "https://www.studentbenchmark.pl/signup";
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl());
     }
 
